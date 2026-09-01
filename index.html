@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CLASSROOM LIVE</title>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mediapipe@0.1.167/selfie_segmentation.js"></script>
+<script src="https://unpkg.com/mediasoup-client@3.20.0/lib/index.js"></script>
+<style>
+*{box-sizing:border-box}:root{--bg:#080a0f;--panel:#12151d;--panel2:#181c25;--border:#282e3b;--text:#f5f7fb;--muted:#9ba3b3;--blue:#4f8cff;--green:#32c875;--red:#e54852;--yellow:#f3b83f}
+html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+.home{min-height:100vh;display:flex;justify-content:center;align-items:center;padding:25px;background:radial-gradient(circle at 10% 10%,#17244a 0,transparent 35%),radial-gradient(circle at 90% 90%,#102e2a 0,transparent 35%),var(--bg)}
+.home-card{width:min(950px,100%);display:grid;grid-template-columns:1.15fr .85fr;background:#11141b;border:1px solid var(--border);border-radius:25px;overflow:hidden;box-shadow:0 30px 90px #0009}.home-main{padding:55px}.brand{display:flex;align-items:center;gap:12px;margin-bottom:45px}.logo{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:var(--blue);font-size:23px}.brand-name{font-size:20px;font-weight:bold}.eyebrow{color:#79a5ff;font-size:12px;letter-spacing:1.5px;font-weight:bold;margin-bottom:12px}.hero{font-size:44px;line-height:1.05;margin:0 0 18px;letter-spacing:-1.5px}.description{color:var(--muted);line-height:1.6;max-width:550px;margin-bottom:32px}.label{display:block;color:#c7ccd6;font-size:13px;font-weight:bold;margin-bottom:7px}.input{width:100%;height:50px;padding:0 15px;border-radius:12px;border:1px solid var(--border);background:#090c11;color:white;outline:none}.input:focus{border-color:var(--blue)}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.btn{height:50px;border-radius:12px;border:1px solid var(--border);background:#202530;color:white;font-weight:bold}.btn-primary{background:var(--blue);border-color:var(--blue)}.join-area{margin-top:12px;padding:14px;border-radius:13px;border:1px solid var(--border);background:#0b0e14}.error{color:#ff8585;margin-top:12px;font-size:14px}.home-info{background:#0c0f15;border-left:1px solid var(--border);padding:35px;display:flex;align-items:center}.info-title{font-size:18px;font-weight:bold;margin-bottom:18px}.info-item{display:flex;gap:13px;padding:15px 0;border-bottom:1px solid var(--border)}.info-icon{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:#1b2230}.info-item strong{display:block;margin-bottom:4px}.info-item span{color:var(--muted);font-size:13px}
+#lobby{min-height:100vh;display:none;align-items:center;justify-content:center;padding:20px}.lobby-card{width:min(900px,100%);padding:25px;border-radius:22px;border:1px solid var(--border);background:var(--panel)}.lobby-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.lobby-title h2{margin:0}.preview{position:relative;min-height:400px;border-radius:18px;overflow:hidden;background:#030406}.preview video{width:100%;height:400px;object-fit:cover;display:block}.preview-status{position:absolute;top:14px;left:14px;background:#000b;padding:8px 11px;border-radius:9px;font-size:13px}.lobby-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:15px}
+#meeting{display:none;width:100%;height:100vh;overflow:hidden}.topbar{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:#10131a;border-bottom:1px solid var(--border)}.top-left{display:flex;align-items:center;gap:11px}.small-logo{width:37px;height:37px;border-radius:10px;background:var(--blue);display:grid;place-items:center}.top-name{font-weight:bold}.top-right{display:flex;align-items:center;gap:10px}.code{padding:8px 11px;border:1px solid var(--border);border-radius:9px;background:#1a1e27;font-size:13px;font-weight:bold}.status{color:var(--green);font-size:13px}.grid{height:calc(100vh - 140px);padding:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:13px;overflow:auto}.tile{position:relative;min-height:205px;overflow:hidden;border-radius:17px;border:1px solid var(--border);background:#151820}.tile video{width:100%;height:100%;min-height:205px;object-fit:cover;display:block;background:#050609}.avatar{position:absolute;inset:0;display:grid;place-items:center;background:#171b24}.avatar-circle{width:75px;height:75px;border-radius:50%;display:grid;place-items:center;background:#2b3447;font-size:27px;font-weight:bold}.tile-info{position:absolute;left:11px;right:11px;bottom:11px;display:flex;justify-content:space-between;align-items:center}.name-tag{max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:8px 10px;border-radius:8px;background:#000c;font-size:13px}.media-icons{display:flex;gap:5px}.media-icon{padding:7px;border-radius:8px;background:#000c;font-size:12px}.hand-icon{color:var(--yellow);font-size:18px;display:none}.hand-icon.show{display:block}
+.controls{height:70px;display:flex;align-items:center;justify-content:center;gap:9px;padding:8px;background:#10131a;border-top:1px solid var(--border)}.control{min-width:100px;height:45px;padding:0 13px;border-radius:11px;border:1px solid var(--border);background:#202530;color:white;font-weight:bold}.control:hover{background:#2a303c}.control.off{background:#8d3038;border-color:#a13a43}.control.hand-active{background:#9b6b18;border-color:#bd841e}.leave{background:var(--red);border-color:var(--red)}
+.panel{position:fixed;top:0;right:0;width:min(360px,90vw);height:100vh;z-index:50;background:#11141b;border-left:1px solid var(--border);transform:translateX(100%);transition:.25s ease;box-shadow:-20px 0 60px #0008}.panel.open{transform:translateX(0)}.panel-head{height:70px;padding:0 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}.panel-head h3{margin:0}.close-panel{width:38px;height:38px;border-radius:9px;border:1px solid var(--border);background:#202530;color:white}.people{padding:10px;overflow:auto;height:calc(100vh - 70px)}.person{display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;margin-bottom:5px}.person:hover{background:#1a1e27}.person-avatar{width:39px;height:39px;border-radius:50%;display:grid;place-items:center;background:#293247;font-size:14px;font-weight:bold}.person-main{flex:1;min-width:0}.person-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14px;font-weight:bold}.person-role{color:var(--muted);font-size:12px;margin-top:3px}.person-status{font-size:15px}
+.modal{position:fixed;inset:0;z-index:100;background:#0009;display:none;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modal-card{width:min(420px,100%);padding:25px;border-radius:18px;border:1px solid var(--border);background:#151821}.modal-card h3{margin-top:0}.modal-buttons{display:flex;gap:10px;margin-top:15px}.modal-buttons button{flex:1}
+.chat{position:fixed;right:0;bottom:70px;width:min(360px,90vw);height:430px;background:#11141b;border:1px solid var(--border);border-radius:18px 0 0 0;display:none;z-index:60;box-shadow:-20px -10px 60px #0008}.chat.open{display:flex;flex-direction:column}.chat-head{height:55px;padding:0 15px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}.chat-messages{flex:1;overflow:auto;padding:12px}.msg{margin-bottom:10px}.msg b{font-size:12px}.msg p{margin:3px 0 0;padding:8px 10px;border-radius:9px;background:#202530;display:inline-block;max-width:90%;word-break:break-word}.chat-form{display:flex;gap:7px;padding:10px;border-top:1px solid var(--border)}.chat-form input{height:40px;flex:1}.chat-form button{height:40px;min-width:65px}
+@media(max-width:760px){.home{padding:14px}.home-card{grid-template-columns:1fr}.home-info{display:none}.home-main{padding:32px 24px}.hero{font-size:36px}.buttons{grid-template-columns:1fr}.lobby-card{padding:16px}.preview{min-height:270px}.preview video{height:270px}.lobby-actions{grid-template-columns:1fr}.topbar{height:62px;padding:0 10px}.top-name{font-size:14px}.status{display:none}.grid{height:calc(100vh - 128px);padding:8px;gap:8px;grid-template-columns:1fr}.tile,.tile video{min-height:225px}.controls{height:66px;gap:5px}.control{min-width:0;flex:1;padding:0 5px;font-size:11px}.code{font-size:11px;padding:7px}}
+</style>
+</head>
+<body>
+
+<section id="home" class="home"><div class="home-card"><div class="home-main">
+<div class="brand"><div class="logo">🎓</div><div class="brand-name">CLASSROOM LIVE</div></div>
+<div class="eyebrow">SCHOOL VIDEO MEETING</div>
+<h1 class="hero">Connect your classroom anywhere.</h1>
+<p class="description">Video meeting untuk guru dan siswa dengan kamera, microphone, SFU, participant panel, raise hand, chat dan virtual background.</p>
+<label class="label">Nama</label><input id="name" class="input" placeholder="Masukkan nama" maxlength="40">
+<div class="buttons"><button class="btn btn-primary" onclick="createRoom()">🎓 Create Meeting</button><button class="btn" onclick="showJoin()">🚪 Join Meeting</button></div>
+<div id="joinArea" class="join-area hidden"><input id="code" class="input" placeholder="CLASS-82K4" maxlength="10"><button class="btn btn-primary" style="width:100%;margin-top:10px" onclick="joinRoom()">Join Classroom</button></div>
+<div id="error" class="error"></div>
+</div><div class="home-info"><div><div class="info-title">CLASSROOM LIVE SFU</div>
+<div class="info-item"><div class="info-icon">📹</div><div><strong>SFU Video</strong><span>Media dirutekan lewat server, bukan mesh antar-siswa.</span></div></div>
+<div class="info-item"><div class="info-icon">🎤</div><div><strong>Real Microphone</strong><span>Audio peserta diterima secara terpisah.</span></div></div>
+<div class="info-item"><div class="info-icon">👥</div><div><strong>Up to 20 People</strong><span>Batas aplikasi satu room.</span></div></div>
+<div class="info-item"><div class="info-icon">💬</div><div><strong>Chat + Raise Hand</strong><span>Komunikasi kelas lebih rapi.</span></div></div>
+</div></div></div></section>
+
+<section id="lobby"><div class="lobby-card"><div class="lobby-title"><h2>Ready to join?</h2><span id="lobbyCode" class="code"></span></div>
+<div class="preview"><video id="previewVideo" autoplay muted playsinline></video><div id="previewStatus" class="preview-status">Preparing camera...</div></div>
+<div class="lobby-actions"><button class="btn" onclick="togglePreviewMic()" id="previewMic">🎤 Mic ON</button><button class="btn" onclick="togglePreviewCam()" id="previewCam">📷 Camera ON</button><button class="btn btn-primary" onclick="enterMeeting()">Join Now</button></div>
+<div id="lobbyError" class="error"></div></div></section>
+
+<section id="meeting"><header class="topbar"><div class="top-left"><div class="small-logo">🎓</div><div class="top-name">CLASSROOM LIVE</div></div><div class="top-right"><span id="connection" class="status">🟢 Connected</span><span id="meetingCode" class="code">CLASS-XXXX</span></div></header>
+<main id="grid" class="grid"></main>
+<footer class="controls">
+<button id="micButton" class="control" onclick="toggleMic()">🎤 Mic ON</button>
+<button id="camButton" class="control" onclick="toggleCam()">📷 Camera ON</button>
+<button id="handButton" class="control" onclick="toggleHand()">🙋 Raise Hand</button>
+<button class="control" onclick="openParticipants()">👥 People</button>
+<button class="control" onclick="openBackground()">🖼️ Background</button>
+<button class="control" onclick="toggleChat()">💬 Chat</button>
+<button class="control" onclick="openNameModal()">✏️ Name</button>
+<button class="control leave" onclick="leave()">Leave</button>
+</footer></section>
+
+<aside id="peoplePanel" class="panel"><div class="panel-head"><h3>Participants <span id="peopleCount">0/20</span></h3><button class="close-panel" onclick="closeParticipants()">×</button></div><div id="peopleList" class="people"></div></aside>
+
+<div id="nameModal" class="modal"><div class="modal-card"><h3>Change your name</h3><input id="newName" class="input" maxlength="40" placeholder="Nama baru"><div class="modal-buttons"><button class="btn" onclick="closeNameModal()">Cancel</button><button class="btn btn-primary" onclick="changeName()">Save</button></div><div id="nameError" class="error"></div></div></div>
+
+<div id="backgroundModal" class="modal"><div class="modal-card"><h3>Virtual Background</h3><p style="color:#9ba3b3;font-size:14px;line-height:1.5">Pilih foto dari perangkat. Foto diproses lokal di browser. Untuk hasil terbaik gunakan pencahayaan cukup dan kamera menghadap wajah.</p><input id="backgroundFile" class="input" type="file" accept="image/*" onchange="selectBackground(event)"><div class="modal-buttons"><button class="btn" onclick="removeBackground()">Remove</button><button class="btn" onclick="closeBackground()">Close</button></div><div id="bgError" class="error"></div></div></div>
+
+<div id="chat" class="chat"><div class="chat-head"><b>Class Chat</b><button class="close-panel" onclick="toggleChat()">×</button></div><div id="chatMessages" class="chat-messages"></div><form class="chat-form" onsubmit="sendChat(event)"><input id="chatInput" class="input" maxlength="500" placeholder="Tulis pesan..."><button class="btn btn-primary" type="submit">Send</button></form></div>
+
+<script>
+const socket=io();
+const peers=new Map();
+const consumers=new Map();
+let device=null, sendTransport=null, recvTransport=null, stream=null;
+let code="",myId="",myName="",mic=true,cam=true,hand=false;
+let pendingAction=null,pendingRoom=null;
+let backgroundImage=null,backgroundEnabled=false,backgroundStream=null,backgroundCanvas=null,bgVideo=null,bgLoop=false;
+
+const $=id=>document.getElementById(id);
+function showJoin(){$("joinArea").classList.remove("hidden");$("code").focus()}
+function err(t){$("error").textContent=t}
+function initials(n){return n.trim().split(/\s+/).slice(0,2).map(x=>x[0]?.toUpperCase()||"").join("")||"?"}
+
+async function getMedia(){
+  if(!navigator.mediaDevices?.getUserMedia){err("Kamera/mic membutuhkan HTTPS.");return false}
+  try{stream=await navigator.mediaDevices.getUserMedia({video:{width:{ideal:1280},height:{ideal:720},facingMode:"user"},audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1}});mic=true;cam=true;return true}
+  catch(e){console.error(e);try{stream=await navigator.mediaDevices.getUserMedia({video:true,audio:false});mic=false;cam=true;return true}catch(e2){err("Izin kamera/mic ditolak atau perangkat tidak tersedia.");return false}}
+}
+async function createRoom(){myName=$("name").value.trim()||"Guru";if(!await getMedia())return;pendingAction="create";showLobby()}
+async function joinRoom(){const c=$("code").value.trim().toUpperCase();if(!c)return err("Masukkan kode meeting.");myName=$("name").value.trim()||"Siswa";if(!await getMedia())return;pendingAction="join";pendingRoom=c;showLobby()}
+function showLobby(){$("home").style.display="none";$("lobby").style.display="flex";$("previewVideo").srcObject=stream;$("previewStatus").textContent=cam?"📷 Camera ready":"Camera unavailable"}
+function togglePreviewMic(){if(!stream)return;mic=!mic;stream.getAudioTracks().forEach(t=>t.enabled=mic);$("previewMic").textContent=mic?"🎤 Mic ON":"🔇 Mic OFF"}
+function togglePreviewCam(){if(!stream)return;cam=!cam;stream.getVideoTracks().forEach(t=>t.enabled=cam);$("previewCam").textContent=cam?"📷 Camera ON":"📷 Camera OFF"}
+function enterMeeting(){
+ $("lobbyError").textContent="";
+ const event=pendingAction==="create"?"create-room":"join-room";
+ const data=pendingAction==="create"?{name:myName}:{code:pendingRoom,name:myName};
+ socket.emit(event,data,async r=>{
+  if(!r.ok){$("lobbyError").textContent=r.error;return}
+  code=r.code;myId=socket.id;
+  $("lobby").style.display="none";$("meeting").style.display="block";$("meetingCode").textContent=code;
+  addLocal();updateButtons();
+  try{await initSFU(); if(pendingAction==="join"){await loadExistingPeers()}}catch(e){console.error(e);$("lobbyError").textContent="SFU gagal dimulai: "+e.message}
+ });
+}
+function addLocal(){
+ if($("tile-"+myId))return;
+ const t=document.createElement("div");t.className="tile";t.id="tile-"+myId;
+ const v=document.createElement("video");v.autoplay=true;v.muted=true;v.playsInline=true;v.srcObject=stream;
+ const a=document.createElement("div");a.className="avatar";a.style.display=cam?"none":"grid";a.innerHTML='<div class="avatar-circle">'+initials(myName)+'</div>';
+ const info=document.createElement("div");info.className="tile-info";
+ const n=document.createElement("div");n.className="name-tag";n.id="name-"+myId;n.textContent=myName+" (You)";
+ const icons=document.createElement("div");icons.className="media-icons";
+ const mi=document.createElement("span");mi.className="media-icon";mi.id="mic-"+myId;mi.textContent=mic?"🎤":"🔇";
+ const hi=document.createElement("span");hi.className="hand-icon";hi.id="hand-"+myId;hi.textContent="🙋";
+ icons.append(mi,hi);info.append(n,icons);t.append(a,v,info);$("grid").appendChild(t);
+}
+function addRemoteTile(peerId,name){
+ let t=$("tile-"+peerId);if(t)return t;
+ t=document.createElement("div");t.className="tile";t.id="tile-"+peerId;
+ const v=document.createElement("video");v.autoplay=true;v.playsInline=true;v.controls=false;v.dataset.peer=peerId;
+ const a=document.createElement("div");a.className="avatar";a.innerHTML='<div class="avatar-circle">'+initials(name||"Peserta")+'</div>';
+ const info=document.createElement("div");info.className="tile-info";
+ const n=document.createElement("div");n.className="name-tag";n.id="name-"+peerId;n.textContent=name||"Peserta";
+ const icons=document.createElement("div");icons.className="media-icons";
+ const mi=document.createElement("span");mi.className="media-icon";mi.id="mic-"+peerId;mi.textContent="🎤";
+ const hi=document.createElement("span");hi.className="hand-icon";hi.id="hand-"+peerId;hi.textContent="🙋";
+ icons.append(mi,hi);info.append(n,icons);t.append(a,v,info);$("grid").appendChild(t);return t;
+}
+
+async function initSFU(){
+ const r=await emit("get-router-rtp-capabilities",{});
+ device=new mediasoupClient.Device();
+ await device.load({routerRtpCapabilities:r.rtpCapabilities});
+ await createSendTransport(); await createRecvTransport();
+ for(const track of stream.getTracks()) await produceTrack(track);
+}
+function emit(event,data){return new Promise((resolve,reject)=>socket.emit(event,data,r=>r?.ok?resolve(r):reject(new Error(r?.error||event+" failed"))))}
+async function createSendTransport(){
+ const d=await emit("create-transport",{direction:"send"});
+ sendTransport=device.createSendTransport({id:d.id,iceParameters:d.iceParameters,iceCandidates:d.iceCandidates,dtlsParameters:d.dtlsParameters,sctpParameters:d.sctpParameters});
+ sendTransport.on("connect",({dtlsParameters},cb,eb)=>socket.emit("connect-transport",{transportId:sendTransport.id,dtlsParameters},r=>r?.ok?cb():eb(new Error(r?.error||"connect failed"))));
+ sendTransport.on("produce",(params,cb,eb)=>socket.emit("produce",{transportId:sendTransport.id,kind:params.kind,rtpParameters:params.rtpParameters,appData:params.appData},r=>r?.ok?cb({id:r.id}):eb(new Error(r?.error||"produce failed"))));
+}
+async function createRecvTransport(){
+ const d=await emit("create-transport",{direction:"recv"});
+ recvTransport=device.createRecvTransport({id:d.id,iceParameters:d.iceParameters,iceCandidates:d.iceCandidates,dtlsParameters:d.dtlsParameters,sctpParameters:d.sctpParameters});
+ recvTransport.on("connect",({dtlsParameters},cb,eb)=>socket.emit("connect-transport",{transportId:recvTransport.id,dtlsParameters},r=>r?.ok?cb():eb(new Error(r?.error||"connect failed"))));
+}
+async function produceTrack(track){
+ const producer=await sendTransport.produce({track,appData:{kind:track.kind}});
+ track._producer=producer;
+ producer.on("transportclose",()=>{});
+}
+async function loadExistingPeers(){
+ const r=await emit("get-producers",{});
+ for(const p of r.producers) await consumeProducer(p);
+}
+async function consumeProducer(info){
+ if(consumers.has(info.producerId))return;
+ const r=await emit("consume",{producerId:info.producerId,transportId:recvTransport.id,rtpCapabilities:device.rtpCapabilities});
+ const consumer=await recvTransport.consume({id:r.id,producerId:r.producerId,kind:r.kind,rtpParameters:r.rtpParameters});
+ consumers.set(r.id,{consumer,producerId:r.producerId,peerId:r.peerId});
+ let peer=peers.get(r.peerId);if(!peer){peer={name:"Peserta"};peers.set(r.peerId,peer)}
+ const tile=addRemoteTile(r.peerId,peer.name);
+ let v=tile.querySelector("video");
+ let ms=v.srcObject;
+ if(!ms)ms=new MediaStream();
+ ms.addTrack(consumer.track);v.srcObject=ms;
+ try{await v.play()}catch{}
+ await emit("resume-consumer",{consumerId:r.id});
+}
+socket.on("new-producer",async p=>{try{await consumeProducer(p)}catch(e){console.error("consume",e)}});
+socket.on("consumer-closed",d=>{const x=consumers.get(d.consumerId);if(x){consumers.delete(d.consumerId);removeConsumerTrack(x)}});
+function removeConsumerTrack(x){const tile=$("tile-"+x.peerId);if(!tile)return;const v=tile.querySelector("video");const ms=v.srcObject;if(ms){const tr=ms.getTracks().find(t=>t.id===x.consumer.track?.id);if(tr){tr.stop();ms.removeTrack(tr)}}}
+socket.on("peer-joined",p=>{peers.set(p.id,{name:p.name,role:p.role});addRemoteTile(p.id,p.name)});
+socket.on("peer-left",id=>{peers.delete(id);$("tile-"+id)?.remove();for(const [cid,x] of consumers){if(x.peerId===id){try{x.consumer.close()}catch{};consumers.delete(cid)}}});
+socket.on("name-changed",d=>{const p=peers.get(d.id)||{};p.name=d.name;peers.set(d.id,p);const n=$("name-"+d.id);if(n)n.textContent=d.id===myId?d.name+" (You)":d.name;const a=document.querySelector("#tile-"+d.id+" .avatar-circle");if(a)a.textContent=initials(d.name)});
+socket.on("media-state",d=>{const t=$("tile-"+d.id);if(!t)return;const v=t.querySelector("video"),a=t.querySelector(".avatar"),m=$("mic-"+d.id);if(v)v.style.display=d.camera?"block":"none";if(a)a.style.display=d.camera?"none":"grid";if(m)m.textContent=d.mic?"🎤":"🔇"});
+socket.on("hand-state",d=>{const h=$("hand-"+d.id);if(h)h.classList.toggle("show",!!d.hand)});
+socket.on("participants",list=>{ $("peopleCount").textContent=list.length+"/20";const box=$("peopleList");box.innerHTML="";for(const p of list){peers.set(p.id,{name:p.name,role:p.role});const row=document.createElement("div");row.className="person";row.innerHTML='<div class="person-avatar">'+initials(p.name)+'</div><div class="person-main"><div class="person-name"></div><div class="person-role"></div></div><div class="person-status"></div>';row.querySelector(".person-name").textContent=p.name+(p.id===myId?" (You)":"");row.querySelector(".person-role").textContent=p.role==="teacher"?"Teacher":"Student";row.querySelector(".person-status").textContent=(p.mic?"🎤":"🔇")+" "+(p.camera?"📷":"🚫")+" "+(p.hand?"🙋":"");box.appendChild(row);if(p.id!==myId)addRemoteTile(p.id,p.name)}});
+function toggleMic(){if(!stream)return;mic=!mic;stream.getAudioTracks().forEach(t=>t.enabled=mic);updateButtons();socket.emit("media-state",{camera:cam,mic});const tile=$("tile-"+myId);const tr=tile?.querySelector("video");if(!mic){for(const [cid,x] of consumers){} } }
+function toggleCam(){if(!stream)return;cam=!cam;stream.getVideoTracks().forEach(t=>t.enabled=cam);updateButtons();const t=$("tile-"+myId);if(t){t.querySelector("video").style.display=cam?"block":"none";t.querySelector(".avatar").style.display=cam?"none":"grid"};socket.emit("media-state",{camera:cam,mic})}
+function updateButtons(){$("micButton").textContent=mic?"🎤 Mic ON":"🔇 Mic OFF";$("micButton").classList.toggle("off",!mic);$("camButton").textContent=cam?"📷 Camera ON":"📷 Camera OFF";$("camButton").classList.toggle("off",!cam);$("handButton").textContent=hand?"🙋 Hand Raised":"🙋 Raise Hand";$("handButton").classList.toggle("hand-active",hand);const m=$("mic-"+myId);if(m)m.textContent=mic?"🎤":"🔇"}
+function toggleHand(){hand=!hand;socket.emit("raise-hand",{hand});updateButtons()}
+function openParticipants(){$("peoplePanel").classList.add("open")}function closeParticipants(){$("peoplePanel").classList.remove("open")}
+function openNameModal(){$("newName").value=myName;$("nameModal").classList.add("show")}function closeNameModal(){$("nameModal").classList.remove("show");$("nameError").textContent=""}
+function changeName(){const n=$("newName").value.trim();if(!n){$("nameError").textContent="Nama tidak boleh kosong.";return}socket.emit("change-name",{name:n},r=>{if(!r.ok){$("nameError").textContent=r.error;return}myName=r.name;closeNameModal()})}
+function openBackground(){$("backgroundModal").classList.add("show")}function closeBackground(){$("backgroundModal").classList.remove("show")}
+async function selectBackground(e){
+ const file=e.target.files[0];if(!file)return;
+ if(!stream)return;
+ try{
+  const img=new Image();img.src=URL.createObjectURL(file);await img.decode();backgroundImage=img;backgroundEnabled=true;
+  await startBackgroundPipeline();closeBackground();
+ }catch(err){console.error(err);$("bgError").textContent="Gagal memproses gambar."}
+}
+async function startBackgroundPipeline(){
+ if(!backgroundImage||!stream)return;
+ if(!window.SelfieSegmentation){$("bgError").textContent="Komponen background belum tersedia.";return}
+ if(!backgroundCanvas){backgroundCanvas=document.createElement("canvas");backgroundCanvas.width=640;backgroundCanvas.height=360}
+ if(!bgVideo){bgVideo=document.createElement("video");bgVideo.muted=true;bgVideo.playsInline=true;bgVideo.autoplay=true;bgVideo.srcObject=stream;await bgVideo.play()}
+ const seg=new SelfieSegmentation({locateFile:f=>"https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/"+f});
+ seg.setOptions({modelSelection:1});
+ seg.onResults(res=>{
+  const ctx=backgroundCanvas.getContext("2d");
+  ctx.save();ctx.clearRect(0,0,640,360);
+  ctx.drawImage(backgroundImage,0,0,640,360);
+  ctx.globalCompositeOperation="destination-out";ctx.drawImage(res.segmentationMask,0,0,640,360);
+  ctx.globalCompositeOperation="destination-over";ctx.drawImage(backgroundImage,0,0,640,360);
+  ctx.globalCompositeOperation="source-over";ctx.drawImage(res.image,0,0,640,360);ctx.restore();
+  if(!backgroundStream){backgroundStream=backgroundCanvas.captureStream(20);const audio=stream.getAudioTracks()[0];if(audio)backgroundStream.addTrack(audio);replaceVideoTrack(backgroundStream.getVideoTracks()[0])}
+ });
+ if(bgLoop)return;bgLoop=true;
+ const loop=async()=>{if(!backgroundEnabled){bgLoop=false;return}try{await seg.send({image:bgVideo})}catch(e){}requestAnimationFrame(loop)};loop();
+}
+async function replaceVideoTrack(track){if(!track)return;const producer=[...stream.getVideoTracks()][0]?._producer;if(producer){await producer.replaceTrack({track})}const tile=$("tile-"+myId);if(tile){const v=tile.querySelector("video");const ms=v.srcObject;if(ms){ms.getVideoTracks().forEach(t=>ms.removeTrack(t));ms.addTrack(track)}else v.srcObject=backgroundStream}}
+function removeBackground(){backgroundEnabled=false;backgroundImage=null;backgroundStream=null;const original=stream.getVideoTracks()[0];const producer=original?._producer;if(producer)producer.replaceTrack({track:original}).catch(()=>{});const v=$("tile-"+myId)?.querySelector("video");if(v)v.srcObject=stream;closeBackground()}
+function toggleChat(){$("chat").classList.toggle("open");if($("chat").classList.contains("open"))$("chatInput").focus()}
+function sendChat(e){e.preventDefault();const text=$("chatInput").value.trim();if(!text)return;socket.emit("chat-message",{text});$("chatInput").value=""}
+socket.on("chat-message",m=>{const d=document.createElement("div");d.className="msg";const b=document.createElement("b");b.textContent=m.name+(m.id===myId?" (You)":"");const p=document.createElement("p");p.textContent=m.text;d.append(b,p);$("chatMessages").appendChild(d);$("chatMessages").scrollTop=$("chatMessages").scrollHeight})
+async function copyLink(){const u=location.origin+"/meeting/"+code;try{await navigator.clipboard.writeText(u);alert("Meeting link copied!")}catch{prompt("Copy meeting link:",u)}}
+function leave(){socket.emit("leave-room");for(const [,x] of consumers){try{x.consumer.close()}catch{}}try{sendTransport?.close();recvTransport?.close()}catch{}peers.clear();stream?.getTracks().forEach(t=>t.stop());location.href="/"}
+socket.on("connect",()=>{$("connection").textContent="🟢 Connected"});socket.on("disconnect",()=>{$("connection").textContent="🟠 Reconnecting..."})
+window.addEventListener("load",()=>{const m=location.pathname.match(/\/meeting\/([^/]+)/);if(m){ $("code").value=m[1];showJoin()}})
+$("newName").addEventListener("keydown",e=>{if(e.key==="Enter")changeName()})
+</script>
+</body>
+</html>

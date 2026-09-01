@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
 
@@ -14,7 +14,6 @@
 
 <script src="/socket.io/socket.io.js"></script>
 
-<!-- Virtual background -->
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"></script>
 
 <style>
@@ -24,1051 +23,748 @@
 }
 
 :root{
-
-    --bg:#080a0f;
-    --panel:#12151d;
-    --panel2:#181c25;
-    --border:#282e3b;
-
+    --bg:#070a12;
+    --panel:#111622;
+    --panel2:#171d2a;
+    --border:#293246;
     --text:#f5f7fb;
-    --muted:#9ba3b3;
-
-    --blue:#4f8cff;
-    --green:#32c875;
-    --red:#e54852;
-    --yellow:#f3b83f;
+    --muted:#9ba6ba;
+    --blue:#4d8dff;
+    --blue2:#2868e8;
+    --green:#35d07f;
+    --red:#ef4f5f;
+    --yellow:#f2bd45;
 }
 
 html,
 body{
-
     margin:0;
     width:100%;
     min-height:100%;
-
     background:var(--bg);
     color:var(--text);
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
 button,
 input{
-
     font:inherit;
 }
 
 button{
-
     cursor:pointer;
 }
 
 .hidden{
-
     display:none!important;
 }
 
 
-/* =========================================
+/* ========================================
 HOME
-========================================= */
+======================================== */
 
 .home{
-
     min-height:100vh;
-
     display:flex;
-    justify-content:center;
     align-items:center;
-
+    justify-content:center;
     padding:25px;
 
     background:
         radial-gradient(
             circle at 10% 10%,
-            #17244a 0,
+            #18366d,
             transparent 35%
         ),
         radial-gradient(
             circle at 90% 90%,
-            #102e2a 0,
+            #123f39,
             transparent 35%
         ),
         var(--bg);
 }
 
 .home-card{
-
-    width:min(950px,100%);
-
+    width:min(1000px,100%);
     display:grid;
     grid-template-columns:1.15fr .85fr;
-
-    background:#11141b;
-
     border:1px solid var(--border);
-
-    border-radius:25px;
-
+    border-radius:28px;
     overflow:hidden;
-
-    box-shadow:
-        0 30px 90px #0009;
+    background:#101520;
+    box-shadow:0 30px 100px #000b;
 }
 
 .home-main{
-
     padding:55px;
 }
 
 .brand{
-
     display:flex;
     align-items:center;
-
     gap:12px;
-
-    margin-bottom:45px;
+    margin-bottom:42px;
 }
 
 .logo{
-
-    width:48px;
-    height:48px;
-
+    width:50px;
+    height:50px;
+    border-radius:15px;
     display:grid;
     place-items:center;
-
-    border-radius:14px;
-
-    background:var(--blue);
-
-    font-size:23px;
+    background:linear-gradient(
+        135deg,
+        var(--blue),
+        var(--blue2)
+    );
+    font-size:24px;
 }
 
 .brand-name{
-
-    font-size:20px;
     font-weight:bold;
+    font-size:20px;
 }
 
 .eyebrow{
-
-    color:#79a5ff;
-
+    color:#80aaff;
     font-size:12px;
-
-    letter-spacing:1.5px;
-
     font-weight:bold;
-
+    letter-spacing:2px;
     margin-bottom:12px;
 }
 
 .hero{
-
-    font-size:44px;
-
+    font-size:46px;
     line-height:1.05;
-
+    letter-spacing:-2px;
     margin:0 0 18px;
-
-    letter-spacing:-1.5px;
 }
 
 .description{
-
     color:var(--muted);
-
-    line-height:1.6;
-
-    max-width:550px;
-
-    margin-bottom:32px;
+    line-height:1.65;
+    max-width:580px;
+    margin-bottom:30px;
 }
 
 .label{
-
     display:block;
-
-    color:#c7ccd6;
-
     font-size:13px;
-
     font-weight:bold;
-
+    color:#d4d9e2;
     margin-bottom:7px;
 }
 
 .input{
-
     width:100%;
-
     height:50px;
-
-    padding:0 15px;
-
     border-radius:12px;
-
     border:1px solid var(--border);
-
-    background:#090c11;
-
+    background:#080b11;
     color:white;
-
+    padding:0 15px;
     outline:none;
 }
 
 .input:focus{
-
     border-color:var(--blue);
 }
 
 .buttons{
-
     display:grid;
-
     grid-template-columns:1fr 1fr;
-
     gap:12px;
-
     margin-top:14px;
 }
 
 .btn{
-
-    height:50px;
-
+    min-height:50px;
     border-radius:12px;
-
     border:1px solid var(--border);
-
-    background:#202530;
-
+    background:#202735;
     color:white;
-
     font-weight:bold;
+    padding:0 15px;
+}
+
+.btn:hover{
+    background:#293142;
 }
 
 .btn-primary{
-
     background:var(--blue);
-
     border-color:var(--blue);
 }
 
-.btn-danger{
-
-    background:var(--red);
-
-    border-color:var(--red);
+.btn-primary:hover{
+    background:var(--blue2);
 }
 
 .join-area{
-
     margin-top:12px;
-
     padding:14px;
-
-    border-radius:13px;
-
     border:1px solid var(--border);
-
-    background:#0b0e14;
+    border-radius:14px;
+    background:#0b0f17;
 }
 
 .error{
-
     color:#ff8585;
-
     margin-top:12px;
-
     font-size:14px;
 }
 
 .home-info{
-
-    background:#0c0f15;
-
-    border-left:1px solid var(--border);
-
-    padding:35px;
-
+    padding:40px;
     display:flex;
-
     align-items:center;
+    background:#0b0f17;
+    border-left:1px solid var(--border);
 }
 
 .info-title{
-
-    font-size:18px;
-
+    font-size:20px;
     font-weight:bold;
-
     margin-bottom:18px;
 }
 
 .info-item{
-
     display:flex;
-
     gap:13px;
-
     padding:15px 0;
-
     border-bottom:1px solid var(--border);
 }
 
 .info-icon{
-
-    width:38px;
-    height:38px;
-
-    border-radius:10px;
-
+    width:40px;
+    height:40px;
+    flex-shrink:0;
     display:grid;
     place-items:center;
-
-    background:#1b2230;
+    border-radius:11px;
+    background:#1b2435;
 }
 
 .info-item strong{
-
     display:block;
-
     margin-bottom:4px;
 }
 
 .info-item span{
-
     color:var(--muted);
-
     font-size:13px;
+    line-height:1.4;
 }
 
 
-/* =========================================
+/* ========================================
 LOBBY
-========================================= */
+======================================== */
 
 #lobby{
-
     min-height:100vh;
-
     display:none;
-
     align-items:center;
-
     justify-content:center;
-
     padding:20px;
+
+    background:
+        radial-gradient(
+            circle at 50% 0,
+            #172c5b,
+            transparent 40%
+        ),
+        var(--bg);
 }
 
 .lobby-card{
-
     width:min(900px,100%);
-
     padding:25px;
-
-    border-radius:22px;
-
-    border:1px solid var(--border);
-
     background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:23px;
+    box-shadow:0 25px 80px #0008;
 }
 
 .lobby-title{
-
     display:flex;
-
-    justify-content:space-between;
-
     align-items:center;
-
-    margin-bottom:20px;
+    justify-content:space-between;
+    margin-bottom:18px;
 }
 
 .lobby-title h2{
-
     margin:0;
 }
 
 .preview{
-
     position:relative;
-
-    min-height:400px;
-
-    border-radius:18px;
-
+    height:440px;
     overflow:hidden;
-
-    background:#030406;
+    border-radius:18px;
+    background:#030508;
+    border:1px solid var(--border);
 }
 
 #previewVideo{
-
     width:100%;
-    height:400px;
-
+    height:100%;
     object-fit:cover;
-
-    display:block;
 }
 
 .preview-status{
-
     position:absolute;
-
     top:14px;
     left:14px;
-
-    background:#000b;
-
     padding:8px 11px;
-
     border-radius:9px;
-
+    background:#000b;
     font-size:13px;
 }
 
 .lobby-actions{
-
     display:grid;
-
-    grid-template-columns:1fr 1fr 1fr;
-
+    grid-template-columns:1fr 1fr 1.3fr;
     gap:10px;
-
     margin-top:15px;
 }
 
 
-/* =========================================
+/* ========================================
 MEETING
-========================================= */
+======================================== */
 
 #meeting{
-
     display:none;
-
-    width:100%;
     height:100vh;
-
     overflow:hidden;
+    background:var(--bg);
 }
 
 .topbar{
-
-    height:70px;
-
+    height:68px;
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
-
     padding:0 18px;
-
-    background:#10131a;
-
+    background:#0f141e;
     border-bottom:1px solid var(--border);
 }
 
 .top-left{
-
     display:flex;
-
     align-items:center;
-
     gap:11px;
 }
 
 .small-logo{
-
-    width:37px;
-    height:37px;
-
-    border-radius:10px;
-
-    background:var(--blue);
-
+    width:38px;
+    height:38px;
+    border-radius:11px;
     display:grid;
     place-items:center;
+    background:var(--blue);
 }
 
 .top-name{
-
     font-weight:bold;
 }
 
 .top-right{
-
     display:flex;
-
     align-items:center;
-
     gap:10px;
 }
 
 .code{
-
     padding:8px 11px;
-
-    border:1px solid var(--border);
-
     border-radius:9px;
-
-    background:#1a1e27;
-
+    background:#1b2230;
+    border:1px solid var(--border);
     font-size:13px;
-
     font-weight:bold;
 }
 
 .status{
-
     color:var(--green);
-
     font-size:13px;
 }
 
 .grid{
-
-    height:calc(100vh - 140px);
-
-    padding:14px;
+    height:calc(100vh - 138px);
+    padding:13px;
 
     display:grid;
 
     grid-template-columns:
         repeat(auto-fit,minmax(260px,1fr));
 
-    gap:13px;
+    gap:12px;
 
     overflow:auto;
 }
 
 .tile{
-
     position:relative;
-
     min-height:205px;
-
     overflow:hidden;
-
     border-radius:17px;
-
+    background:#151a24;
     border:1px solid var(--border);
-
-    background:#151820;
 }
 
 .tile video{
-
     width:100%;
     height:100%;
-
     min-height:205px;
-
     object-fit:cover;
-
     display:block;
-
-    background:#050609;
+    background:#05070b;
 }
 
 .avatar{
-
     position:absolute;
-
     inset:0;
-
-    display:grid;
-
+    display:none;
     place-items:center;
-
-    background:#171b24;
+    background:
+        radial-gradient(
+            circle,
+            #25324a,
+            #111622
+        );
 }
 
 .avatar-circle{
-
-    width:75px;
-    height:75px;
-
+    width:78px;
+    height:78px;
     border-radius:50%;
-
     display:grid;
-
     place-items:center;
-
-    background:#2b3447;
-
+    background:#32415e;
     font-size:27px;
-
     font-weight:bold;
 }
 
 .tile-info{
-
     position:absolute;
-
-    left:11px;
-    right:11px;
-    bottom:11px;
+    left:10px;
+    right:10px;
+    bottom:10px;
 
     display:flex;
-
+    align-items:center;
     justify-content:space-between;
 
-    align-items:center;
+    gap:8px;
 }
 
 .name-tag{
-
     max-width:70%;
-
     overflow:hidden;
-
     text-overflow:ellipsis;
-
     white-space:nowrap;
-
     padding:8px 10px;
-
     border-radius:8px;
-
     background:#000c;
-
     font-size:13px;
 }
 
 .media-icons{
-
     display:flex;
-
     gap:5px;
 }
 
 .media-icon{
-
     padding:7px;
-
     border-radius:8px;
-
     background:#000c;
-
     font-size:12px;
 }
 
 .hand-icon{
-
-    color:var(--yellow);
-
-    font-size:18px;
-
     display:none;
+    color:#ffd35e;
+    font-size:18px;
 }
 
 .hand-icon.show{
-
     display:block;
 }
 
 
-/* =========================================
+/* ========================================
 CONTROLS
-========================================= */
+======================================== */
 
 .controls{
-
     height:70px;
-
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
-    gap:9px;
-
+    gap:8px;
     padding:8px;
-
-    background:#10131a;
-
+    background:#0f141e;
     border-top:1px solid var(--border);
 }
 
 .control{
-
     min-width:100px;
-
     height:45px;
-
-    padding:0 13px;
-
+    padding:0 12px;
     border-radius:11px;
-
     border:1px solid var(--border);
-
-    background:#202530;
-
+    background:#202735;
     color:white;
-
     font-weight:bold;
 }
 
 .control:hover{
-
-    background:#2a303c;
+    background:#2a3343;
 }
 
 .control.off{
-
     background:#8d3038;
-
-    border-color:#a13a43;
+    border-color:#a33b44;
 }
 
 .control.hand-active{
-
-    background:#9b6b18;
-
-    border-color:#bd841e;
+    background:#956b18;
+    border-color:#bd8b27;
 }
 
 .leave{
-
     background:var(--red);
-
     border-color:var(--red);
 }
 
 
-/* =========================================
-PARTICIPANTS PANEL
-========================================= */
+/* ========================================
+PARTICIPANTS
+======================================== */
 
 .panel{
-
     position:fixed;
-
     top:0;
     right:0;
-
-    width:min(360px,90vw);
-
+    width:min(370px,92vw);
     height:100vh;
-
     z-index:50;
 
-    background:#11141b;
-
+    background:#101520;
     border-left:1px solid var(--border);
 
     transform:translateX(100%);
-
     transition:.25s ease;
 
-    box-shadow:-20px 0 60px #0008;
+    box-shadow:-20px 0 70px #0009;
 }
 
 .panel.open{
-
     transform:translateX(0);
 }
 
 .panel-head{
-
     height:70px;
-
-    padding:0 18px;
-
     display:flex;
-
-    justify-content:space-between;
-
     align-items:center;
-
+    justify-content:space-between;
+    padding:0 18px;
     border-bottom:1px solid var(--border);
 }
 
 .panel-head h3{
-
     margin:0;
 }
 
 .close-panel{
-
     width:38px;
     height:38px;
-
     border-radius:9px;
-
     border:1px solid var(--border);
-
-    background:#202530;
-
+    background:#202735;
     color:white;
+    font-size:20px;
 }
 
 .people{
-
-    padding:10px;
-
-    overflow:auto;
-
     height:calc(100vh - 70px);
+    overflow:auto;
+    padding:10px;
 }
 
 .person{
-
     display:flex;
-
     align-items:center;
-
     gap:10px;
-
     padding:12px;
-
     border-radius:12px;
-
-    margin-bottom:5px;
 }
 
 .person:hover{
-
-    background:#1a1e27;
+    background:#1a202c;
 }
 
 .person-avatar{
-
-    width:39px;
-    height:39px;
-
+    width:40px;
+    height:40px;
+    flex-shrink:0;
     border-radius:50%;
-
     display:grid;
     place-items:center;
-
-    background:#293247;
-
+    background:#293650;
     font-size:14px;
-
     font-weight:bold;
 }
 
 .person-main{
-
     flex:1;
-
     min-width:0;
 }
 
 .person-name{
-
     white-space:nowrap;
-
     overflow:hidden;
-
     text-overflow:ellipsis;
-
     font-size:14px;
-
     font-weight:bold;
 }
 
 .person-role{
-
-    color:var(--muted);
-
-    font-size:12px;
-
     margin-top:3px;
+    color:var(--muted);
+    font-size:12px;
 }
 
 .person-status{
-
     font-size:15px;
 }
 
 
-/* =========================================
-NAME MODAL
-========================================= */
+/* ========================================
+MODAL
+======================================== */
 
 .modal{
-
     position:fixed;
-
     inset:0;
-
     z-index:100;
 
-    background:#0009;
-
     display:none;
-
     align-items:center;
-
     justify-content:center;
 
     padding:20px;
+
+    background:#000b;
 }
 
 .modal.show{
-
     display:flex;
 }
 
 .modal-card{
-
-    width:min(400px,100%);
-
+    width:min(420px,100%);
     padding:25px;
-
-    border-radius:18px;
-
+    border-radius:19px;
     border:1px solid var(--border);
-
-    background:#151821;
+    background:#151b27;
+    box-shadow:0 25px 80px #000b;
 }
 
 .modal-card h3{
-
     margin-top:0;
 }
 
 .modal-buttons{
-
     display:flex;
-
     gap:10px;
-
     margin-top:15px;
 }
 
 .modal-buttons button{
-
     flex:1;
 }
 
 
-/* =========================================
+/* ========================================
 RESPONSIVE
-========================================= */
+======================================== */
 
 @media(max-width:760px){
 
     .home{
-
         padding:14px;
     }
 
     .home-card{
-
         grid-template-columns:1fr;
     }
 
     .home-info{
-
         display:none;
     }
 
     .home-main{
-
         padding:32px 24px;
     }
 
     .hero{
-
         font-size:36px;
     }
 
     .buttons{
-
         grid-template-columns:1fr;
     }
 
-    .lobby-card{
-
-        padding:16px;
-    }
-
     .preview{
-
-        min-height:270px;
-    }
-
-    #previewVideo{
-
         height:270px;
     }
 
     .lobby-actions{
-
         grid-template-columns:1fr;
     }
 
     .topbar{
-
         height:62px;
-
         padding:0 10px;
     }
 
     .top-name{
-
         font-size:14px;
     }
 
     .status{
-
         display:none;
     }
 
     .grid{
-
         height:calc(100vh - 128px);
-
-        padding:8px;
-
-        gap:8px;
-
         grid-template-columns:1fr;
+        padding:8px;
+        gap:8px;
     }
 
     .tile,
     .tile video{
-
         min-height:225px;
     }
 
     .controls{
-
         height:66px;
-
         gap:5px;
     }
 
     .control{
-
         min-width:0;
-
         flex:1;
-
-        padding:0 5px;
-
+        padding:0 4px;
         font-size:11px;
     }
 
     .code{
-
         font-size:11px;
-
         padding:7px;
     }
 }
@@ -1077,13 +773,12 @@ RESPONSIVE
 
 </head>
 
-
 <body>
 
 
-<!-- =========================================
+<!-- ========================================
 HOME
-========================================= -->
+======================================== -->
 
 <section id="home" class="home">
 
@@ -1101,26 +796,19 @@ CLASSROOM LIVE
 
 </div>
 
-
 <div class="eyebrow">
 SCHOOL VIDEO MEETING
 </div>
-
 
 <h1 class="hero">
 Connect your classroom anywhere.
 </h1>
 
-
 <p class="description">
-
 Video meeting sederhana untuk guru dan siswa.
-Tidak perlu install aplikasi.
-Buka website, izinkan kamera dan microphone,
-kemudian masuk kelas.
-
+Gunakan kamera dan microphone perangkat,
+bagikan kode meeting, lalu masuk kelas.
 </p>
-
 
 <label class="label">
 Nama
@@ -1129,10 +817,9 @@ Nama
 <input
     id="name"
     class="input"
-    placeholder="Masukkan nama"
     maxlength="40"
-/>
-
+    placeholder="Masukkan nama"
+>
 
 <div class="buttons">
 
@@ -1143,7 +830,6 @@ Nama
 🎓 Create Meeting
 </button>
 
-
 <button
     class="btn"
     onclick="showJoin()"
@@ -1153,7 +839,6 @@ Nama
 
 </div>
 
-
 <div
     id="joinArea"
     class="join-area hidden"
@@ -1162,9 +847,9 @@ Nama
 <input
     id="code"
     class="input"
-    placeholder="CLASS-82K4"
     maxlength="10"
-/>
+    placeholder="CLASS-XXXX"
+>
 
 <button
     class="btn btn-primary"
@@ -1176,8 +861,10 @@ Join Classroom
 
 </div>
 
-
-<div id="error" class="error"></div>
+<div
+    id="error"
+    class="error"
+></div>
 
 </div>
 
@@ -1190,70 +877,67 @@ Join Classroom
 CLASSROOM LIVE
 </div>
 
-
 <div class="info-item">
 
 <div class="info-icon">📹</div>
 
 <div>
-
-<strong>Real Camera</strong>
-
+<strong>Camera</strong>
 <span>
-Gunakan kamera HP, laptop atau webcam.
+Gunakan kamera laptop, HP atau webcam.
 </span>
-
 </div>
 
 </div>
-
 
 <div class="info-item">
 
 <div class="info-icon">🎤</div>
 
 <div>
-
-<strong>Real Microphone</strong>
-
+<strong>Clear Audio</strong>
 <span>
-Gunakan microphone bawaan atau headset.
+Echo cancellation dan noise suppression.
 </span>
-
 </div>
 
 </div>
-
 
 <div class="info-item">
 
 <div class="info-icon">👥</div>
 
 <div>
-
-<strong>Up to 20 People</strong>
-
+<strong>20 Participants</strong>
 <span>
-Guru dan siswa dalam satu classroom.
+Satu classroom dapat berisi hingga 20 orang.
 </span>
-
 </div>
 
 </div>
-
 
 <div class="info-item">
 
 <div class="info-icon">🙋</div>
 
 <div>
-
 <strong>Raise Hand</strong>
-
 <span>
 Siswa dapat mengangkat tangan.
 </span>
+</div>
 
+</div>
+
+<div class="info-item">
+
+<div class="info-icon">🖼️</div>
+
+<div>
+<strong>Virtual Background</strong>
+<span>
+Gunakan foto sendiri sebagai background.
+</span>
 </div>
 
 </div>
@@ -1267,9 +951,9 @@ Siswa dapat mengangkat tangan.
 </section>
 
 
-<!-- =========================================
+<!-- ========================================
 LOBBY
-========================================= -->
+======================================== -->
 
 <section id="lobby">
 
@@ -1289,7 +973,6 @@ Ready to join?
 
 </div>
 
-
 <div class="preview">
 
 <video
@@ -1308,49 +991,48 @@ Preparing camera...
 
 </div>
 
-
 <div class="lobby-actions">
 
 <button
+    id="previewMic"
     class="btn"
     onclick="togglePreviewMic()"
-    id="previewMic"
 >
 🎤 Mic ON
 </button>
 
-
 <button
+    id="previewCam"
     class="btn"
     onclick="togglePreviewCam()"
-    id="previewCam"
 >
 📷 Camera ON
 </button>
-
 
 <button
     class="btn btn-primary"
     onclick="enterMeeting()"
 >
-Join Now
+🚀 Join Now
 </button>
 
 </div>
 
-<div id="lobbyError" class="error"></div>
+<div
+    id="lobbyError"
+    class="error"
+></div>
 
 </div>
 
 </section>
 
 
-<!-- =========================================
+<!-- ========================================
 MEETING
-========================================= -->
+======================================== -->
 
 <section id="meeting">
-
 
 <header class="topbar">
 
@@ -1365,7 +1047,6 @@ CLASSROOM LIVE
 </div>
 
 </div>
-
 
 <div class="top-right">
 
@@ -1388,7 +1069,10 @@ CLASS-XXXX
 </header>
 
 
-<main id="grid" class="grid"></main>
+<main
+    id="grid"
+    class="grid"
+></main>
 
 
 <footer class="controls">
@@ -1401,7 +1085,6 @@ CLASS-XXXX
 🎤 Mic ON
 </button>
 
-
 <button
     id="camButton"
     class="control"
@@ -1409,7 +1092,6 @@ CLASS-XXXX
 >
 📷 Camera ON
 </button>
-
 
 <button
     id="handButton"
@@ -1419,14 +1101,12 @@ CLASS-XXXX
 🙋 Raise Hand
 </button>
 
-
 <button
     class="control"
     onclick="openParticipants()"
 >
 👥 People
 </button>
-
 
 <button
     class="control"
@@ -1435,14 +1115,12 @@ CLASS-XXXX
 🖼️ Background
 </button>
 
-
 <button
     class="control"
     onclick="openNameModal()"
 >
 ✏️ Name
 </button>
-
 
 <button
     class="control leave"
@@ -1456,9 +1134,9 @@ Leave
 </section>
 
 
-<!-- =========================================
+<!-- ========================================
 PARTICIPANTS
-========================================= -->
+======================================== -->
 
 <aside
     id="peoplePanel"
@@ -1469,7 +1147,9 @@ PARTICIPANTS
 
 <h3>
 Participants
-<span id="peopleCount">0/20</span>
+<span id="peopleCount">
+0/20
+</span>
 </h3>
 
 <button
@@ -1489,9 +1169,9 @@ Participants
 </aside>
 
 
-<!-- =========================================
+<!-- ========================================
 NAME MODAL
-========================================= -->
+======================================== -->
 
 <div
     id="nameModal"
@@ -1509,7 +1189,7 @@ Change your name
     class="input"
     maxlength="40"
     placeholder="Nama baru"
-/>
+>
 
 <div class="modal-buttons">
 
@@ -1539,9 +1219,9 @@ Save
 </div>
 
 
-<!-- =========================================
+<!-- ========================================
 BACKGROUND MODAL
-========================================= -->
+======================================== -->
 
 <div
     id="backgroundModal"
@@ -1551,17 +1231,19 @@ BACKGROUND MODAL
 <div class="modal-card">
 
 <h3>
-Virtual Background
+🖼️ Virtual Background
 </h3>
 
-<p style="color:#9ba3b3;font-size:14px;line-height:1.5">
-
-Pilih foto dari HP atau komputer.
-Foto diproses di browser dan tidak perlu
-di-upload ke server.
-
+<p
+    style="
+    color:#9ba6ba;
+    font-size:14px;
+    line-height:1.6;
+    "
+>
+Pilih foto dari perangkatmu.
+Foto diproses langsung di browser.
 </p>
-
 
 <input
     id="backgroundFile"
@@ -1570,7 +1252,6 @@ di-upload ke server.
     accept="image/*"
     onchange="selectBackground(event)"
 >
-
 
 <div class="modal-buttons">
 
@@ -1582,7 +1263,7 @@ Remove
 </button>
 
 <button
-    class="btn"
+    class="btn btn-primary"
     onclick="closeBackground()"
 >
 Close
@@ -1595,21 +1276,32 @@ Close
 </div>
 
 
-<!-- =========================================
-JAVASCRIPT
-========================================= -->
-
 <script>
 
+/* ========================================
+SOCKET
+======================================== */
+
 const socket = io();
+
+
+/* ========================================
+GLOBAL
+======================================== */
 
 const peers = new Map();
 
 let stream = null;
 
+let processedStream = null;
+
+let originalVideoTrack = null;
+
 let code = "";
 
 let myId = "";
+
+let myName = "";
 
 let mic = true;
 
@@ -1617,38 +1309,66 @@ let cam = true;
 
 let hand = false;
 
-let myName = "";
+let pendingAction = null;
+
+let pendingRoom = null;
+
+
+/* ========================================
+BACKGROUND
+======================================== */
 
 let backgroundImage = null;
 
 let backgroundEnabled = false;
 
-let pendingRoom = null;
+let segmentation = null;
 
-let pendingAction = null;
+let backgroundCanvas = null;
+
+let backgroundContext = null;
+
+let backgroundLoopRunning = false;
+
+let backgroundProcessing = false;
 
 
-/* =========================================
+/* ========================================
 WEBRTC
-========================================= */
+======================================== */
 
 const rtcConfig = {
 
     iceServers:[
         {
-            urls:"stun:stun.l.google.com:19302"
+            urls:
+                "stun:stun.l.google.com:19302"
         }
     ]
 
 };
 
 
-/* =========================================
-ELEMENTS
-========================================= */
+/* ========================================
+HELPER
+======================================== */
 
-const $ = id =>
-    document.getElementById(id);
+function $(id){
+
+    return document.getElementById(id);
+
+}
+
+
+function showJoin(){
+
+    $("joinArea")
+        .classList
+        .remove("hidden");
+
+    $("code").focus();
+
+}
 
 
 function setError(text){
@@ -1658,18 +1378,9 @@ function setError(text){
 }
 
 
-function showJoin(){
-
-    $("joinArea").classList.remove("hidden");
-
-    $("code").focus();
-
-}
-
-
-/* =========================================
+/* ========================================
 MEDIA
-========================================= */
+======================================== */
 
 async function getMedia(){
 
@@ -1679,10 +1390,11 @@ async function getMedia(){
     ){
 
         setError(
-            "Camera dan microphone membutuhkan HTTPS."
+            "Kamera dan microphone membutuhkan HTTPS."
         );
 
         return false;
+
     }
 
 
@@ -1690,43 +1402,106 @@ async function getMedia(){
 
         stream =
             await navigator.mediaDevices.getUserMedia({
+
                 video:{
+                    width:{
+                        ideal:1280
+                    },
+
+                    height:{
+                        ideal:720
+                    },
+
+                    frameRate:{
+                        ideal:24,
+                        max:30
+                    },
+
                     facingMode:"user"
                 },
-                audio:true
+
+                audio:{
+                    echoCancellation:true,
+                    noiseSuppression:true,
+                    autoGainControl:true,
+                    channelCount:1,
+                    sampleRate:48000
+                }
+
             });
 
-        mic = true;
-        cam = true;
+
+        const audioTracks =
+            stream.getAudioTracks();
+
+        const videoTracks =
+            stream.getVideoTracks();
+
+
+        mic =
+            audioTracks.length > 0;
+
+        cam =
+            videoTracks.length > 0;
+
+
+        if(videoTracks.length){
+
+            originalVideoTrack =
+                videoTracks[0];
+
+        }
+
 
         return true;
 
     }catch(error){
 
-        console.log(error);
+        console.error(
+            "getUserMedia:",
+            error
+        );
+
 
         try{
 
             stream =
                 await navigator.mediaDevices.getUserMedia({
-                    video:{
-                        facingMode:"user"
-                    },
+
+                    video:true,
+
                     audio:false
+
                 });
 
             mic = false;
+
             cam = true;
+
+            const videoTracks =
+                stream.getVideoTracks();
+
+            if(videoTracks.length){
+
+                originalVideoTrack =
+                    videoTracks[0];
+
+            }
 
             return true;
 
         }catch(error2){
 
+            console.error(
+                error2
+            );
+
             setError(
-                "Camera permission denied or camera unavailable."
+                "Kamera tidak dapat digunakan. Pastikan izin kamera diberikan."
             );
 
             return false;
+
         }
 
     }
@@ -1734,16 +1509,23 @@ async function getMedia(){
 }
 
 
-/* =========================================
+/* ========================================
 CREATE ROOM
-========================================= */
+======================================== */
 
 async function createRoom(){
 
     myName =
-        $("name").value.trim() || "Guru";
+        $("name")
+            .value
+            .trim() || "Guru";
 
-    if(!await getMedia()) return;
+
+    if(!await getMedia()){
+
+        return;
+
+    }
 
 
     pendingAction = "create";
@@ -1753,92 +1535,93 @@ async function createRoom(){
 }
 
 
-/* =========================================
+/* ========================================
 JOIN ROOM
-========================================= */
+======================================== */
 
 async function joinRoom(){
 
     const enteredCode =
-        $("code").value.trim().toUpperCase();
+        $("code")
+            .value
+            .trim()
+            .toUpperCase();
 
 
     if(!enteredCode){
 
-        setError("Masukkan kode meeting.");
+        setError(
+            "Masukkan kode meeting."
+        );
 
         return;
+
     }
 
 
     myName =
-        $("name").value.trim() || "Siswa";
+        $("name")
+            .value
+            .trim() || "Siswa";
 
 
-    if(!await getMedia()) return;
+    if(!await getMedia()){
+
+        return;
+
+    }
 
 
     pendingAction = "join";
 
-    pendingRoom = enteredCode;
+    pendingRoom =
+        enteredCode;
 
     showLobby();
 
 }
 
 
-/* =========================================
+/* ========================================
 LOBBY
-========================================= */
+======================================== */
 
 function showLobby(){
 
-    $("home").style.display = "none";
+    $("home").style.display =
+        "none";
 
-    $("lobby").style.display = "flex";
+    $("lobby").style.display =
+        "flex";
 
-    $("previewVideo").srcObject = stream;
+
+    $("previewVideo").srcObject =
+        stream;
+
+
+    $("lobbyCode").textContent =
+        pendingAction === "join"
+            ? pendingRoom
+            : "NEW MEETING";
+
 
     $("previewStatus").textContent =
         cam
             ? "📷 Camera ready"
             : "Camera unavailable";
 
+
+    updatePreviewButtons();
+
 }
 
 
-function togglePreviewMic(){
-
-    if(!stream) return;
-
-    mic = !mic;
-
-    stream
-        .getAudioTracks()
-        .forEach(track => {
-            track.enabled = mic;
-        });
-
+function updatePreviewButtons(){
 
     $("previewMic").textContent =
         mic
             ? "🎤 Mic ON"
             : "🔇 Mic OFF";
-
-}
-
-
-function togglePreviewCam(){
-
-    if(!stream) return;
-
-    cam = !cam;
-
-    stream
-        .getVideoTracks()
-        .forEach(track => {
-            track.enabled = cam;
-        });
 
 
     $("previewCam").textContent =
@@ -1848,6 +1631,54 @@ function togglePreviewCam(){
 
 }
 
+
+function togglePreviewMic(){
+
+    if(!stream) return;
+
+
+    mic = !mic;
+
+
+    stream
+        .getAudioTracks()
+        .forEach(track => {
+
+            track.enabled = mic;
+
+        });
+
+
+    updatePreviewButtons();
+
+}
+
+
+function togglePreviewCam(){
+
+    if(!stream) return;
+
+
+    cam = !cam;
+
+
+    stream
+        .getVideoTracks()
+        .forEach(track => {
+
+            track.enabled = cam;
+
+        });
+
+
+    updatePreviewButtons();
+
+}
+
+
+/* ========================================
+ENTER MEETING
+======================================== */
 
 function enterMeeting(){
 
@@ -1865,10 +1696,12 @@ function enterMeeting(){
 
                 if(!response.ok){
 
-                    $("lobbyError").textContent =
+                    $("lobbyError")
+                        .textContent =
                         response.error;
 
                     return;
+
                 }
 
 
@@ -1879,64 +1712,74 @@ function enterMeeting(){
             }
         );
 
-    }else{
-
-        socket.emit(
-            "join-room",
-            {
-                code:pendingRoom,
-                name:myName
-            },
-            response => {
-
-                if(!response.ok){
-
-                    $("lobbyError").textContent =
-                        response.error;
-
-                    return;
-                }
-
-
-                startMeeting(
-                    response.code
-                );
-
-
-                response.existingPeers.forEach(
-                    peerData => {
-
-                        createOffer(
-                            peerData.id,
-                            peerData.name
-                        );
-
-                    }
-                );
-
-            }
-        );
+        return;
 
     }
+
+
+    socket.emit(
+        "join-room",
+        {
+            code:pendingRoom,
+            name:myName
+        },
+        response => {
+
+            if(!response.ok){
+
+                $("lobbyError")
+                    .textContent =
+                    response.error;
+
+                return;
+
+            }
+
+
+            startMeeting(
+                response.code
+            );
+
+
+            response.existingPeers
+                .forEach(peerData => {
+
+                    createOffer(
+                        peerData.id,
+                        peerData.name
+                    );
+
+                });
+
+        }
+    );
 
 }
 
 
-/* =========================================
-START MEETING
-========================================= */
+/* ========================================
+START
+======================================== */
 
 function startMeeting(roomCode){
 
-    code = roomCode;
+    code =
+        roomCode;
 
-    myId = socket.id;
+    myId =
+        socket.id;
 
-    $("lobby").style.display = "none";
 
-    $("meeting").style.display = "block";
+    $("lobby").style.display =
+        "none";
 
-    $("meetingCode").textContent = code;
+    $("meeting").style.display =
+        "block";
+
+
+    $("meetingCode").textContent =
+        code;
+
 
     addLocalVideo();
 
@@ -1945,38 +1788,102 @@ function startMeeting(roomCode){
 }
 
 
-/* =========================================
+/* ========================================
+INITIALS
+======================================== */
+
+function getInitials(name){
+
+    const words =
+        String(name)
+            .trim()
+            .split(/\s+/)
+            .slice(0,2);
+
+
+    return words
+        .map(word =>
+            word.charAt(0).toUpperCase()
+        )
+        .join("");
+
+}
+
+
+/* ========================================
+AVATAR
+======================================== */
+
+function createAvatar(name){
+
+    const avatar =
+        document.createElement("div");
+
+    avatar.className =
+        "avatar";
+
+
+    const circle =
+        document.createElement("div");
+
+    circle.className =
+        "avatar-circle";
+
+    circle.textContent =
+        getInitials(name) || "?";
+
+
+    avatar.appendChild(
+        circle
+    );
+
+
+    return avatar;
+
+}
+
+
+/* ========================================
 LOCAL VIDEO
-========================================= */
+======================================== */
 
 function addLocalVideo(){
 
-    let tile =
+    if(
         document.getElementById(
             "tile-" + myId
-        );
+        )
+    ){
+
+        return;
+
+    }
 
 
-    if(tile) return;
+    const tile =
+        document.createElement("div");
 
+    tile.className =
+        "tile";
 
-    tile = document.createElement("div");
-
-    tile.className = "tile";
-
-    tile.id = "tile-" + myId;
+    tile.id =
+        "tile-" + myId;
 
 
     const video =
         document.createElement("video");
 
-    video.autoplay = true;
+    video.autoplay =
+        true;
 
-    video.muted = true;
+    video.muted =
+        true;
 
-    video.playsInline = true;
+    video.playsInline =
+        true;
 
-    video.srcObject = stream;
+    video.srcObject =
+        stream;
 
 
     const avatar =
@@ -1986,15 +1893,18 @@ function addLocalVideo(){
     const info =
         document.createElement("div");
 
-    info.className = "tile-info";
+    info.className =
+        "tile-info";
 
 
     const nameTag =
         document.createElement("div");
 
-    nameTag.className = "name-tag";
+    nameTag.className =
+        "name-tag";
 
-    nameTag.id = "name-" + myId;
+    nameTag.id =
+        "name-" + myId;
 
     nameTag.textContent =
         myName + " (You)";
@@ -2003,7 +1913,8 @@ function addLocalVideo(){
     const icons =
         document.createElement("div");
 
-    icons.className = "media-icons";
+    icons.className =
+        "media-icons";
 
 
     const micIcon =
@@ -2051,62 +1962,19 @@ function addLocalVideo(){
     );
 
 
-    $("grid").appendChild(tile);
+    $("grid").appendChild(
+        tile
+    );
+
 
     updateLocalVideo();
 
 }
 
 
-/* =========================================
-AVATAR
-========================================= */
-
-function getInitials(name){
-
-    const words =
-        name
-            .trim()
-            .split(/\s+/)
-            .slice(0,2);
-
-
-    return words
-        .map(word =>
-            word.charAt(0).toUpperCase()
-        )
-        .join("");
-}
-
-
-function createAvatar(name){
-
-    const avatar =
-        document.createElement("div");
-
-    avatar.className = "avatar";
-
-
-    const circle =
-        document.createElement("div");
-
-    circle.className =
-        "avatar-circle";
-
-    circle.textContent =
-        getInitials(name) || "?";
-
-
-    avatar.appendChild(circle);
-
-    return avatar;
-
-}
-
-
-/* =========================================
-PEER
-========================================= */
+/* ========================================
+CREATE PEER
+======================================== */
 
 function createPeer(id,name){
 
@@ -2129,15 +1997,20 @@ function createPeer(id,name){
     );
 
 
-    if(stream){
+    const sendingStream =
+        processedStream ||
+        stream;
 
-        stream
+
+    if(sendingStream){
+
+        sendingStream
             .getTracks()
             .forEach(track => {
 
                 peer.addTrack(
                     track,
-                    stream
+                    sendingStream
                 );
 
             });
@@ -2190,7 +2063,17 @@ function createPeer(id,name){
                 "failed"
             ){
 
-                peer.restartIce();
+                try{
+
+                    peer.restartIce();
+
+                }catch(error){
+
+                    console.log(
+                        error
+                    );
+
+                }
 
             }
 
@@ -2202,16 +2085,19 @@ function createPeer(id,name){
 }
 
 
-/* =========================================
+/* ========================================
 OFFER
-========================================= */
+======================================== */
 
 async function createOffer(id,name){
 
     try{
 
         const peer =
-            createPeer(id,name);
+            createPeer(
+                id,
+                name
+            );
 
 
         const offer =
@@ -2227,24 +2113,31 @@ async function createOffer(id,name){
             "offer",
             {
                 to:id,
-                offer:offer
+                offer
             }
         );
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "Offer error:",
+            error
+        );
 
     }
 
 }
 
 
-/* =========================================
+/* ========================================
 REMOTE VIDEO
-========================================= */
+======================================== */
 
-function addRemoteVideo(id,name,remoteStream){
+function addRemoteVideo(
+    id,
+    name,
+    remoteStream
+){
 
     let tile =
         document.getElementById(
@@ -2257,9 +2150,11 @@ function addRemoteVideo(id,name,remoteStream){
         tile =
             document.createElement("div");
 
-        tile.className = "tile";
+        tile.className =
+            "tile";
 
-        tile.id = "tile-" + id;
+        tile.id =
+            "tile-" + id;
 
 
         const avatar =
@@ -2271,18 +2166,29 @@ function addRemoteVideo(id,name,remoteStream){
         const video =
             document.createElement("video");
 
-        video.autoplay = true;
+        video.autoplay =
+            true;
 
-        video.playsInline = true;
+        video.playsInline =
+            true;
 
         video.srcObject =
             remoteStream;
 
 
+        /*
+        Browser akan melakukan mixing
+        audio dari beberapa elemen video.
+        */
+
+        video.volume = 1.0;
+
+
         const info =
             document.createElement("div");
 
-        info.className = "tile-info";
+        info.className =
+            "tile-info";
 
 
         const nameTag =
@@ -2350,23 +2256,32 @@ function addRemoteVideo(id,name,remoteStream){
         );
 
 
-        $("grid").appendChild(tile);
+        $("grid").appendChild(
+            tile
+        );
 
     }
 
 
     const video =
-        tile.querySelector("video");
+        tile.querySelector(
+            "video"
+        );
 
-    video.srcObject =
-        remoteStream;
+
+    if(video){
+
+        video.srcObject =
+            remoteStream;
+
+    }
 
 }
 
 
-/* =========================================
-SOCKET EVENTS
-========================================= */
+/* ========================================
+SOCKET PEER JOINED
+======================================== */
 
 socket.on(
     "peer-joined",
@@ -2380,6 +2295,10 @@ socket.on(
     }
 );
 
+
+/* ========================================
+OFFER RECEIVED
+======================================== */
 
 socket.on(
     "offer",
@@ -2412,19 +2331,26 @@ socket.on(
                 "answer",
                 {
                     to:data.from,
-                    answer:answer
+                    answer
                 }
             );
 
         }catch(error){
 
-            console.error(error);
+            console.error(
+                "Answer error:",
+                error
+            );
 
         }
 
     }
 );
 
+
+/* ========================================
+ANSWER
+======================================== */
 
 socket.on(
     "answer",
@@ -2448,13 +2374,20 @@ socket.on(
 
         }catch(error){
 
-            console.error(error);
+            console.error(
+                "Remote answer error:",
+                error
+            );
 
         }
 
     }
 );
 
+
+/* ========================================
+ICE
+======================================== */
 
 socket.on(
     "ice-candidate",
@@ -2481,7 +2414,10 @@ socket.on(
 
         }catch(error){
 
-            console.log(error);
+            console.log(
+                "ICE error:",
+                error
+            );
 
         }
 
@@ -2489,16 +2425,54 @@ socket.on(
 );
 
 
-/* =========================================
+/* ========================================
+PEER LEFT
+======================================== */
+
+socket.on(
+    "peer-left",
+    id => {
+
+        const peer =
+            peers.get(id);
+
+
+        if(peer){
+
+            peer.close();
+
+        }
+
+
+        peers.delete(id);
+
+
+        const tile =
+            document.getElementById(
+                "tile-" + id
+            );
+
+
+        if(tile){
+
+            tile.remove();
+
+        }
+
+    }
+);
+
+
+/* ========================================
 PARTICIPANTS
-========================================= */
+======================================== */
 
 socket.on(
     "participants",
-    participants => {
+    list => {
 
         updateParticipants(
-            participants
+            list
         );
 
     }
@@ -2511,11 +2485,11 @@ function updateParticipants(list){
         list.length + "/20";
 
 
-    const people =
+    const container =
         $("peopleList");
 
 
-    people.innerHTML = "";
+    container.innerHTML = "";
 
 
     list.forEach(person => {
@@ -2585,7 +2559,6 @@ function updateParticipants(list){
         status.className =
             "person-status";
 
-
         status.textContent =
             (
                 person.mic
@@ -2613,16 +2586,18 @@ function updateParticipants(list){
         );
 
 
-        people.appendChild(row);
+        container.appendChild(
+            row
+        );
 
     });
 
 }
 
 
-/* =========================================
+/* ========================================
 MEDIA STATE
-========================================= */
+======================================== */
 
 socket.on(
     "media-state",
@@ -2654,11 +2629,15 @@ function updateRemoteMedia(
 
 
     const video =
-        tile.querySelector("video");
+        tile.querySelector(
+            "video"
+        );
 
 
     const avatar =
-        tile.querySelector(".avatar");
+        tile.querySelector(
+            ".avatar"
+        );
 
 
     const micIcon =
@@ -2699,19 +2678,20 @@ function updateRemoteMedia(
 }
 
 
-/* =========================================
+/* ========================================
 HAND
-========================================= */
+======================================== */
 
 function toggleHand(){
 
-    hand = !hand;
+    hand =
+        !hand;
 
 
     socket.emit(
         "raise-hand",
         {
-            hand:hand
+            hand
         }
     );
 
@@ -2764,16 +2744,17 @@ socket.on(
 );
 
 
-/* =========================================
+/* ========================================
 CAMERA
-========================================= */
+======================================== */
 
 function toggleCam(){
 
     if(!stream) return;
 
 
-    cam = !cam;
+    cam =
+        !cam;
 
 
     stream
@@ -2795,7 +2776,7 @@ function toggleCam(){
         "media-state",
         {
             camera:cam,
-            mic:mic
+            mic
         }
     );
 
@@ -2814,10 +2795,15 @@ function updateLocalVideo(){
 
 
     const video =
-        tile.querySelector("video");
+        tile.querySelector(
+            "video"
+        );
+
 
     const avatar =
-        tile.querySelector(".avatar");
+        tile.querySelector(
+            ".avatar"
+        );
 
 
     if(video){
@@ -2842,16 +2828,17 @@ function updateLocalVideo(){
 }
 
 
-/* =========================================
+/* ========================================
 MIC
-========================================= */
+======================================== */
 
 function toggleMic(){
 
     if(!stream) return;
 
 
-    mic = !mic;
+    mic =
+        !mic;
 
 
     stream
@@ -2864,6 +2851,22 @@ function toggleMic(){
         });
 
 
+    if(
+        processedStream
+    ){
+
+        processedStream
+            .getAudioTracks()
+            .forEach(track => {
+
+                track.enabled =
+                    mic;
+
+            });
+
+    }
+
+
     updateButtons();
 
 
@@ -2871,16 +2874,16 @@ function toggleMic(){
         "media-state",
         {
             camera:cam,
-            mic:mic
+            mic
         }
     );
 
 }
 
 
-/* =========================================
+/* ========================================
 BUTTONS
-========================================= */
+======================================== */
 
 function updateButtons(){
 
@@ -2891,7 +2894,8 @@ function updateButtons(){
 
 
     $("micButton")
-        .classList.toggle(
+        .classList
+        .toggle(
             "off",
             !mic
         );
@@ -2904,13 +2908,11 @@ function updateButtons(){
 
 
     $("camButton")
-        .classList.toggle(
+        .classList
+        .toggle(
             "off",
             !cam
         );
-
-
-    updateHandButton();
 
 
     const localMic =
@@ -2926,17 +2928,21 @@ function updateButtons(){
 
     }
 
+
+    updateHandButton();
+
 }
 
 
-/* =========================================
+/* ========================================
 PARTICIPANTS PANEL
-========================================= */
+======================================== */
 
 function openParticipants(){
 
     $("peoplePanel")
-        .classList.add("open");
+        .classList
+        .add("open");
 
 }
 
@@ -2944,14 +2950,15 @@ function openParticipants(){
 function closeParticipants(){
 
     $("peoplePanel")
-        .classList.remove("open");
+        .classList
+        .remove("open");
 
 }
 
 
-/* =========================================
-CHANGE NAME
-========================================= */
+/* ========================================
+NAME
+======================================== */
 
 function openNameModal(){
 
@@ -2959,7 +2966,8 @@ function openNameModal(){
         myName;
 
     $("nameModal")
-        .classList.add("show");
+        .classList
+        .add("show");
 
 }
 
@@ -2967,9 +2975,11 @@ function openNameModal(){
 function closeNameModal(){
 
     $("nameModal")
-        .classList.remove("show");
+        .classList
+        .remove("show");
 
-    $("nameError").textContent = "";
+    $("nameError").textContent =
+        "";
 
 }
 
@@ -2977,7 +2987,9 @@ function closeNameModal(){
 function changeName(){
 
     const newName =
-        $("newName").value.trim();
+        $("newName")
+            .value
+            .trim();
 
 
     if(!newName){
@@ -2986,6 +2998,7 @@ function changeName(){
             "Nama tidak boleh kosong.";
 
         return;
+
     }
 
 
@@ -2998,10 +3011,12 @@ function changeName(){
 
             if(!response.ok){
 
-                $("nameError").textContent =
+                $("nameError")
+                    .textContent =
                     response.error;
 
                 return;
+
             }
 
 
@@ -3084,14 +3099,15 @@ socket.on(
 );
 
 
-/* =========================================
-BACKGROUND
-========================================= */
+/* ========================================
+BACKGROUND MODAL
+======================================== */
 
 function openBackground(){
 
     $("backgroundModal")
-        .classList.add("show");
+        .classList
+        .add("show");
 
 }
 
@@ -3099,10 +3115,15 @@ function openBackground(){
 function closeBackground(){
 
     $("backgroundModal")
-        .classList.remove("show");
+        .classList
+        .remove("show");
 
 }
 
+
+/* ========================================
+SELECT IMAGE
+======================================== */
 
 function selectBackground(event){
 
@@ -3113,88 +3134,70 @@ function selectBackground(event){
     if(!file) return;
 
 
-    const reader =
-        new FileReader();
+    if(!file.type.startsWith("image/")){
 
-
-    reader.onload =
-        () => {
-
-            backgroundImage =
-                new Image();
-
-
-            backgroundImage.onload =
-                () => {
-
-                    backgroundEnabled = true;
-
-                    startVirtualBackground();
-
-                };
-
-
-            backgroundImage.src =
-                reader.result;
-
-        };
-
-
-    reader.readAsDataURL(file);
-
-}
-
-
-function removeBackground(){
-
-    backgroundEnabled = false;
-
-    backgroundImage = null;
-
-    const video =
-        document.querySelector(
-            "#tile-" +
-            myId +
-            " video"
+        alert(
+            "File harus berupa gambar."
         );
 
-
-    if(video){
-
-        video.srcObject =
-            stream;
+        return;
 
     }
 
 
-    closeBackground();
+    const reader =
+        new FileReader();
+
+
+    reader.onload = () => {
+
+        const image =
+            new Image();
+
+
+        image.onload = () => {
+
+            backgroundImage =
+                image;
+
+            backgroundEnabled =
+                true;
+
+
+            startVirtualBackground();
+
+        };
+
+
+        image.src =
+            reader.result;
+
+    };
+
+
+    reader.readAsDataURL(
+        file
+    );
 
 }
 
 
-let segmentation = null;
+/* ========================================
+START VIRTUAL BACKGROUND
+======================================== */
 
-let backgroundCanvas = null;
+async function startVirtualBackground(){
 
-let backgroundContext = null;
-
-let backgroundStream = null;
-
-
-function startVirtualBackground(){
+    if(!stream) return;
 
     if(!backgroundImage) return;
 
+    if(!originalVideoTrack){
 
-    const video =
-        document.querySelector(
-            "#tile-" +
-            myId +
-            " video"
-        );
+        originalVideoTrack =
+            stream.getVideoTracks()[0];
 
-
-    if(!video) return;
+    }
 
 
     if(
@@ -3203,12 +3206,14 @@ function startVirtualBackground(){
     ){
 
         alert(
-            "Virtual background tidak tersedia pada browser ini."
+            "Virtual background belum berhasil dimuat. Coba refresh halaman."
         );
 
-        backgroundEnabled = false;
+        backgroundEnabled =
+            false;
 
         return;
+
     }
 
 
@@ -3219,15 +3224,20 @@ function startVirtualBackground(){
                 "canvas"
             );
 
+
         backgroundCanvas.width =
             640;
 
         backgroundCanvas.height =
             480;
 
+
         backgroundContext =
             backgroundCanvas.getContext(
-                "2d"
+                "2d",
+                {
+                    alpha:false
+                }
             );
 
     }
@@ -3240,15 +3250,18 @@ function startVirtualBackground(){
 
                 locateFile:
                     file =>
-                        "https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/" +
-                        file
+
+                    "https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/" +
+                    file
 
             });
 
 
         segmentation.setOptions({
 
-            modelSelection:1
+            modelSelection:1,
+
+            selfieMode:false
 
         });
 
@@ -3260,16 +3273,45 @@ function startVirtualBackground(){
     }
 
 
-    processVirtualBackground();
+    if(!backgroundLoopRunning){
+
+        backgroundLoopRunning =
+            true;
+
+        processVirtualBackground();
+
+    }
 
 }
 
 
+/* ========================================
+PROCESS BACKGROUND
+======================================== */
+
 async function processVirtualBackground(){
 
-    if(!backgroundEnabled) return;
+    if(
+        !backgroundLoopRunning
+    ){
 
-    if(!stream) return;
+        return;
+
+    }
+
+
+    if(
+        !backgroundEnabled ||
+        !stream ||
+        !segmentation
+    ){
+
+        backgroundLoopRunning =
+            false;
+
+        return;
+
+    }
 
 
     const source =
@@ -3280,21 +3322,42 @@ async function processVirtualBackground(){
         );
 
 
-    if(!source) return;
+    if(
+        !source ||
+        source.readyState < 2
+    ){
 
-
-    try{
-
-        await segmentation.send({
-            image:source
-        });
-
-    }catch(error){
-
-        console.log(
-            "Background error:",
-            error
+        requestAnimationFrame(
+            processVirtualBackground
         );
+
+        return;
+
+    }
+
+
+    if(!backgroundProcessing){
+
+        backgroundProcessing =
+            true;
+
+        try{
+
+            await segmentation.send({
+                image:source
+            });
+
+        }catch(error){
+
+            console.log(
+                "Background processing:",
+                error
+            );
+
+        }
+
+        backgroundProcessing =
+            false;
 
     }
 
@@ -3306,17 +3369,27 @@ async function processVirtualBackground(){
 }
 
 
-function drawVirtualBackground(results){
+/* ========================================
+DRAW BACKGROUND
+======================================== */
 
-    if(!backgroundEnabled) return;
+function drawVirtualBackground(
+    results
+){
 
+    if(
+        !backgroundEnabled ||
+        !backgroundImage ||
+        !backgroundContext
+    ){
 
-    if(!backgroundContext) return;
+        return;
+
+    }
 
 
     const canvas =
         backgroundCanvas;
-
 
     const ctx =
         backgroundContext;
@@ -3333,21 +3406,25 @@ function drawVirtualBackground(results){
     );
 
 
-    if(backgroundImage){
+    /*
+    1. Gambar video asli
+    */
 
-        ctx.drawImage(
-            backgroundImage,
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
+    ctx.drawImage(
+        results.image,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
 
-    }
 
+    /*
+    2. Sisakan bagian manusia
+    */
 
     ctx.globalCompositeOperation =
-        "destination-out";
+        "destination-in";
 
 
     ctx.drawImage(
@@ -3359,31 +3436,17 @@ function drawVirtualBackground(results){
     );
 
 
+    /*
+    3. Letakkan foto background
+    */
+
     ctx.globalCompositeOperation =
         "destination-over";
 
 
-    if(backgroundImage){
-
-        ctx.drawImage(
-            backgroundImage,
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-    }
-
-
-    ctx.globalCompositeOperation =
-        "source-over";
-
-
-    ctx.drawImage(
-        results.image,
-        0,
-        0,
+    drawCoverImage(
+        ctx,
+        backgroundImage,
         canvas.width,
         canvas.height
     );
@@ -3392,29 +3455,37 @@ function drawVirtualBackground(results){
     ctx.restore();
 
 
-    if(!backgroundStream){
+    /*
+    Buat stream baru hanya sekali.
+    */
 
-        backgroundStream =
-            canvas.captureStream(30);
+    if(!processedStream){
+
+        processedStream =
+            canvas.captureStream(
+                24
+            );
 
 
-        const originalAudio =
+        /*
+        Tambahkan audio asli.
+        */
+
+        const audioTracks =
             stream.getAudioTracks();
 
 
-        originalAudio.forEach(
-            track => {
+        audioTracks.forEach(track => {
 
-                backgroundStream.addTrack(
-                    track
-                );
+            processedStream.addTrack(
+                track
+            );
 
-            }
-        );
+        });
 
 
-        videoWithBackground(
-            backgroundStream
+        replaceVideoTrack(
+            processedStream.getVideoTracks()[0]
         );
 
     }
@@ -3422,9 +3493,115 @@ function drawVirtualBackground(results){
 }
 
 
-function videoWithBackground(
-    newStream
+/* ========================================
+COVER IMAGE
+======================================== */
+
+function drawCoverImage(
+    ctx,
+    image,
+    width,
+    height
 ){
+
+    const imageRatio =
+        image.width /
+        image.height;
+
+    const canvasRatio =
+        width /
+        height;
+
+    let drawWidth;
+    let drawHeight;
+    let x;
+    let y;
+
+
+    if(imageRatio > canvasRatio){
+
+        drawHeight =
+            height;
+
+        drawWidth =
+            height *
+            imageRatio;
+
+        x =
+            (width - drawWidth) / 2;
+
+        y = 0;
+
+    }else{
+
+        drawWidth =
+            width;
+
+        drawHeight =
+            width /
+            imageRatio;
+
+        x = 0;
+
+        y =
+            (height - drawHeight) / 2;
+
+    }
+
+
+    ctx.drawImage(
+        image,
+        x,
+        y,
+        drawWidth,
+        drawHeight
+    );
+
+}
+
+
+/* ========================================
+REPLACE VIDEO TRACK
+======================================== */
+
+function replaceVideoTrack(
+    newVideoTrack
+){
+
+    if(!newVideoTrack) return;
+
+
+    peers.forEach(peer => {
+
+        const sender =
+            peer
+                .getSenders()
+                .find(
+                    sender =>
+                        sender.track &&
+                        sender.track.kind ===
+                        "video"
+                );
+
+
+        if(sender){
+
+            sender.replaceTrack(
+                newVideoTrack
+            )
+            .catch(error => {
+
+                console.log(
+                    "replaceTrack:",
+                    error
+                );
+
+            });
+
+        }
+
+    });
+
 
     const localVideo =
         document.querySelector(
@@ -3437,55 +3614,85 @@ function videoWithBackground(
     if(localVideo){
 
         localVideo.srcObject =
-            newStream;
+            processedStream ||
+            stream;
 
     }
-
-
-    peers.forEach(
-        peer => {
-
-            const senders =
-                peer.getSenders();
-
-
-            const videoSender =
-                senders.find(
-                    sender =>
-                        sender.track &&
-                        sender.track.kind ===
-                        "video"
-                );
-
-
-            if(
-                videoSender &&
-                backgroundStream
-            ){
-
-                const videoTrack =
-                    backgroundStream.getVideoTracks()[0];
-
-
-                if(videoTrack){
-
-                    videoSender.replaceTrack(
-                        videoTrack
-                    );
-
-                }
-
-            }
-
-        }
-    );
 
 }
 
 
-/* =========================================
+/* ========================================
+REMOVE BACKGROUND
+======================================== */
+
+function removeBackground(){
+
+    backgroundEnabled =
+        false;
+
+
+    backgroundImage =
+        null;
+
+
+    backgroundLoopRunning =
+        false;
+
+
+    if(
+        originalVideoTrack
+    ){
+
+        replaceVideoTrack(
+            originalVideoTrack
+        );
+
+    }
+
+
+    const localVideo =
+        document.querySelector(
+            "#tile-" +
+            myId +
+            " video"
+        );
+
+
+    if(localVideo){
+
+        localVideo.srcObject =
+            stream;
+
+    }
+
+
+    if(processedStream){
+
+        processedStream
+            .getVideoTracks()
+            .forEach(track => {
+
+                track.stop();
+
+            });
+
+    }
+
+
+    processedStream =
+        null;
+
+
+    $("backgroundFile").value =
+        "";
+
+}
+
+
+/* ========================================
 COPY LINK
-========================================= */
+======================================== */
 
 async function copyLink(){
 
@@ -3502,7 +3709,7 @@ async function copyLink(){
         );
 
         alert(
-            "Meeting link copied!"
+            "Meeting link berhasil disalin."
         );
 
     }catch(error){
@@ -3517,19 +3724,23 @@ async function copyLink(){
 }
 
 
-/* =========================================
+/* ========================================
 CONNECTION
-========================================= */
+======================================== */
 
 socket.on(
     "connect",
     () => {
 
-        $("connection").textContent =
-            "🟢 Connected";
+        if($("connection")){
 
-        $("connection").style.color =
-            "#32c875";
+            $("connection").textContent =
+                "🟢 Connected";
+
+            $("connection").style.color =
+                "#35d07f";
+
+        }
 
     }
 );
@@ -3539,19 +3750,23 @@ socket.on(
     "disconnect",
     () => {
 
-        $("connection").textContent =
-            "🟠 Reconnecting...";
+        if($("connection")){
 
-        $("connection").style.color =
-            "#f3b83f";
+            $("connection").textContent =
+                "🟠 Reconnecting...";
+
+            $("connection").style.color =
+                "#f2bd45";
+
+        }
 
     }
 );
 
 
-/* =========================================
+/* ========================================
 LEAVE
-========================================= */
+======================================== */
 
 function leave(){
 
@@ -3560,9 +3775,11 @@ function leave(){
     );
 
 
-    peers.forEach(
-        peer => peer.close()
-    );
+    peers.forEach(peer => {
+
+        peer.close();
+
+    });
 
 
     peers.clear();
@@ -3572,22 +3789,37 @@ function leave(){
 
         stream
             .getTracks()
-            .forEach(
-                track =>
-                    track.stop()
-            );
+            .forEach(track => {
+
+                track.stop();
+
+            });
 
     }
 
 
-    location.href = "/";
+    if(processedStream){
+
+        processedStream
+            .getTracks()
+            .forEach(track => {
+
+                track.stop();
+
+            });
+
+    }
+
+
+    location.href =
+        "/";
 
 }
 
 
-/* =========================================
+/* ========================================
 DIRECT MEETING LINK
-========================================= */
+======================================== */
 
 window.addEventListener(
     "load",
@@ -3612,9 +3844,9 @@ window.addEventListener(
 );
 
 
-/* =========================================
-KEYBOARD
-========================================= */
+/* ========================================
+ENTER KEY
+======================================== */
 
 $("newName")
     ?.addEventListener(
@@ -3634,7 +3866,25 @@ $("newName")
     );
 
 
+$("code")
+    ?.addEventListener(
+        "keydown",
+        event => {
+
+            if(
+                event.key ===
+                "Enter"
+            ){
+
+                joinRoom();
+
+            }
+
+        }
+    );
+
 </script>
 
 </body>
+
 </html>

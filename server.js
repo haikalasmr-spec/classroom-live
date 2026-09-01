@@ -6,73 +6,421 @@ const path = require("path");
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
+
 const PORT = process.env.PORT || 3000;
+
+const MAX_PARTICIPANTS = 20;
+
 const rooms = new Map();
 
-app.use(express.static(path.join(__dirname, "public")));
-app.get("/meeting/:code", (req,res) =>
-  res.sendFile(path.join(__dirname,"public","index.html"))
-);
+const publicPath = path.join(__dirname, "public");
 
-function code() {
-  let c;
-  do c = "CLASS-" + Math.random().toString(36).slice(2,6).toUpperCase();
-  while (rooms.has(c));
-  return c;
-}
-function sendParticipants(roomCode) {
-  const room = rooms.get(roomCode);
-  if (!room) return;
-  io.to(roomCode).emit("participants",
-    [...room.users.entries()].map(([id,u]) => ({
-      id,name:u.name,role:u.role,camera:u.camera,mic:u.mic
-    }))
-  );
-}
-function remove(socket) {
-  const rc=socket.data.room;
-  if(!rc) return;
-  const room=rooms.get(rc);
-  if(!room) return;
-  room.users.delete(socket.id);
-  socket.to(rc).emit("peer-left",socket.id);
-  sendParticipants(rc);
-  if(room.users.size===0) rooms.delete(rc);
-  socket.data.room=null;
-}
-io.on("connection",socket=>{
-  socket.on("create-room",(data,cb)=>{
-    const rc=code(), name=String(data?.name||"Guru").slice(0,40);
-    rooms.set(rc,{host:socket.id,users:new Map([[socket.id,{name,role:"teacher",camera:true,mic:true}]])});
-    socket.join(rc); socket.data.room=rc; socket.data.role="teacher";
-    cb({ok:true,code:rc});
-    sendParticipants(rc);
-  });
-  socket.on("join-room",(data,cb)=>{
-    const rc=String(data?.code||"").trim().toUpperCase();
-    const room=rooms.get(rc);
-    if(!room) return cb({ok:false,error:"Meeting not found."});
-    const students=[...room.users.values()].filter(u=>u.role==="student").length;
-    if(students>=10) return cb({ok:false,error:"Meeting Full. Maksimal 10 siswa."});
-    const existing=[...room.users.entries()].map(([id,u])=>({id,name:u.name,role:u.role}));
-    const name=String(data?.name||"Siswa").slice(0,40);
-    room.users.set(socket.id,{name,role:"student",camera:true,mic:true});
-    socket.join(rc); socket.data.room=rc; socket.data.role="student";
-    cb({ok:true,code:rc,existingPeers:existing});
-    socket.to(rc).emit("peer-joined",{id:socket.id,name,role:"student"});
-    sendParticipants(rc);
-  });
-  socket.on("offer",d=>io.to(d.to).emit("offer",{from:socket.id,offer:d.offer}));
-  socket.on("answer",d=>io.to(d.to).emit("answer",{from:socket.id,answer:d.answer}));
-  socket.on("ice-candidate",d=>io.to(d.to).emit("ice-candidate",{from:socket.id,candidate:d.candidate}));
-  socket.on("media-state",d=>{
-    const room=rooms.get(socket.data.room), u=room?.users.get(socket.id);
-    if(!u) return;
-    u.camera=!!d.camera; u.mic=!!d.mic;
-    socket.to(socket.data.room).emit("media-state",{id:socket.id,camera:u.camera,mic:u.mic});
-    sendParticipants(socket.data.room);
-  });
-  socket.on("leave-room",()=>remove(socket));
-  socket.on("disconnect",()=>remove(socket));
+app.use(express.static(publicPath));
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(publicPath, "index.html"));
 });
-server.listen(PORT,()=>console.log(`CLASSROOM LIVE listening on ${PORT}`));
+
+app.get("/meeting/:code", (req, res) => {
+    res.sendFile(path.join(publicPath, "index.html"));
+});
+
+function createCode() {
+    let code;
+
+    do {
+        code =
+            "CLASS-" +
+            Math.random()
+                .toString(36)
+                .substring(2, 6)
+                .toUpperCase();
+    } while (rooms.has(code));
+
+    return code;
+}
+
+function getParticipants(roomCode) {
+    const room = rooms.get(roomCode);
+
+    if (!room) return [];
+
+    return [...room.users.entries()].map(([id, user]) => ({
+        id,
+        name: user.name,
+        role: user.role,
+        camera: user.camera,
+        mic: user.mic,
+        hand: user.hand
+    }));
+}
+
+function sendParticipants(roomCode) {
+    if (!rooms.has(roomCode)) return;
+
+    io.to(roomCode).emit(
+        "participants",
+        getParticipants(roomCode)
+    );
+}
+
+function removeUser(socket) {
+    const roomCode = socket.data.room;
+
+    if (!roomCode) return;
+
+    const room = rooms.get(roomCode);
+
+    if (!room) return;
+
+    room.users.delete(socket.id);
+
+    socket.to(roomCode).emit(
+        "peer-left",
+        socket.id
+    );
+
+    sendParticipants(roomCode);
+
+    if (room.users.size === 0) {
+        rooms.delete(roomCode);
+    }
+
+    socket.data.room = null;
+}
+
+io.on("connection", (socket) => {
+
+    /*
+    ============================================
+    CREATE ROOM
+    ============================================
+    */
+
+    socket.on("create-room", (data, callback) => {
+
+        const roomCode = createCode();
+
+        const name =
+            String(data?.name || "Guru")
+                .trim()
+                .substring(0, 40);
+
+        rooms.set(roomCode, {
+            host: socket.id,
+
+            users: new Map([
+                [
+                    socket.id,
+                    {
+                        name: name || "Guru",
+                        role: "teacher",
+                        camera: true,
+                        mic: true,
+                        hand: false
+                    }
+                ]
+            ])
+        });
+
+        socket.join(roomCode);
+
+        socket.data.room = roomCode;
+        socket.data.role = "teacher";
+
+        callback({
+            ok: true,
+            code: roomCode
+        });
+
+        sendParticipants(roomCode);
+    });
+
+
+    /*
+    ============================================
+    JOIN ROOM
+    ============================================
+    */
+
+    socket.on("join-room", (data, callback) => {
+
+        const roomCode =
+            String(data?.code || "")
+                .trim()
+                .toUpperCase();
+
+        const room = rooms.get(roomCode);
+
+        if (!room) {
+
+            return callback({
+                ok: false,
+                error: "Meeting not found."
+            });
+        }
+
+        if (room.users.size >= MAX_PARTICIPANTS) {
+
+            return callback({
+                ok: false,
+                error:
+                    "Meeting penuh. Maksimal 20 peserta."
+            });
+        }
+
+        const existingPeers =
+            [...room.users.entries()].map(
+                ([id, user]) => ({
+                    id,
+                    name: user.name,
+                    role: user.role
+                })
+            );
+
+        let name =
+            String(data?.name || "Siswa")
+                .trim()
+                .substring(0, 40);
+
+        if (!name) {
+            name = "Siswa";
+        }
+
+        room.users.set(socket.id, {
+            name,
+            role: "student",
+            camera: true,
+            mic: true,
+            hand: false
+        });
+
+        socket.join(roomCode);
+
+        socket.data.room = roomCode;
+        socket.data.role = "student";
+
+        callback({
+            ok: true,
+            code: roomCode,
+            existingPeers
+        });
+
+        socket.to(roomCode).emit(
+            "peer-joined",
+            {
+                id: socket.id,
+                name,
+                role: "student"
+            }
+        );
+
+        sendParticipants(roomCode);
+    });
+
+
+    /*
+    ============================================
+    WEBRTC SIGNALING
+    ============================================
+    */
+
+    socket.on("offer", (data) => {
+
+        if (!data?.to) return;
+
+        io.to(data.to).emit(
+            "offer",
+            {
+                from: socket.id,
+                offer: data.offer
+            }
+        );
+    });
+
+
+    socket.on("answer", (data) => {
+
+        if (!data?.to) return;
+
+        io.to(data.to).emit(
+            "answer",
+            {
+                from: socket.id,
+                answer: data.answer
+            }
+        );
+    });
+
+
+    socket.on("ice-candidate", (data) => {
+
+        if (!data?.to) return;
+
+        io.to(data.to).emit(
+            "ice-candidate",
+            {
+                from: socket.id,
+                candidate: data.candidate
+            }
+        );
+    });
+
+
+    /*
+    ============================================
+    CAMERA / MICROPHONE
+    ============================================
+    */
+
+    socket.on("media-state", (data) => {
+
+        const room = rooms.get(socket.data.room);
+
+        if (!room) return;
+
+        const user = room.users.get(socket.id);
+
+        if (!user) return;
+
+        user.camera = !!data.camera;
+        user.mic = !!data.mic;
+
+        socket.to(socket.data.room).emit(
+            "media-state",
+            {
+                id: socket.id,
+                camera: user.camera,
+                mic: user.mic
+            }
+        );
+
+        sendParticipants(socket.data.room);
+    });
+
+
+    /*
+    ============================================
+    RAISE HAND
+    ============================================
+    */
+
+    socket.on("raise-hand", (data) => {
+
+        const room = rooms.get(socket.data.room);
+
+        if (!room) return;
+
+        const user = room.users.get(socket.id);
+
+        if (!user) return;
+
+        user.hand = !!data.hand;
+
+        io.to(socket.data.room).emit(
+            "hand-state",
+            {
+                id: socket.id,
+                hand: user.hand
+            }
+        );
+
+        sendParticipants(socket.data.room);
+    });
+
+
+    /*
+    ============================================
+    CHANGE NAME
+    ============================================
+    */
+
+    socket.on("change-name", (data, callback) => {
+
+        const room = rooms.get(socket.data.room);
+
+        if (!room) {
+
+            if (callback) {
+                callback({
+                    ok: false,
+                    error: "Meeting not found."
+                });
+            }
+
+            return;
+        }
+
+        const user = room.users.get(socket.id);
+
+        if (!user) return;
+
+        let newName =
+            String(data?.name || "")
+                .trim()
+                .substring(0, 40);
+
+        if (!newName) {
+
+            if (callback) {
+                callback({
+                    ok: false,
+                    error: "Nama tidak boleh kosong."
+                });
+            }
+
+            return;
+        }
+
+        user.name = newName;
+
+        if (callback) {
+            callback({
+                ok: true,
+                name: newName
+            });
+        }
+
+        socket.to(socket.data.room).emit(
+            "name-changed",
+            {
+                id: socket.id,
+                name: newName
+            }
+        );
+
+        sendParticipants(socket.data.room);
+    });
+
+
+    /*
+    ============================================
+    LEAVE
+    ============================================
+    */
+
+    socket.on("leave-room", () => {
+        removeUser(socket);
+    });
+
+
+    /*
+    ============================================
+    DISCONNECT
+    ============================================
+    */
+
+    socket.on("disconnect", () => {
+        removeUser(socket);
+    });
+
+});
+
+
+server.listen(PORT, "0.0.0.0", () => {
+
+    console.log(
+        `CLASSROOM LIVE listening on ${PORT}`
+    );
+
+});

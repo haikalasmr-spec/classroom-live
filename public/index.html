@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
 
 <title>CLASSROOM LIVE</title>
 
@@ -11,21 +15,23 @@
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"></script>
 
 <style>
+
 *{
     box-sizing:border-box;
 }
 
-html,body{
+html,
+body{
     margin:0;
     width:100%;
     height:100%;
-    overflow:hidden;
     background:#070a10;
     color:#fff;
     font-family:Arial,Helvetica,sans-serif;
 }
 
-button,input{
+button,
+input{
     font:inherit;
 }
 
@@ -37,46 +43,46 @@ button{
     display:none!important;
 }
 
-/* =====================================================
-HOME
-===================================================== */
 
-.home{
-    width:100%;
-    height:100vh;
-    overflow:auto;
+/* ================= HOME ================= */
 
+#home{
+    min-height:100vh;
     display:flex;
     align-items:center;
     justify-content:center;
-
-    padding:25px;
+    padding:20px;
 
     background:
-        radial-gradient(circle at 15% 15%,#1c3670 0,transparent 32%),
-        radial-gradient(circle at 85% 85%,#124b43 0,transparent 32%),
-        linear-gradient(135deg,#070a10,#0d111a);
+    radial-gradient(
+        circle at 10% 10%,
+        #1d3670,
+        transparent 35%
+    ),
+    radial-gradient(
+        circle at 90% 90%,
+        #123c34,
+        transparent 35%
+    ),
+    #070a10;
 }
 
 .home-card{
-    width:min(1000px,100%);
-
+    width:min(950px,100%);
     display:grid;
-    grid-template-columns:1.15fr .85fr;
-
-    background:#10141d;
+    grid-template-columns:1.2fr .8fr;
 
     border:1px solid #252d3b;
-
-    border-radius:26px;
-
+    border-radius:25px;
     overflow:hidden;
+
+    background:#11151e;
 
     box-shadow:0 30px 100px #000b;
 }
 
 .home-main{
-    padding:55px;
+    padding:50px;
 }
 
 .brand{
@@ -87,65 +93,56 @@ HOME
 }
 
 .logo{
-    width:50px;
-    height:50px;
-
+    width:48px;
+    height:48px;
     display:grid;
     place-items:center;
-
-    border-radius:15px;
-
-    background:linear-gradient(135deg,#4f8cff,#6d5dfc);
-
-    font-size:24px;
+    background:#4f8cff;
+    border-radius:14px;
+    font-size:23px;
 }
 
 .brand-name{
-    font-size:20px;
     font-weight:bold;
+    font-size:20px;
 }
 
 .eyebrow{
-    color:#78a3ff;
+    color:#75a0ff;
     font-size:12px;
     letter-spacing:2px;
     font-weight:bold;
-    margin-bottom:12px;
 }
 
 .hero{
-    margin:0 0 18px;
-    font-size:46px;
-    line-height:1.04;
-    letter-spacing:-2px;
+    font-size:44px;
+    line-height:1.05;
+    margin:12px 0;
 }
 
 .description{
-    color:#9ca6b8;
-    line-height:1.65;
-    margin-bottom:30px;
+    color:#9ba5b6;
+    line-height:1.6;
 }
 
 .label{
     display:block;
-    color:#d2d7e0;
+    margin-top:25px;
+    margin-bottom:7px;
     font-size:13px;
     font-weight:bold;
-    margin-bottom:7px;
 }
 
 .input{
     width:100%;
     height:50px;
+    padding:0 14px;
 
-    padding:0 15px;
+    border:1px solid #293140;
+    border-radius:11px;
 
-    color:#fff;
     background:#080b11;
-
-    border:1px solid #29313f;
-    border-radius:12px;
-
+    color:white;
     outline:none;
 }
 
@@ -156,26 +153,17 @@ HOME
 .buttons{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:12px;
-    margin-top:14px;
+    gap:10px;
+    margin-top:12px;
 }
 
 .btn{
-    height:50px;
-    border-radius:12px;
-
-    border:1px solid #29313f;
-
-    background:#202633;
-    color:#fff;
-
+    min-height:48px;
+    border:1px solid #293140;
+    border-radius:11px;
+    background:#202632;
+    color:white;
     font-weight:bold;
-
-    transition:.15s;
-}
-
-.btn:hover{
-    filter:brightness(1.15);
 }
 
 .btn-primary{
@@ -185,247 +173,173 @@ HOME
 
 .join-area{
     margin-top:12px;
-    padding:14px;
-
-    border:1px solid #29313f;
-    border-radius:13px;
-
+    padding:13px;
+    border:1px solid #293140;
+    border-radius:12px;
     background:#0b0e14;
 }
 
 .error{
-    min-height:20px;
-    margin-top:12px;
     color:#ff8585;
     font-size:14px;
+    margin-top:12px;
 }
 
 .home-info{
     padding:40px;
+    background:#0c1017;
+    border-left:1px solid #252d3b;
+
     display:flex;
     align-items:center;
-
-    background:#0b0f16;
-    border-left:1px solid #252d3b;
 }
 
 .info-title{
     font-size:19px;
     font-weight:bold;
-    margin-bottom:18px;
+    margin-bottom:20px;
 }
 
 .info-item{
     display:flex;
     gap:13px;
     padding:15px 0;
-
-    border-bottom:1px solid #242b38;
+    border-bottom:1px solid #252d3b;
 }
 
 .info-icon{
     width:40px;
     height:40px;
-
     flex:none;
 
     display:grid;
     place-items:center;
 
-    border-radius:11px;
-
-    background:#192131;
+    border-radius:10px;
+    background:#1b2433;
 }
 
-.info-item strong{
-    display:block;
-    margin-bottom:4px;
-}
 
-.info-item span{
-    color:#9ca6b8;
-    font-size:13px;
-}
-
-/* =====================================================
-LOBBY
-===================================================== */
+/* ================= LOBBY ================= */
 
 #lobby{
     min-height:100vh;
-
     display:none;
-
     align-items:center;
     justify-content:center;
-
     padding:20px;
-
-    background:
-        radial-gradient(circle at 50% 0,#152448,transparent 45%),
-        #070a10;
 }
 
 .lobby-card{
     width:min(900px,100%);
-
-    padding:24px;
-
-    background:#111620;
-
-    border:1px solid #29313f;
-    border-radius:23px;
-
-    box-shadow:0 30px 80px #000b;
+    padding:22px;
+    border:1px solid #252d3b;
+    border-radius:22px;
+    background:#11151e;
 }
 
-.lobby-title{
+.lobby-head{
     display:flex;
     align-items:center;
     justify-content:space-between;
-
-    gap:15px;
-
-    margin-bottom:18px;
-}
-
-.lobby-title h2{
-    margin:0;
-}
-
-.code{
-    padding:8px 11px;
-
-    border:1px solid #29313f;
-    border-radius:9px;
-
-    background:#1a202b;
-
-    font-size:13px;
-    font-weight:bold;
+    margin-bottom:15px;
 }
 
 .preview{
     position:relative;
-
-    height:min(58vh,470px);
-
+    height:430px;
     overflow:hidden;
-
     border-radius:18px;
-
-    background:#030507;
-    border:1px solid #252c38;
+    background:#020307;
 }
 
 #previewVideo{
     width:100%;
     height:100%;
-
-    display:block;
-
     object-fit:cover;
-
-    background:#030507;
 }
 
 .preview-status{
     position:absolute;
+    top:12px;
+    left:12px;
 
-    top:14px;
-    left:14px;
-
-    padding:8px 11px;
-
-    background:#000c;
-
-    border-radius:9px;
-
-    font-size:13px;
+    padding:8px 10px;
+    border-radius:8px;
+    background:#000b;
 }
 
 .lobby-actions{
     display:grid;
-    grid-template-columns:1fr 1fr 1fr;
-
+    grid-template-columns:1fr 1fr 1.2fr;
     gap:10px;
-
-    margin-top:15px;
+    margin-top:12px;
 }
 
-/* =====================================================
-MEETING
-===================================================== */
+
+/* ================= MEETING ================= */
 
 #meeting{
     display:none;
-
     width:100%;
     height:100vh;
-
     overflow:hidden;
-
-    background:#070a10;
 }
 
 .topbar{
-    height:68px;
+    height:64px;
 
     display:flex;
     align-items:center;
     justify-content:space-between;
 
-    padding:0 18px;
+    padding:0 15px;
 
     background:#10141c;
-
-    border-bottom:1px solid #252d39;
+    border-bottom:1px solid #252d3b;
 }
 
-.top-left{
-    display:flex;
-    align-items:center;
-    gap:11px;
-}
-
-.small-logo{
-    width:38px;
-    height:38px;
-
-    display:grid;
-    place-items:center;
-
-    border-radius:10px;
-
-    background:linear-gradient(135deg,#4f8cff,#6d5dfc);
-}
-
-.top-name{
-    font-weight:bold;
-}
-
+.top-left,
 .top-right{
     display:flex;
     align-items:center;
     gap:10px;
 }
 
-.status{
-    color:#32c875;
+.small-logo{
+    width:37px;
+    height:37px;
+    display:grid;
+    place-items:center;
+    border-radius:10px;
+    background:#4f8cff;
+}
+
+.code{
+    padding:7px 10px;
+    border-radius:8px;
+    background:#1b212c;
+    border:1px solid #293140;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.connection{
+    color:#38d17b;
     font-size:13px;
 }
 
 .grid{
-    width:100%;
-    height:calc(100vh - 138px);
+    height:calc(100vh - 130px);
 
-    padding:13px;
+    padding:12px;
 
     display:grid;
 
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    grid-template-columns:
+    repeat(auto-fit,minmax(250px,1fr));
 
-    gap:12px;
+    gap:10px;
 
     overflow:auto;
 }
@@ -437,174 +351,157 @@ MEETING
 
     overflow:hidden;
 
+    border-radius:15px;
+
     background:#151a23;
 
-    border:1px solid #29313e;
-
-    border-radius:17px;
-
-    box-shadow:0 8px 30px #0005;
+    border:1px solid #293140;
 }
 
 .tile video{
     width:100%;
     height:100%;
-
     min-height:200px;
 
     display:block;
 
     object-fit:cover;
 
-    background:#05070a;
+    background:#050609;
 }
 
 .avatar{
     position:absolute;
-
     inset:0;
 
-    display:none;
-
+    display:grid;
     place-items:center;
 
     background:
-        radial-gradient(circle at 50% 35%,#27334b,transparent 40%),
-        #151a23;
+    radial-gradient(
+        circle,
+        #263451,
+        #121722
+    );
 }
 
 .avatar-circle{
-    width:78px;
-    height:78px;
+    width:75px;
+    height:75px;
 
     display:grid;
     place-items:center;
 
     border-radius:50%;
 
-    background:#2e3a51;
+    background:#354361;
 
-    font-size:27px;
+    font-size:26px;
     font-weight:bold;
 }
 
 .tile-info{
     position:absolute;
-
-    left:11px;
-    right:11px;
-    bottom:11px;
+    left:10px;
+    right:10px;
+    bottom:10px;
 
     display:flex;
     align-items:center;
     justify-content:space-between;
 
-    gap:10px;
+    pointer-events:none;
 }
 
 .name-tag{
-    max-width:75%;
+    max-width:70%;
 
     overflow:hidden;
-
     text-overflow:ellipsis;
     white-space:nowrap;
 
-    padding:8px 10px;
+    padding:7px 9px;
 
-    background:#000c;
-
+    background:#000d;
     border-radius:8px;
 
     font-size:13px;
 }
 
-.media-icons{
+.icons{
     display:flex;
-    align-items:center;
     gap:5px;
 }
 
-.media-icon{
-    padding:7px;
+.icon{
+    min-width:30px;
+    padding:6px;
 
-    background:#000c;
+    text-align:center;
 
-    border-radius:8px;
+    border-radius:7px;
 
-    font-size:12px;
+    background:#000d;
 }
 
-.hand-icon{
+.hand{
     display:none;
-
-    font-size:18px;
 }
 
-.hand-icon.show{
+.hand.show{
     display:block;
 }
 
-/* =====================================================
-CONTROLS
-===================================================== */
+
+/* ================= CONTROLS ================= */
 
 .controls{
-    height:70px;
+    height:66px;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    gap:8px;
+    gap:7px;
 
-    padding:8px;
+    padding:7px;
 
     background:#10141c;
-
-    border-top:1px solid #252d39;
+    border-top:1px solid #252d3b;
 }
 
 .control{
-    min-width:100px;
-    height:45px;
+    min-width:90px;
+    height:44px;
 
-    padding:0 13px;
+    border:1px solid #293140;
+    border-radius:10px;
 
-    color:#fff;
+    background:#202632;
+    color:white;
 
-    background:#202633;
-
-    border:1px solid #2c3544;
-    border-radius:11px;
-
+    font-size:13px;
     font-weight:bold;
-
-    transition:.15s;
 }
 
 .control:hover{
-    background:#2b3341;
+    background:#2a3240;
 }
 
-.control.off{
-    background:#8d3038;
-    border-color:#a43c45;
+.off{
+    background:#8d3038!important;
 }
 
-.control.hand-active{
-    background:#966b19;
-    border-color:#c28b24;
+.hand-active{
+    background:#9c701d!important;
 }
 
 .leave{
-    background:#e54852;
-    border-color:#e54852;
+    background:#e54852!important;
 }
 
-/* =====================================================
-PARTICIPANTS
-===================================================== */
+
+/* ================= SIDE PANEL ================= */
 
 .panel{
     position:fixed;
@@ -612,20 +509,20 @@ PARTICIPANTS
     top:0;
     right:0;
 
-    width:min(370px,92vw);
+    width:min(370px,90vw);
     height:100vh;
 
     z-index:50;
 
-    background:#11151d;
+    background:#11151e;
 
-    border-left:1px solid #2a3240;
+    border-left:1px solid #293140;
 
     transform:translateX(100%);
 
-    transition:.25s ease;
+    transition:.2s;
 
-    box-shadow:-25px 0 70px #000a;
+    box-shadow:-20px 0 70px #000b;
 }
 
 .panel.open{
@@ -633,49 +530,42 @@ PARTICIPANTS
 }
 
 .panel-head{
-    height:70px;
+    height:65px;
 
     display:flex;
     align-items:center;
     justify-content:space-between;
 
-    padding:0 18px;
+    padding:0 15px;
 
-    border-bottom:1px solid #29313e;
+    border-bottom:1px solid #293140;
 }
 
-.panel-head h3{
-    margin:0;
-}
+.close{
+    width:36px;
+    height:36px;
 
-.close-panel{
-    width:38px;
-    height:38px;
-
-    border:1px solid #303847;
+    border:1px solid #293140;
     border-radius:9px;
 
-    color:#fff;
-    background:#202633;
+    background:#202632;
+    color:white;
 }
 
 .people{
-    height:calc(100vh - 70px);
-
+    height:calc(100vh - 65px);
     padding:10px;
-
     overflow:auto;
 }
 
 .person{
     display:flex;
     align-items:center;
-
     gap:10px;
 
-    padding:11px;
+    padding:10px;
 
-    border-radius:12px;
+    border-radius:10px;
 }
 
 .person:hover{
@@ -683,17 +573,15 @@ PARTICIPANTS
 }
 
 .person-avatar{
-    width:40px;
-    height:40px;
-
-    flex:none;
+    width:39px;
+    height:39px;
 
     display:grid;
     place-items:center;
 
     border-radius:50%;
 
-    background:#29354b;
+    background:#293650;
 
     font-size:13px;
     font-weight:bold;
@@ -706,39 +594,123 @@ PARTICIPANTS
 
 .person-name{
     overflow:hidden;
-
     text-overflow:ellipsis;
     white-space:nowrap;
-
     font-size:14px;
     font-weight:bold;
 }
 
 .person-role{
+    color:#9ba5b6;
+    font-size:12px;
+    margin-top:3px;
+}
+
+
+/* ================= CHAT ================= */
+
+.chat{
+    position:fixed;
+
+    right:15px;
+    bottom:80px;
+
+    width:min(380px,calc(100vw - 30px));
+    height:480px;
+
+    z-index:40;
+
+    display:none;
+    flex-direction:column;
+
+    background:#11151e;
+
+    border:1px solid #293140;
+    border-radius:16px;
+
+    box-shadow:0 20px 70px #000c;
+}
+
+.chat.open{
+    display:flex;
+}
+
+.chat-head{
+    height:55px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 14px;
+
+    border-bottom:1px solid #293140;
+}
+
+.messages{
+    flex:1;
+
+    padding:12px;
+
+    overflow:auto;
+}
+
+.message{
+    margin-bottom:10px;
+}
+
+.message-name{
+    font-size:11px;
+    color:#79a5ff;
+    font-weight:bold;
+}
+
+.message-text{
+    display:inline-block;
+
     margin-top:3px;
 
-    color:#9ba5b5;
+    max-width:90%;
 
-    font-size:12px;
+    padding:8px 10px;
+
+    border-radius:9px;
+
+    background:#202632;
+
+    font-size:13px;
+
+    word-break:break-word;
 }
 
-.person-status{
-    white-space:nowrap;
+.message-time{
+    margin-left:5px;
+    color:#727b8b;
+    font-size:10px;
 }
 
-/* =====================================================
-MODAL
-===================================================== */
+.chat-input{
+    display:flex;
+    gap:7px;
+    padding:10px;
+    border-top:1px solid #293140;
+}
+
+.chat-input input{
+    flex:1;
+    min-width:0;
+}
+
+
+/* ================= MODAL ================= */
 
 .modal{
     position:fixed;
-
     inset:0;
 
     z-index:100;
 
     display:none;
-
     align-items:center;
     justify-content:center;
 
@@ -747,53 +719,36 @@ MODAL
     background:#000b;
 }
 
-.modal.show{
+.modal.open{
     display:flex;
 }
 
 .modal-card{
-    width:min(430px,100%);
+    width:min(420px,100%);
 
-    padding:25px;
+    padding:22px;
+
+    border-radius:16px;
+
+    border:1px solid #293140;
 
     background:#151a23;
-
-    border:1px solid #303847;
-    border-radius:18px;
-
-    box-shadow:0 25px 80px #000b;
-}
-
-.modal-card h3{
-    margin-top:0;
-}
-
-.modal-card p{
-    color:#9ba5b5;
-    line-height:1.5;
 }
 
 .modal-buttons{
     display:flex;
-
-    gap:10px;
-
-    margin-top:15px;
+    gap:8px;
+    margin-top:12px;
 }
 
 .modal-buttons button{
     flex:1;
 }
 
-/* =====================================================
-RESPONSIVE
-===================================================== */
+
+/* ================= MOBILE ================= */
 
 @media(max-width:760px){
-
-    .home{
-        padding:12px;
-    }
 
     .home-card{
         grid-template-columns:1fr;
@@ -804,50 +759,28 @@ RESPONSIVE
     }
 
     .home-main{
-        padding:32px 24px;
+        padding:30px 22px;
     }
 
     .hero{
-        font-size:36px;
+        font-size:35px;
     }
 
     .buttons{
         grid-template-columns:1fr;
     }
 
-    .lobby-card{
-        padding:15px;
-    }
-
     .preview{
-        height:300px;
+        height:280px;
     }
 
     .lobby-actions{
         grid-template-columns:1fr;
     }
 
-    .topbar{
-        height:62px;
-        padding:0 10px;
-    }
-
-    .top-name{
-        font-size:14px;
-    }
-
-    .status{
-        display:none;
-    }
-
     .grid{
-        height:calc(100vh - 128px);
-
-        padding:7px;
-
-        gap:7px;
-
         grid-template-columns:1fr;
+        height:calc(100vh - 128px);
     }
 
     .tile,
@@ -856,42 +789,51 @@ RESPONSIVE
     }
 
     .controls{
-        height:66px;
         gap:4px;
     }
 
     .control{
         min-width:0;
         flex:1;
-
         padding:0 4px;
-
         font-size:10px;
     }
 
-    .code{
-        font-size:10px;
-        padding:7px;
+    .top-name{
+        display:none;
     }
+
+    .connection{
+        display:none;
+    }
+
 }
+
 </style>
+
 </head>
 
 <body>
 
-<!-- =====================================================
-HOME
-===================================================== -->
 
-<section id="home" class="home">
+<!-- =================================================
+HOME
+================================================= -->
+
+<section id="home">
 
 <div class="home-card">
 
 <div class="home-main">
 
 <div class="brand">
+
 <div class="logo">🎓</div>
-<div class="brand-name">CLASSROOM LIVE</div>
+
+<div class="brand-name">
+CLASSROOM LIVE
+</div>
+
 </div>
 
 <div class="eyebrow">
@@ -903,9 +845,9 @@ Connect your classroom anywhere.
 </h1>
 
 <p class="description">
-Video meeting untuk guru dan siswa dengan kamera,
-microphone, raise hand, background pribadi,
-pergantian nama dan participant hingga 20 orang.
+Video meeting untuk guru dan siswa.
+Kamera, microphone, raise hand,
+background pribadi, peserta dan chat realtime.
 </p>
 
 <label class="label">
@@ -913,47 +855,41 @@ Nama
 </label>
 
 <input
-    id="name"
-    class="input"
-    maxlength="40"
-    placeholder="Masukkan nama"
-/>
+id="name"
+class="input"
+maxlength="40"
+placeholder="Masukkan nama">
 
 <div class="buttons">
 
 <button
-    class="btn btn-primary"
-    onclick="createRoom()"
->
+class="btn btn-primary"
+onclick="createRoom()">
 🎓 Create Meeting
 </button>
 
 <button
-    class="btn"
-    onclick="showJoin()"
->
+class="btn"
+onclick="showJoin()">
 🚪 Join Meeting
 </button>
 
 </div>
 
 <div
-    id="joinArea"
-    class="join-area hidden"
->
+id="joinArea"
+class="join-area hidden">
 
 <input
-    id="code"
-    class="input"
-    maxlength="10"
-    placeholder="CLASS-ABCD"
-/>
+id="code"
+class="input"
+maxlength="10"
+placeholder="CLASS-XXXX">
 
 <button
-    class="btn btn-primary"
-    style="width:100%;margin-top:10px"
-    onclick="joinRoom()"
->
+class="btn btn-primary"
+style="width:100%;margin-top:8px"
+onclick="joinRoom()">
 Join Classroom
 </button>
 
@@ -962,6 +898,7 @@ Join Classroom
 <div id="error" class="error"></div>
 
 </div>
+
 
 <div class="home-info">
 
@@ -974,40 +911,36 @@ CLASSROOM LIVE
 <div class="info-item">
 <div class="info-icon">📹</div>
 <div>
-<strong>Real Camera</strong>
-<span>Kamera laptop, HP atau webcam.</span>
+<strong>Camera</strong>
+<br>
+<span>Camera laptop atau HP.</span>
 </div>
 </div>
 
 <div class="info-item">
 <div class="info-icon">🎤</div>
 <div>
-<strong>Clear Audio</strong>
+<strong>Audio</strong>
+<br>
 <span>Echo cancellation dan noise suppression.</span>
-</div>
-</div>
-
-<div class="info-item">
-<div class="info-icon">👥</div>
-<div>
-<strong>Up to 20 People</strong>
-<span>Guru dan siswa dalam satu classroom.</span>
 </div>
 </div>
 
 <div class="info-item">
 <div class="info-icon">🖼️</div>
 <div>
-<strong>Personal Background</strong>
-<span>Pakai foto sendiri sebagai background.</span>
+<strong>Virtual Background</strong>
+<br>
+<span>Gunakan foto sendiri sebagai latar.</span>
 </div>
 </div>
 
 <div class="info-item">
-<div class="info-icon">🙋</div>
+<div class="info-icon">💬</div>
 <div>
-<strong>Raise Hand</strong>
-<span>Siswa dapat mengangkat tangan.</span>
+<strong>Realtime Chat</strong>
+<br>
+<span>Kirim pesan ke seluruh kelas.</span>
 </div>
 </div>
 
@@ -1020,39 +953,33 @@ CLASSROOM LIVE
 </section>
 
 
-<!-- =====================================================
+<!-- =================================================
 LOBBY
-===================================================== -->
+================================================= -->
 
 <section id="lobby">
 
 <div class="lobby-card">
 
-<div class="lobby-title">
+<div class="lobby-head">
 
 <h2>Ready to join?</h2>
 
-<span
-    id="lobbyCode"
-    class="code"
->
-</span>
+<span id="lobbyCode" class="code"></span>
 
 </div>
 
 <div class="preview">
 
 <video
-    id="previewVideo"
-    autoplay
-    muted
-    playsinline
-></video>
+id="previewVideo"
+autoplay
+muted
+playsinline></video>
 
 <div
-    id="previewStatus"
-    class="preview-status"
->
+id="previewStatus"
+class="preview-status">
 Preparing camera...
 </div>
 
@@ -1061,43 +988,37 @@ Preparing camera...
 <div class="lobby-actions">
 
 <button
-    class="btn"
-    id="previewMic"
-    onclick="togglePreviewMic()"
->
+id="previewMic"
+class="btn"
+onclick="togglePreviewMic()">
 🎤 Mic ON
 </button>
 
 <button
-    class="btn"
-    id="previewCam"
-    onclick="togglePreviewCam()"
->
+id="previewCam"
+class="btn"
+onclick="togglePreviewCam()">
 📷 Camera ON
 </button>
 
 <button
-    class="btn btn-primary"
-    onclick="enterMeeting()"
->
+class="btn btn-primary"
+onclick="enterMeeting()">
 Join Now
 </button>
 
 </div>
 
-<div
-    id="lobbyError"
-    class="error"
-></div>
+<div id="lobbyError" class="error"></div>
 
 </div>
 
 </section>
 
 
-<!-- =====================================================
+<!-- =================================================
 MEETING
-===================================================== -->
+================================================= -->
 
 <section id="meeting">
 
@@ -1118,16 +1039,14 @@ CLASSROOM LIVE
 <div class="top-right">
 
 <span
-    id="connection"
-    class="status"
->
+id="connection"
+class="connection">
 🟢 Connected
 </span>
 
 <span
-    id="meetingCode"
-    class="code"
->
+id="meetingCode"
+class="code">
 CLASS-XXXX
 </span>
 
@@ -1135,62 +1054,60 @@ CLASS-XXXX
 
 </header>
 
-<main
-    id="grid"
-    class="grid"
-></main>
+
+<main id="grid" class="grid"></main>
+
 
 <footer class="controls">
 
 <button
-    id="micButton"
-    class="control"
-    onclick="toggleMic()"
->
+id="micButton"
+class="control"
+onclick="toggleMic()">
 🎤 Mic ON
 </button>
 
 <button
-    id="camButton"
-    class="control"
-    onclick="toggleCam()"
->
+id="camButton"
+class="control"
+onclick="toggleCam()">
 📷 Camera ON
 </button>
 
 <button
-    id="handButton"
-    class="control"
-    onclick="toggleHand()"
->
+id="handButton"
+class="control"
+onclick="toggleHand()">
 🙋 Raise Hand
 </button>
 
 <button
-    class="control"
-    onclick="openParticipants()"
->
+class="control"
+onclick="openPeople()">
 👥 People
 </button>
 
 <button
-    class="control"
-    onclick="openBackground()"
->
+class="control"
+onclick="openChat()">
+💬 Chat
+</button>
+
+<button
+class="control"
+onclick="openBackground()">
 🖼️ Background
 </button>
 
 <button
-    class="control"
-    onclick="openNameModal()"
->
+class="control"
+onclick="openName()">
 ✏️ Name
 </button>
 
 <button
-    class="control leave"
-    onclick="leave()"
->
+class="control leave"
+onclick="leave()">
 Leave
 </button>
 
@@ -1199,136 +1116,166 @@ Leave
 </section>
 
 
-<!-- =====================================================
-PARTICIPANTS
-===================================================== -->
+<!-- =================================================
+PEOPLE
+================================================= -->
 
 <aside
-    id="peoplePanel"
-    class="panel"
->
+id="peoplePanel"
+class="panel">
 
 <div class="panel-head">
 
-<h3>
+<strong>
 Participants
 <span id="peopleCount">0/20</span>
-</h3>
+</strong>
 
 <button
-    class="close-panel"
-    onclick="closeParticipants()"
->
+class="close"
+onclick="closePeople()">
 ×
 </button>
 
 </div>
 
 <div
-    id="peopleList"
-    class="people"
-></div>
+id="peopleList"
+class="people"></div>
 
 </aside>
 
 
-<!-- =====================================================
-NAME MODAL
-===================================================== -->
+<!-- =================================================
+CHAT
+================================================= -->
+
+<section
+id="chat"
+class="chat">
+
+<div class="chat-head">
+
+<strong>💬 Classroom Chat</strong>
+
+<button
+class="close"
+onclick="closeChat()">
+×
+</button>
+
+</div>
 
 <div
-    id="nameModal"
-    class="modal"
->
+id="messages"
+class="messages"></div>
+
+<div class="chat-input">
+
+<input
+id="chatInput"
+class="input"
+maxlength="500"
+placeholder="Tulis pesan...">
+
+<button
+class="btn btn-primary"
+onclick="sendChat()">
+Send
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =================================================
+NAME MODAL
+================================================= -->
+
+<div
+id="nameModal"
+class="modal">
 
 <div class="modal-card">
 
-<h3>Change your name</h3>
+<h3>Change Name</h3>
 
 <input
-    id="newName"
-    class="input"
-    maxlength="40"
-    placeholder="Nama baru"
-/>
+id="newName"
+class="input"
+maxlength="40"
+placeholder="Nama baru">
 
 <div class="modal-buttons">
 
 <button
-    class="btn"
-    onclick="closeNameModal()"
->
+class="btn"
+onclick="closeName()">
 Cancel
 </button>
 
 <button
-    class="btn btn-primary"
-    onclick="changeName()"
->
+class="btn btn-primary"
+onclick="saveName()">
 Save
 </button>
 
 </div>
 
 <div
-    id="nameError"
-    class="error"
-></div>
+id="nameError"
+class="error"></div>
 
 </div>
 
 </div>
 
 
-<!-- =====================================================
+<!-- =================================================
 BACKGROUND MODAL
-===================================================== -->
+================================================= -->
 
 <div
-    id="backgroundModal"
-    class="modal"
->
+id="backgroundModal"
+class="modal">
 
 <div class="modal-card">
 
-<h3>Virtual Background</h3>
+<h3>🖼️ Virtual Background</h3>
 
-<p>
-Pilih foto dari HP atau komputer.
+<p style="color:#9ba5b6;font-size:13px;line-height:1.5">
+
+Pilih foto dari komputer atau HP.
 Foto diproses langsung di browser.
-Tidak dikirim ke server.
+
 </p>
 
 <input
-    id="backgroundFile"
-    class="input"
-    type="file"
-    accept="image/*"
-    onchange="selectBackground(event)"
->
+id="backgroundFile"
+class="input"
+type="file"
+accept="image/*">
 
 <div class="modal-buttons">
 
 <button
-    class="btn"
-    onclick="removeBackground()"
->
-Remove
+class="btn"
+onclick="removeBackground()">
+Original
 </button>
 
 <button
-    class="btn btn-primary"
-    onclick="closeBackground()"
->
-Close
+class="btn"
+onclick="applyBackground()">
+Apply
 </button>
 
 </div>
 
 <div
-    id="backgroundStatus"
-    class="error"
-></div>
+id="backgroundStatus"
+class="error"></div>
 
 </div>
 
@@ -1336,33 +1283,25 @@ Close
 
 
 <script>
+
 /* =====================================================
 SOCKET
 ===================================================== */
 
-const socket = io({
-    transports:["websocket","polling"],
-    reconnection:true,
-    reconnectionAttempts:Infinity,
-    reconnectionDelay:1000
-});
+const socket = io();
 
 
 /* =====================================================
-GLOBAL
+STATE
 ===================================================== */
 
 const peers = new Map();
 
+const peerNames = new Map();
+
 const pendingCandidates = new Map();
 
 let stream = null;
-
-let originalVideoTrack = null;
-
-let processedVideoTrack = null;
-
-let processedStream = null;
 
 let code = "";
 
@@ -1376,30 +1315,41 @@ let cam = true;
 
 let hand = false;
 
-let pendingAction = null;
+let pendingAction = "";
 
-let pendingRoom = null;
+let pendingRoom = "";
+
+let backgroundImage = null;
+
+let backgroundEnabled = false;
+
+let processedStream = null;
+
+let processedVideoTrack = null;
+
+let segmentation = null;
+
+let processing = false;
 
 
 /* =====================================================
-RTC CONFIG
+WEBRTC
 ===================================================== */
 
 const rtcConfig = {
 
     iceServers:[
+
         {
-            urls:[
-                "stun:stun.l.google.com:19302",
-                "stun:stun1.l.google.com:19302",
-                "stun:stun2.l.google.com:19302"
-            ]
+            urls:"stun:stun.l.google.com:19302"
+        },
+
+        {
+            urls:"stun:stun1.l.google.com:19302"
         }
-    ],
 
-    bundlePolicy:"max-bundle",
+    ]
 
-    rtcpMuxPolicy:"require"
 };
 
 
@@ -1411,15 +1361,18 @@ function $(id){
     return document.getElementById(id);
 }
 
-function setError(text){
-    $("error").textContent = text || "";
+
+function showError(text){
+    $("error").textContent = text;
 }
+
 
 function showJoin(){
 
     $("joinArea").classList.remove("hidden");
 
     $("code").focus();
+
 }
 
 
@@ -1429,19 +1382,6 @@ MEDIA
 
 async function getMedia(){
 
-    if(
-        !navigator.mediaDevices ||
-        !navigator.mediaDevices.getUserMedia
-    ){
-
-        setError(
-            "Browser tidak mendukung kamera. Pastikan website menggunakan HTTPS."
-        );
-
-        return false;
-    }
-
-
     try{
 
         stream =
@@ -1449,17 +1389,15 @@ async function getMedia(){
 
                 video:{
                     width:{
-                        ideal:1280,
-                        max:1920
+                        ideal:1280
                     },
 
                     height:{
-                        ideal:720,
-                        max:1080
+                        ideal:720
                     },
 
                     frameRate:{
-                        ideal:30,
+                        ideal:24,
                         max:30
                     },
 
@@ -1467,30 +1405,29 @@ async function getMedia(){
                 },
 
                 audio:{
+
                     echoCancellation:true,
+
                     noiseSuppression:true,
+
                     autoGainControl:true,
-                    channelCount:1,
-                    sampleRate:48000
+
+                    channelCount:1
+
                 }
 
             });
 
 
-        originalVideoTrack =
-            stream.getVideoTracks()[0] || null;
+        mic = true;
 
-        mic =
-            stream.getAudioTracks().length > 0;
-
-        cam =
-            !!originalVideoTrack;
+        cam = true;
 
         return true;
 
     }catch(error){
 
-        console.error("getUserMedia:",error);
+        console.error(error);
 
 
         try{
@@ -1500,37 +1437,28 @@ async function getMedia(){
 
                     video:true,
 
-                    audio:{
-                        echoCancellation:true,
-                        noiseSuppression:true,
-                        autoGainControl:true,
-                        channelCount:1
-                    }
+                    audio:false
 
                 });
 
-            originalVideoTrack =
-                stream.getVideoTracks()[0] || null;
+            mic = false;
 
-            mic =
-                stream.getAudioTracks().length > 0;
-
-            cam =
-                !!originalVideoTrack;
+            cam = true;
 
             return true;
 
         }catch(error2){
 
-            console.error(error2);
-
-            setError(
-                "Kamera/microphone tidak dapat digunakan. Izinkan Camera dan Microphone pada browser."
+            showError(
+                "Kamera tidak bisa digunakan. Pastikan izin kamera diberikan dan website menggunakan HTTPS."
             );
 
             return false;
+
         }
+
     }
+
 }
 
 
@@ -1552,6 +1480,7 @@ async function createRoom(){
     pendingAction = "create";
 
     showLobby();
+
 }
 
 
@@ -1561,17 +1490,20 @@ JOIN
 
 async function joinRoom(){
 
-    const enteredCode =
+    const roomCode =
         $("code").value
             .trim()
             .toUpperCase();
 
 
-    if(!enteredCode){
+    if(!roomCode){
 
-        setError("Masukkan kode meeting.");
+        showError(
+            "Masukkan kode meeting."
+        );
 
         return;
+
     }
 
 
@@ -1586,9 +1518,10 @@ async function joinRoom(){
 
     pendingAction = "join";
 
-    pendingRoom = enteredCode;
+    pendingRoom = roomCode;
 
     showLobby();
+
 }
 
 
@@ -1602,13 +1535,11 @@ function showLobby(){
 
     $("lobby").style.display = "flex";
 
-    $("previewVideo").srcObject = stream;
+    $("previewVideo").srcObject =
+        stream;
 
-    $("previewVideo").play().catch(()=>{});
-
-
-    $("lobbyCode").textContent =
-        pendingRoom || "NEW CLASS";
+    $("previewVideo").play()
+        .catch(()=>{});
 
 
     $("previewStatus").textContent =
@@ -1616,23 +1547,6 @@ function showLobby(){
             ? "📷 Camera ready"
             : "Camera unavailable";
 
-
-    updatePreviewButtons();
-}
-
-
-function updatePreviewButtons(){
-
-    $("previewMic").textContent =
-        mic
-            ? "🎤 Mic ON"
-            : "🔇 Mic OFF";
-
-
-    $("previewCam").textContent =
-        cam
-            ? "📷 Camera ON"
-            : "📷 Camera OFF";
 }
 
 
@@ -1640,18 +1554,20 @@ function togglePreviewMic(){
 
     if(!stream) return;
 
-
     mic = !mic;
-
 
     stream
         .getAudioTracks()
-        .forEach(track=>{
+        .forEach(track => {
             track.enabled = mic;
         });
 
 
-    updatePreviewButtons();
+    $("previewMic").textContent =
+        mic
+            ? "🎤 Mic ON"
+            : "🔇 Mic OFF";
+
 }
 
 
@@ -1659,18 +1575,20 @@ function togglePreviewCam(){
 
     if(!stream) return;
 
-
     cam = !cam;
-
 
     stream
         .getVideoTracks()
-        .forEach(track=>{
+        .forEach(track => {
             track.enabled = cam;
         });
 
 
-    updatePreviewButtons();
+    $("previewCam").textContent =
+        cam
+            ? "📷 Camera ON"
+            : "📷 Camera OFF";
+
 }
 
 
@@ -1690,15 +1608,15 @@ function enterMeeting(){
             {
                 name:myName
             },
-            response=>{
+            response => {
 
-                if(!response || !response.ok){
+                if(!response.ok){
 
                     $("lobbyError").textContent =
-                        response?.error ||
-                        "Gagal membuat meeting.";
+                        response.error;
 
                     return;
+
                 }
 
 
@@ -1710,48 +1628,53 @@ function enterMeeting(){
         );
 
 
-    }else{
-
-        socket.emit(
-            "join-room",
-            {
-                code:pendingRoom,
-                name:myName
-            },
-            response=>{
-
-                if(!response || !response.ok){
-
-                    $("lobbyError").textContent =
-                        response?.error ||
-                        "Gagal masuk meeting.";
-
-                    return;
-                }
-
-
-                startMeeting(
-                    response.code
-                );
-
-
-                const existing =
-                    response.existingPeers || [];
-
-
-                existing.forEach(peerData=>{
-
-                    createOffer(
-                        peerData.id,
-                        peerData.name
-                    );
-
-                });
-
-            }
-        );
+        return;
 
     }
+
+
+    socket.emit(
+        "join-room",
+        {
+            code:pendingRoom,
+            name:myName
+        },
+        response => {
+
+            if(!response.ok){
+
+                $("lobbyError").textContent =
+                    response.error;
+
+                return;
+
+            }
+
+
+            startMeeting(
+                response.code
+            );
+
+
+            response.existingPeers.forEach(
+                p => {
+
+                    peerNames.set(
+                        p.id,
+                        p.name
+                    );
+
+                    createOffer(
+                        p.id,
+                        p.name
+                    );
+
+                }
+            );
+
+        }
+    );
+
 }
 
 
@@ -1765,24 +1688,39 @@ function startMeeting(roomCode){
 
     myId = socket.id;
 
-
     $("lobby").style.display = "none";
 
     $("meeting").style.display = "block";
 
-
-    $("meetingCode").textContent =
-        code;
-
+    $("meetingCode").textContent = code;
 
     addLocalVideo();
 
     updateButtons();
+
 }
 
 
 /* =====================================================
-LOCAL TILE
+INITIALS
+===================================================== */
+
+function initials(name){
+
+    return name
+        .trim()
+        .split(/\s+/)
+        .slice(0,2)
+        .map(x =>
+            x.charAt(0).toUpperCase()
+        )
+        .join("") || "?";
+
+}
+
+
+/* =====================================================
+LOCAL VIDEO
 ===================================================== */
 
 function addLocalVideo(){
@@ -1822,27 +1760,27 @@ function addLocalVideo(){
     info.className = "tile-info";
 
 
-    const nameTag =
+    const name =
         document.createElement("div");
 
-    nameTag.className = "name-tag";
+    name.className = "name-tag";
 
-    nameTag.id = "name-"+myId;
+    name.id = "name-"+myId;
 
-    nameTag.textContent =
+    name.textContent =
         myName+" (You)";
 
 
     const icons =
         document.createElement("div");
 
-    icons.className = "media-icons";
+    icons.className = "icons";
 
 
     const micIcon =
         document.createElement("span");
 
-    micIcon.className = "media-icon";
+    micIcon.className = "icon";
 
     micIcon.id = "mic-"+myId;
 
@@ -1853,11 +1791,14 @@ function addLocalVideo(){
     const handIcon =
         document.createElement("span");
 
-    handIcon.className = "hand-icon";
+    handIcon.className =
+        "icon hand";
 
-    handIcon.id = "hand-"+myId;
+    handIcon.id =
+        "hand-"+myId;
 
-    handIcon.textContent = "🙋";
+    handIcon.textContent =
+        "🙋";
 
 
     icons.append(
@@ -1867,7 +1808,7 @@ function addLocalVideo(){
 
 
     info.append(
-        nameTag,
+        name,
         icons
     );
 
@@ -1881,31 +1822,14 @@ function addLocalVideo(){
 
     $("grid").appendChild(tile);
 
-
     updateLocalVideo();
+
 }
 
 
 /* =====================================================
 AVATAR
 ===================================================== */
-
-function getInitials(name){
-
-    const words =
-        String(name || "")
-            .trim()
-            .split(/\s+/)
-            .slice(0,2);
-
-
-    return words
-        .map(word =>
-            word.charAt(0).toUpperCase()
-        )
-        .join("");
-}
-
 
 function createAvatar(name){
 
@@ -1918,82 +1842,54 @@ function createAvatar(name){
     const circle =
         document.createElement("div");
 
-    circle.className = "avatar-circle";
+    circle.className =
+        "avatar-circle";
 
     circle.textContent =
-        getInitials(name) || "?";
+        initials(name);
 
 
     avatar.appendChild(circle);
 
-
     return avatar;
+
 }
 
 
 /* =====================================================
-PEER
+CREATE PEER
 ===================================================== */
 
 function createPeer(id,name){
 
-    if(!id){
-        return null;
-    }
-
-
     if(peers.has(id)){
 
-        const existing =
-            peers.get(id);
+        return peers.get(id);
 
-        if(name){
-            existing.peerName = name;
-        }
-
-        return existing.pc;
     }
 
 
-    const pc =
+    peerNames.set(id,name);
+
+
+    const peer =
         new RTCPeerConnection(
             rtcConfig
         );
 
 
-    const data = {
-        pc:pc,
-        peerName:name || "Peserta",
-        remoteDescriptionSet:false
-    };
+    peers.set(id,peer);
 
 
-    peers.set(id,data);
+    if(stream){
 
-
-    pendingCandidates.set(
-        id,
-        []
-    );
-
-
-    /* ---------------------------------------------
-    SEND TRACKS
-    --------------------------------------------- */
-
-    const sendStream =
-        processedStream || stream;
-
-
-    if(sendStream){
-
-        sendStream
+        stream
             .getTracks()
-            .forEach(track=>{
+            .forEach(track => {
 
-                pc.addTrack(
+                peer.addTrack(
                     track,
-                    sendStream
+                    stream
                 );
 
             });
@@ -2001,12 +1897,8 @@ function createPeer(id,name){
     }
 
 
-    /* ---------------------------------------------
-    ICE
-    --------------------------------------------- */
-
-    pc.onicecandidate =
-        event=>{
+    peer.onicecandidate =
+        event => {
 
             if(!event.candidate){
                 return;
@@ -2020,126 +1912,75 @@ function createPeer(id,name){
                     candidate:event.candidate
                 }
             );
+
         };
 
 
-    /* ---------------------------------------------
-    REMOTE TRACK
-    --------------------------------------------- */
+    peer.ontrack =
+        event => {
 
-    pc.ontrack =
-        event=>{
-
-            const remoteStream =
+            if(
                 event.streams &&
-                event.streams[0];
+                event.streams[0]
+            ){
 
+                addRemoteVideo(
+                    id,
+                    peerNames.get(id) || "Peserta",
+                    event.streams[0]
+                );
 
-            if(!remoteStream){
-                return;
             }
 
-
-            addRemoteVideo(
-                id,
-                data.peerName,
-                remoteStream
-            );
-
         };
 
 
-    /* ---------------------------------------------
-    CONNECTION
-    --------------------------------------------- */
+    peer.onconnectionstatechange =
+        () => {
 
-    pc.onconnectionstatechange =
-        ()=>{
-
-            const state =
-                pc.connectionState;
-
-
-            if(state === "connected"){
+            if(
+                peer.connectionState ===
+                "failed"
+            ){
 
                 console.log(
-                    "Connected to",
+                    "Peer failed:",
                     id
                 );
-
-            }
-
-
-            if(state === "failed"){
-
-                console.warn(
-                    "Connection failed:",
-                    id
-                );
-
-                try{
-                    pc.restartIce();
-                }catch(e){}
-
-            }
-
-
-            if(state === "closed"){
-
-                removePeer(id);
 
             }
 
         };
 
 
-    pc.oniceconnectionstatechange =
-        ()=>{
+    return peer;
 
-            console.log(
-                "ICE",
-                id,
-                pc.iceConnectionState
-            );
-
-        };
-
-
-    return pc;
 }
 
 
 /* =====================================================
-CREATE OFFER
+OFFER
 ===================================================== */
 
 async function createOffer(id,name){
 
     try{
 
-        const pc =
+        const peer =
             createPeer(id,name);
 
 
-        if(!pc){
-            return;
-        }
-
-
-        /*
-        Hanya pihak yang baru join
-        membuat offer.
-        Ini menghindari offer collision.
-        */
-
         const offer =
-            await pc.createOffer({
+            await peer.createOffer({
+
                 offerToReceiveAudio:true,
+
                 offerToReceiveVideo:true
+
             });
 
 
-        await pc.setLocalDescription(
+        await peer.setLocalDescription(
             offer
         );
 
@@ -2148,10 +1989,9 @@ async function createOffer(id,name){
             "offer",
             {
                 to:id,
-                offer:pc.localDescription
+                offer:peer.localDescription
             }
         );
-
 
     }catch(error){
 
@@ -2161,290 +2001,15 @@ async function createOffer(id,name){
         );
 
     }
+
 }
-
-
-/* =====================================================
-OFFER
-===================================================== */
-
-socket.on(
-    "offer",
-    async data=>{
-
-        try{
-
-            const id =
-                data.from;
-
-
-            const existing =
-                peers.get(id);
-
-
-            const pc =
-                createPeer(
-                    id,
-                    existing?.peerName ||
-                    "Peserta"
-                );
-
-
-            if(!pc){
-                return;
-            }
-
-
-            await pc.setRemoteDescription(
-                new RTCSessionDescription(
-                    data.offer
-                )
-            );
-
-
-            const peerData =
-                peers.get(id);
-
-
-            if(peerData){
-
-                peerData.remoteDescriptionSet =
-                    true;
-
-            }
-
-
-            await flushCandidates(id);
-
-
-            const answer =
-                await pc.createAnswer({
-                    offerToReceiveAudio:true,
-                    offerToReceiveVideo:true
-                });
-
-
-            await pc.setLocalDescription(
-                answer
-            );
-
-
-            socket.emit(
-                "answer",
-                {
-                    to:id,
-                    answer:pc.localDescription
-                }
-            );
-
-
-        }catch(error){
-
-            console.error(
-                "Offer handling error:",
-                error
-            );
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-ANSWER
-===================================================== */
-
-socket.on(
-    "answer",
-    async data=>{
-
-        try{
-
-            const peerData =
-                peers.get(data.from);
-
-
-            if(!peerData){
-                return;
-            }
-
-
-            const pc =
-                peerData.pc;
-
-
-            await pc.setRemoteDescription(
-                new RTCSessionDescription(
-                    data.answer
-                )
-            );
-
-
-            peerData.remoteDescriptionSet =
-                true;
-
-
-            await flushCandidates(
-                data.from
-            );
-
-
-        }catch(error){
-
-            console.error(
-                "Answer error:",
-                error
-            );
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-ICE
-===================================================== */
-
-socket.on(
-    "ice-candidate",
-    async data=>{
-
-        const peerData =
-            peers.get(data.from);
-
-
-        if(
-            !peerData ||
-            !data.candidate
-        ){
-
-            return;
-        }
-
-
-        if(
-            peerData.remoteDescriptionSet
-        ){
-
-            try{
-
-                await peerData.pc.addIceCandidate(
-                    new RTCIceCandidate(
-                        data.candidate
-                    )
-                );
-
-            }catch(error){
-
-                console.warn(
-                    "ICE error:",
-                    error
-                );
-
-            }
-
-        }else{
-
-            const queue =
-                pendingCandidates.get(
-                    data.from
-                ) || [];
-
-
-            queue.push(
-                data.candidate
-            );
-
-
-            pendingCandidates.set(
-                data.from,
-                queue
-            );
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-FLUSH ICE
-===================================================== */
-
-async function flushCandidates(id){
-
-    const peerData =
-        peers.get(id);
-
-
-    if(!peerData){
-        return;
-    }
-
-
-    const queue =
-        pendingCandidates.get(id) || [];
-
-
-    for(
-        const candidate of queue
-    ){
-
-        try{
-
-            await peerData.pc.addIceCandidate(
-                new RTCIceCandidate(
-                    candidate
-                )
-            );
-
-        }catch(error){
-
-            console.warn(
-                "Queued ICE error:",
-                error
-            );
-
-        }
-
-    }
-
-
-    pendingCandidates.set(
-        id,
-        []
-    );
-}
-
-
-/* =====================================================
-PEER JOINED
-===================================================== */
-
-socket.on(
-    "peer-joined",
-    peerData=>{
-
-        createPeer(
-            peerData.id,
-            peerData.name
-        );
-
-    }
-);
 
 
 /* =====================================================
 REMOTE VIDEO
 ===================================================== */
 
-function addRemoteVideo(
-    id,
-    name,
-    remoteStream
-){
+function addRemoteVideo(id,name,remoteStream){
 
     let tile =
         $("tile-"+id);
@@ -2461,9 +2026,7 @@ function addRemoteVideo(
 
 
         const avatar =
-            createAvatar(
-                name || "Peserta"
-            );
+            createAvatar(name);
 
 
         const video =
@@ -2475,10 +2038,23 @@ function addRemoteVideo(
 
         video.controls = false;
 
-        video.volume = 1;
-
         video.srcObject =
             remoteStream;
+
+
+        /*
+        IMPORTANT:
+        Audio harus tetap berasal dari video
+        peserta masing-masing.
+        Browser dipaksa play setelah join.
+        */
+
+        video.play()
+            .catch(() => {
+
+                showAudioNotice();
+
+            });
 
 
         const info =
@@ -2497,38 +2073,38 @@ function addRemoteVideo(
             "name-"+id;
 
         nameTag.textContent =
-            name || "Peserta";
+            name;
 
 
         const icons =
             document.createElement("div");
 
-        icons.className =
-            "media-icons";
+        icons.className = "icons";
 
 
         const micIcon =
             document.createElement("span");
 
-        micIcon.className =
-            "media-icon";
+        micIcon.className = "icon";
 
         micIcon.id =
             "mic-"+id;
 
-        micIcon.textContent = "🎤";
+        micIcon.textContent =
+            "🎤";
 
 
         const handIcon =
             document.createElement("span");
 
         handIcon.className =
-            "hand-icon";
+            "icon hand";
 
         handIcon.id =
             "hand-"+id;
 
-        handIcon.textContent = "🙋";
+        handIcon.textContent =
+            "🙋";
 
 
         icons.append(
@@ -2552,216 +2128,371 @@ function addRemoteVideo(
 
         $("grid").appendChild(tile);
 
+    }
 
-        /*
-        Browser tertentu membutuhkan
-        play() secara eksplisit.
-        */
 
-        video.play().catch(error=>{
+    const video =
+        tile.querySelector("video");
 
-            console.warn(
-                "Remote autoplay blocked:",
-                error
+
+    video.srcObject =
+        remoteStream;
+
+
+    video.play()
+        .catch(()=>{});
+
+}
+
+
+/* =====================================================
+AUDIO NOTICE
+===================================================== */
+
+function showAudioNotice(){
+
+    if($("audioNotice")){
+        return;
+    }
+
+
+    const notice =
+        document.createElement("button");
+
+    notice.id = "audioNotice";
+
+    notice.textContent =
+        "🔊 Aktifkan suara peserta";
+
+
+    notice.style.position =
+        "fixed";
+
+    notice.style.left =
+        "50%";
+
+    notice.style.top =
+        "75px";
+
+    notice.style.transform =
+        "translateX(-50%)";
+
+    notice.style.zIndex =
+        "200";
+
+    notice.style.padding =
+        "12px 18px";
+
+    notice.style.border =
+        "0";
+
+    notice.style.borderRadius =
+        "10px";
+
+    notice.style.background =
+        "#4f8cff";
+
+    notice.style.color =
+        "white";
+
+    notice.style.fontWeight =
+        "bold";
+
+
+    notice.onclick = () => {
+
+        document
+            .querySelectorAll("#grid video")
+            .forEach(video => {
+
+                video.muted = false;
+
+                video.play()
+                    .catch(()=>{});
+
+            });
+
+
+        notice.remove();
+
+    };
+
+
+    document.body.appendChild(
+        notice
+    );
+
+}
+
+
+/* =====================================================
+SOCKET PEER JOINED
+===================================================== */
+
+socket.on(
+    "peer-joined",
+    data => {
+
+        peerNames.set(
+            data.id,
+            data.name
+        );
+
+
+        createPeer(
+            data.id,
+            data.name
+        );
+
+    }
+);
+
+
+/* =====================================================
+OFFER RECEIVED
+===================================================== */
+
+socket.on(
+    "offer",
+    async data => {
+
+        try{
+
+            const peer =
+                createPeer(
+                    data.from,
+                    peerNames.get(data.from) ||
+                    "Peserta"
+                );
+
+
+            await peer.setRemoteDescription(
+                new RTCSessionDescription(
+                    data.offer
+                )
             );
 
-        });
 
-    }else{
-
-        const video =
-            tile.querySelector("video");
+            await flushCandidates(
+                data.from
+            );
 
 
-        if(video){
-
-            if(
-                video.srcObject !==
-                remoteStream
-            ){
-
-                video.srcObject =
-                    remoteStream;
-
-            }
+            const answer =
+                await peer.createAnswer();
 
 
-            video.play().catch(()=>{});
+            await peer.setLocalDescription(
+                answer
+            );
+
+
+            socket.emit(
+                "answer",
+                {
+                    to:data.from,
+                    answer:peer.localDescription
+                }
+            );
+
+        }catch(error){
+
+            console.error(
+                "Answer error:",
+                error
+            );
 
         }
 
     }
-}
+);
 
 
 /* =====================================================
-REMOVE PEER
+ANSWER RECEIVED
 ===================================================== */
 
-function removePeer(id){
-
-    const peerData =
-        peers.get(id);
-
-
-    if(peerData){
+socket.on(
+    "answer",
+    async data => {
 
         try{
-            peerData.pc.close();
-        }catch(e){}
+
+            const peer =
+                peers.get(data.from);
+
+
+            if(!peer){
+                return;
+            }
+
+
+            await peer.setRemoteDescription(
+                new RTCSessionDescription(
+                    data.answer
+                )
+            );
+
+
+            await flushCandidates(
+                data.from
+            );
+
+        }catch(error){
+
+            console.error(
+                "Remote answer error:",
+                error
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+ICE CANDIDATE
+===================================================== */
+
+socket.on(
+    "ice-candidate",
+    async data => {
+
+        const peer =
+            peers.get(data.from);
+
+
+        if(!peer){
+
+            return;
+
+        }
+
+
+        const candidate =
+            new RTCIceCandidate(
+                data.candidate
+            );
+
+
+        if(peer.remoteDescription){
+
+            try{
+
+                await peer.addIceCandidate(
+                    candidate
+                );
+
+            }catch(error){
+
+                console.log(
+                    "ICE error:",
+                    error
+                );
+
+            }
+
+        }else{
+
+            if(
+                !pendingCandidates.has(
+                    data.from
+                )
+            ){
+
+                pendingCandidates.set(
+                    data.from,
+                    []
+                );
+
+            }
+
+
+            pendingCandidates
+                .get(data.from)
+                .push(candidate);
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+FLUSH ICE
+===================================================== */
+
+async function flushCandidates(id){
+
+    const peer =
+        peers.get(id);
+
+    if(!peer) return;
+
+
+    const list =
+        pendingCandidates.get(id);
+
+
+    if(!list) return;
+
+
+    for(
+        const candidate
+        of list
+    ){
+
+        try{
+
+            await peer.addIceCandidate(
+                candidate
+            );
+
+        }catch(error){
+
+            console.log(error);
+
+        }
 
     }
 
-
-    peers.delete(id);
 
     pendingCandidates.delete(id);
 
-
-    const tile =
-        $("tile-"+id);
-
-
-    if(tile){
-        tile.remove();
-    }
 }
-
-
-socket.on(
-    "peer-left",
-    id=>{
-        removePeer(id);
-    }
-);
 
 
 /* =====================================================
-PARTICIPANTS
+PEER LEFT
 ===================================================== */
 
 socket.on(
-    "participants",
-    list=>{
+    "peer-left",
+    id => {
 
-        updateParticipants(
-            list || []
-        );
+        const peer =
+            peers.get(id);
+
+
+        if(peer){
+
+            peer.close();
+
+        }
+
+
+        peers.delete(id);
+
+        peerNames.delete(id);
+
+        pendingCandidates.delete(id);
+
+
+        $("tile-"+id)?.remove();
 
     }
 );
-
-
-function updateParticipants(list){
-
-    $("peopleCount").textContent =
-        list.length + "/20";
-
-
-    const people =
-        $("peopleList");
-
-
-    people.innerHTML = "";
-
-
-    list.forEach(person=>{
-
-        const row =
-            document.createElement("div");
-
-        row.className = "person";
-
-
-        const avatar =
-            document.createElement("div");
-
-        avatar.className =
-            "person-avatar";
-
-        avatar.textContent =
-            getInitials(
-                person.name
-            );
-
-
-        const main =
-            document.createElement("div");
-
-        main.className =
-            "person-main";
-
-
-        const personName =
-            document.createElement("div");
-
-        personName.className =
-            "person-name";
-
-        personName.textContent =
-            person.name +
-            (
-                person.id === myId
-                    ? " (You)"
-                    : ""
-            );
-
-
-        const role =
-            document.createElement("div");
-
-        role.className =
-            "person-role";
-
-        role.textContent =
-            person.role === "teacher"
-                ? "Teacher"
-                : "Student";
-
-
-        main.append(
-            personName,
-            role
-        );
-
-
-        const status =
-            document.createElement("div");
-
-        status.className =
-            "person-status";
-
-
-        status.textContent =
-            (
-                person.mic
-                    ? "🎤"
-                    : "🔇"
-            ) +
-            " " +
-            (
-                person.camera
-                    ? "📷"
-                    : "🚫"
-            ) +
-            (
-                person.hand
-                    ? " 🙋"
-                    : ""
-            );
-
-
-        row.append(
-            avatar,
-            main,
-            status
-        );
-
-
-        people.appendChild(row);
-
-    });
-}
 
 
 /* =====================================================
@@ -2770,7 +2501,7 @@ MEDIA STATE
 
 socket.on(
     "media-state",
-    data=>{
+    data => {
 
         updateRemoteMedia(
             data.id,
@@ -2784,26 +2515,21 @@ socket.on(
 
 function updateRemoteMedia(
     id,
-    remoteCamera,
+    camera,
     remoteMic
 ){
 
     const tile =
         $("tile-"+id);
 
-
-    if(!tile){
-        return;
-    }
+    if(!tile) return;
 
 
     const video =
         tile.querySelector("video");
 
-
     const avatar =
         tile.querySelector(".avatar");
-
 
     const micIcon =
         $("mic-"+id);
@@ -2812,7 +2538,7 @@ function updateRemoteMedia(
     if(video){
 
         video.style.display =
-            remoteCamera
+            camera
                 ? "block"
                 : "none";
 
@@ -2822,7 +2548,7 @@ function updateRemoteMedia(
     if(avatar){
 
         avatar.style.display =
-            remoteCamera
+            camera
                 ? "none"
                 : "grid";
 
@@ -2837,65 +2563,8 @@ function updateRemoteMedia(
                 : "🔇";
 
     }
+
 }
-
-
-/* =====================================================
-HAND
-===================================================== */
-
-function toggleHand(){
-
-    hand = !hand;
-
-
-    socket.emit(
-        "raise-hand",
-        {
-            hand:hand
-        }
-    );
-
-
-    updateHandButton();
-}
-
-
-function updateHandButton(){
-
-    $("handButton").textContent =
-        hand
-            ? "🙋 Hand Raised"
-            : "🙋 Raise Hand";
-
-
-    $("handButton")
-        .classList.toggle(
-            "hand-active",
-            hand
-        );
-}
-
-
-socket.on(
-    "hand-state",
-    data=>{
-
-        const icon =
-            $("hand-"+data.id);
-
-
-        if(icon){
-
-            icon.classList.toggle(
-                "show",
-                !!data.hand
-            );
-
-        }
-
-    }
-);
 
 
 /* =====================================================
@@ -2904,9 +2573,7 @@ CAMERA
 
 function toggleCam(){
 
-    if(!stream){
-        return;
-    }
+    if(!stream) return;
 
 
     cam = !cam;
@@ -2914,19 +2581,12 @@ function toggleCam(){
 
     stream
         .getVideoTracks()
-        .forEach(track=>{
-            track.enabled = cam;
+        .forEach(track => {
+
+            track.enabled =
+                cam;
+
         });
-
-
-    if(
-        processedVideoTrack
-    ){
-
-        processedVideoTrack.enabled =
-            cam;
-
-    }
 
 
     updateLocalVideo();
@@ -2941,6 +2601,7 @@ function toggleCam(){
             mic:mic
         }
     );
+
 }
 
 
@@ -2949,15 +2610,11 @@ function updateLocalVideo(){
     const tile =
         $("tile-"+myId);
 
-
-    if(!tile){
-        return;
-    }
+    if(!tile) return;
 
 
     const video =
         tile.querySelector("video");
-
 
     const avatar =
         tile.querySelector(".avatar");
@@ -2981,6 +2638,7 @@ function updateLocalVideo(){
                 : "grid";
 
     }
+
 }
 
 
@@ -2990,9 +2648,7 @@ MIC
 
 function toggleMic(){
 
-    if(!stream){
-        return;
-    }
+    if(!stream) return;
 
 
     mic = !mic;
@@ -3000,22 +2656,12 @@ function toggleMic(){
 
     stream
         .getAudioTracks()
-        .forEach(track=>{
-            track.enabled = mic;
+        .forEach(track => {
+
+            track.enabled =
+                mic;
+
         });
-
-
-    if(
-        processedStream
-    ){
-
-        processedStream
-            .getAudioTracks()
-            .forEach(track=>{
-                track.enabled = mic;
-            });
-
-    }
 
 
     updateButtons();
@@ -3028,6 +2674,7 @@ function toggleMic(){
             mic:mic
         }
     );
+
 }
 
 
@@ -3063,29 +2710,198 @@ function updateButtons(){
         );
 
 
-    updateHandButton();
+    $("handButton").textContent =
+        hand
+            ? "🙋 Hand Raised"
+            : "🙋 Raise Hand";
 
 
-    const localMic =
+    $("handButton")
+        .classList.toggle(
+            "hand-active",
+            hand
+        );
+
+
+    const micIcon =
         $("mic-"+myId);
 
 
-    if(localMic){
+    if(micIcon){
 
-        localMic.textContent =
+        micIcon.textContent =
             mic
                 ? "🎤"
                 : "🔇";
 
     }
+
 }
 
 
 /* =====================================================
-PARTICIPANTS PANEL
+HAND
 ===================================================== */
 
-function openParticipants(){
+function toggleHand(){
+
+    hand = !hand;
+
+
+    socket.emit(
+        "raise-hand",
+        {
+            hand
+        }
+    );
+
+
+    updateButtons();
+
+}
+
+
+socket.on(
+    "hand-state",
+    data => {
+
+        const icon =
+            $("hand-"+data.id);
+
+
+        if(icon){
+
+            icon.classList.toggle(
+                "show",
+                data.hand
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+PARTICIPANTS
+===================================================== */
+
+socket.on(
+    "participants",
+    list => {
+
+        $("peopleCount").textContent =
+            list.length+"/20";
+
+
+        const container =
+            $("peopleList");
+
+
+        container.innerHTML = "";
+
+
+        list.forEach(person => {
+
+            const row =
+                document.createElement("div");
+
+            row.className = "person";
+
+
+            const avatar =
+                document.createElement("div");
+
+            avatar.className =
+                "person-avatar";
+
+            avatar.textContent =
+                initials(person.name);
+
+
+            const main =
+                document.createElement("div");
+
+            main.className =
+                "person-main";
+
+
+            const personName =
+                document.createElement("div");
+
+            personName.className =
+                "person-name";
+
+            personName.textContent =
+                person.name +
+                (
+                    person.id === myId
+                        ? " (You)"
+                        : ""
+                );
+
+
+            const role =
+                document.createElement("div");
+
+            role.className =
+                "person-role";
+
+            role.textContent =
+                person.role === "teacher"
+                    ? "Teacher"
+                    : "Student";
+
+
+            main.append(
+                personName,
+                role
+            );
+
+
+            const status =
+                document.createElement("div");
+
+            status.textContent =
+                (
+                    person.mic
+                        ? "🎤"
+                        : "🔇"
+                )+
+                " "+
+                (
+                    person.camera
+                        ? "📷"
+                        : "🚫"
+                )+
+                " "+
+                (
+                    person.hand
+                        ? "🙋"
+                        : ""
+                );
+
+
+            row.append(
+                avatar,
+                main,
+                status
+            );
+
+
+            container.appendChild(row);
+
+        });
+
+    }
+);
+
+
+/* =====================================================
+PEOPLE
+===================================================== */
+
+function openPeople(){
 
     $("peoplePanel")
         .classList.add("open");
@@ -3093,7 +2909,7 @@ function openParticipants(){
 }
 
 
-function closeParticipants(){
+function closePeople(){
 
     $("peoplePanel")
         .classList.remove("open");
@@ -3105,60 +2921,58 @@ function closeParticipants(){
 NAME
 ===================================================== */
 
-function openNameModal(){
+function openName(){
 
     $("newName").value =
         myName;
 
+    $("nameError").textContent =
+        "";
 
     $("nameModal")
-        .classList.add("show");
+        .classList.add("open");
 
 }
 
 
-function closeNameModal(){
+function closeName(){
 
     $("nameModal")
-        .classList.remove("show");
-
-    $("nameError").textContent = "";
+        .classList.remove("open");
 
 }
 
 
-function changeName(){
+function saveName(){
 
-    const newName =
+    const value =
         $("newName").value.trim();
 
 
-    if(!newName){
+    if(!value){
 
         $("nameError").textContent =
             "Nama tidak boleh kosong.";
 
         return;
+
     }
 
 
     socket.emit(
         "change-name",
         {
-            name:newName
+            name:value
         },
-        response=>{
+        response => {
 
-            if(
-                !response ||
-                !response.ok
-            ){
+            if(!response.ok){
 
                 $("nameError").textContent =
-                    response?.error ||
-                    "Gagal mengganti nama.";
+                    response.error;
 
                 return;
+
             }
 
 
@@ -3188,31 +3002,36 @@ function changeName(){
             if(avatar){
 
                 avatar.textContent =
-                    getInitials(
-                        myName
-                    );
+                    initials(myName);
 
             }
 
 
-            closeNameModal();
+            closeName();
 
         }
     );
+
 }
 
 
 socket.on(
     "name-changed",
-    data=>{
+    data => {
 
-        const nameTag =
+        peerNames.set(
+            data.id,
+            data.name
+        );
+
+
+        const name =
             $("name-"+data.id);
 
 
-        if(nameTag){
+        if(name){
 
-            nameTag.textContent =
+            name.textContent =
                 data.name;
 
         }
@@ -3228,26 +3047,7 @@ socket.on(
         if(avatar){
 
             avatar.textContent =
-                getInitials(
-                    data.name
-                );
-
-        }
-
-
-        /*
-        Perbarui nama yang dipakai
-        ketika remote video dibuat.
-        */
-
-        const peerData =
-            peers.get(data.id);
-
-
-        if(peerData){
-
-            peerData.peerName =
-                data.name;
+                initials(data.name);
 
         }
 
@@ -3256,137 +3056,305 @@ socket.on(
 
 
 /* =====================================================
-VIRTUAL BACKGROUND
+CHAT
 ===================================================== */
 
-let backgroundImage = null;
+function openChat(){
 
-let backgroundEnabled = false;
+    $("chat")
+        .classList.add("open");
 
-let segmentation = null;
-
-let backgroundCanvas = null;
-
-let backgroundContext = null;
-
-let backgroundProcessingVideo = null;
-
-let backgroundAnimation = null;
-
-
-/* -----------------------------------------------------
-OPEN
------------------------------------------------------ */
-
-function openBackground(){
-
-    $("backgroundModal")
-        .classList.add("show");
+    setTimeout(
+        () => $("chatInput").focus(),
+        100
+    );
 
 }
 
 
-/* -----------------------------------------------------
-CLOSE
------------------------------------------------------ */
+function closeChat(){
+
+    $("chat")
+        .classList.remove("open");
+
+}
+
+
+function sendChat(){
+
+    const input =
+        $("chatInput");
+
+
+    const message =
+        input.value.trim();
+
+
+    if(!message) return;
+
+
+    socket.emit(
+        "chat-message",
+        {
+            message
+        }
+    );
+
+
+    input.value = "";
+
+}
+
+
+$("chatInput")
+    .addEventListener(
+        "keydown",
+        event => {
+
+            if(
+                event.key === "Enter"
+            ){
+
+                event.preventDefault();
+
+                sendChat();
+
+            }
+
+        }
+    );
+
+
+socket.on(
+    "chat-message",
+    data => {
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.className =
+            "message";
+
+
+        const name =
+            document.createElement("div");
+
+        name.className =
+            "message-name";
+
+        name.textContent =
+            data.name +
+            (
+                data.role === "teacher"
+                    ? " · Teacher"
+                    : ""
+            );
+
+
+        const text =
+            document.createElement("span");
+
+        text.className =
+            "message-text";
+
+        text.textContent =
+            data.message;
+
+
+        const time =
+            document.createElement("span");
+
+        time.className =
+            "message-time";
+
+        time.textContent =
+            data.time;
+
+
+        wrapper.append(
+            name,
+            text,
+            time
+        );
+
+
+        $("messages")
+            .appendChild(wrapper);
+
+
+        $("messages").scrollTop =
+            $("messages").scrollHeight;
+
+    }
+);
+
+
+/* =====================================================
+BACKGROUND
+===================================================== */
+
+function openBackground(){
+
+    $("backgroundStatus").textContent =
+        "";
+
+    $("backgroundModal")
+        .classList.add("open");
+
+}
+
 
 function closeBackground(){
 
     $("backgroundModal")
-        .classList.remove("show");
+        .classList.remove("open");
 
 }
 
 
-/* -----------------------------------------------------
-SELECT
------------------------------------------------------ */
-
-function selectBackground(event){
+function applyBackground(){
 
     const file =
-        event.target.files?.[0];
+        $("backgroundFile").files[0];
 
 
     if(!file){
-        return;
-    }
-
-
-    if(
-        !file.type.startsWith("image/")
-    ){
 
         $("backgroundStatus").textContent =
-            "File harus berupa gambar.";
+            "Pilih foto terlebih dahulu.";
 
         return;
+
     }
-
-
-    $("backgroundStatus").textContent =
-        "Memuat background...";
 
 
     const reader =
         new FileReader();
 
 
-    reader.onload =
-        ()=>{
+    reader.onload = () => {
 
-            const image =
-                new Image();
-
-
-            image.onload =
-                ()=>{
-
-                    backgroundImage =
-                        image;
-
-                    backgroundEnabled =
-                        true;
+        const image =
+            new Image();
 
 
-                    $("backgroundStatus").textContent =
-                        "Background aktif ✓";
+        image.onload = async () => {
+
+            backgroundImage =
+                image;
+
+            backgroundEnabled =
+                true;
 
 
-                    startVirtualBackground();
-
-                };
-
-
-            image.onerror =
-                ()=>{
-
-                    $("backgroundStatus").textContent =
-                        "Foto tidak dapat dibaca.";
-
-                };
+            $("backgroundStatus").textContent =
+                "Memproses background...";
 
 
-            image.src =
-                reader.result;
+            await startVirtualBackground();
+
+
+            $("backgroundStatus").textContent =
+                "Background aktif.";
+
+            closeBackground();
 
         };
 
 
+        image.src =
+            reader.result;
+
+    };
+
+
     reader.readAsDataURL(file);
+
 }
 
 
-/* -----------------------------------------------------
-START
------------------------------------------------------ */
+/* =====================================================
+REMOVE BACKGROUND
+===================================================== */
 
-async function startVirtualBackground(){
+function removeBackground(){
 
-    if(!stream){
-        return;
+    backgroundEnabled =
+        false;
+
+    backgroundImage =
+        null;
+
+
+    if(processedVideoTrack){
+
+        processedVideoTrack.stop();
+
+        processedVideoTrack =
+            null;
+
     }
 
+
+    processedStream =
+        null;
+
+
+    stream
+        ?.getVideoTracks()
+        .forEach(originalTrack => {
+
+            peers.forEach(peer => {
+
+                const sender =
+                    peer.getSenders()
+                        .find(
+                            s =>
+                                s.track &&
+                                s.track.kind ===
+                                "video"
+                        );
+
+
+                if(sender){
+
+                    sender.replaceTrack(
+                        originalTrack
+                    );
+
+                }
+
+            });
+
+        });
+
+
+    const video =
+        $("tile-"+myId)
+            ?.querySelector("video");
+
+
+    if(video){
+
+        video.srcObject =
+            stream;
+
+    }
+
+
+    $("backgroundFile").value =
+        "";
+
+    closeBackground();
+
+}
+
+
+/* =====================================================
+VIRTUAL BACKGROUND
+===================================================== */
+
+async function startVirtualBackground(){
 
     if(!backgroundImage){
         return;
@@ -3399,88 +3367,9 @@ async function startVirtualBackground(){
     ){
 
         $("backgroundStatus").textContent =
-            "Library background gagal dimuat. Periksa koneksi internet.";
-
-        backgroundEnabled = false;
+            "Virtual background gagal dimuat. Coba refresh.";
 
         return;
-    }
-
-
-    /*
-    PENTING:
-    Jangan menggunakan video output sebagai input.
-
-    Kita membuat video tersembunyi khusus
-    untuk INPUT kamera asli.
-    */
-
-    if(!backgroundProcessingVideo){
-
-        backgroundProcessingVideo =
-            document.createElement("video");
-
-        backgroundProcessingVideo.autoplay =
-            true;
-
-        backgroundProcessingVideo.muted =
-            true;
-
-        backgroundProcessingVideo.playsInline =
-            true;
-
-        backgroundProcessingVideo.style.position =
-            "fixed";
-
-        backgroundProcessingVideo.style.left =
-            "-10000px";
-
-        backgroundProcessingVideo.style.top =
-            "-10000px";
-
-        backgroundProcessingVideo.style.width =
-            "640px";
-
-        backgroundProcessingVideo.style.height =
-            "480px";
-
-        document.body.appendChild(
-            backgroundProcessingVideo
-        );
-
-    }
-
-
-    backgroundProcessingVideo.srcObject =
-        new MediaStream([
-            originalVideoTrack
-        ]);
-
-
-    await backgroundProcessingVideo
-        .play()
-        .catch(()=>{});
-
-
-    if(!backgroundCanvas){
-
-        backgroundCanvas =
-            document.createElement("canvas");
-
-        backgroundCanvas.width =
-            640;
-
-        backgroundCanvas.height =
-            480;
-
-
-        backgroundContext =
-            backgroundCanvas.getContext(
-                "2d",
-                {
-                    alpha:false
-                }
-            );
 
     }
 
@@ -3490,205 +3379,166 @@ async function startVirtualBackground(){
         segmentation =
             new SelfieSegmentation({
 
-                locateFile:file=>
-                    "https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/"+
-                    file
+                locateFile:
+                    file =>
+                    "https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/"+file
 
             });
 
 
         segmentation.setOptions({
 
-            modelSelection:1,
-
-            selfieMode:false
+            modelSelection:1
 
         });
 
 
         segmentation.onResults(
-            drawVirtualBackground
+            drawBackground
         );
 
     }
 
 
-    if(
-        !backgroundAnimation
-    ){
+    const video =
+        $("tile-"+myId)
+            ?.querySelector("video");
 
-        processVirtualBackground();
 
+    if(!video){
+        return;
     }
+
+
+    if(processing){
+        return;
+    }
+
+
+    processing = true;
+
+
+    processBackgroundFrame(
+        video
+    );
 
 }
 
 
-/* -----------------------------------------------------
-PROCESS
------------------------------------------------------ */
+async function processBackgroundFrame(video){
 
-let processingBusy = false;
+    if(!backgroundEnabled){
 
-async function processVirtualBackground(){
-
-    if(
-        !backgroundEnabled ||
-        !backgroundProcessingVideo ||
-        !segmentation
-    ){
-
-        backgroundAnimation = null;
+        processing = false;
 
         return;
+
     }
 
 
     if(
-        processingBusy
+        !video.videoWidth ||
+        !video.videoHeight
     ){
 
-        backgroundAnimation =
-            requestAnimationFrame(
-                processVirtualBackground
-            );
+        requestAnimationFrame(
+            () =>
+            processBackgroundFrame(video)
+        );
 
         return;
+
     }
-
-
-    processingBusy = true;
 
 
     try{
 
         await segmentation.send({
-            image:backgroundProcessingVideo
+            image:video
         });
 
     }catch(error){
 
-        console.warn(
-            "Virtual background:",
+        console.error(
+            "Segmentation:",
             error
         );
 
     }
 
 
-    processingBusy = false;
+    requestAnimationFrame(
+        () =>
+        processBackgroundFrame(video)
+    );
 
-
-    if(backgroundEnabled){
-
-        backgroundAnimation =
-            requestAnimationFrame(
-                processVirtualBackground
-            );
-
-    }else{
-
-        backgroundAnimation = null;
-
-    }
 }
 
 
-/* -----------------------------------------------------
-DRAW
------------------------------------------------------ */
+/* =====================================================
+DRAW BACKGROUND - FIXED
+===================================================== */
 
-function drawVirtualBackground(results){
+function drawBackground(results){
 
-    if(
-        !backgroundEnabled ||
-        !backgroundContext
-    ){
-
+    if(!backgroundEnabled){
         return;
     }
 
 
-    const ctx =
-        backgroundContext;
-
-
     const canvas =
-        backgroundCanvas;
+        getBackgroundCanvas();
 
 
-    ctx.save();
+    const ctx =
+        canvas.getContext("2d");
+
+
+    const width =
+        canvas.width;
+
+    const height =
+        canvas.height;
 
 
     ctx.clearRect(
         0,
         0,
-        canvas.width,
-        canvas.height
+        width,
+        height
     );
 
 
     /*
-    STEP 1:
-    Draw selected background.
+    1. Draw background image.
     */
 
     if(backgroundImage){
 
-        const cw =
-            canvas.width;
-
-        const ch =
-            canvas.height;
-
-
-        const iw =
-            backgroundImage.width;
-
-        const ih =
-            backgroundImage.height;
-
-
-        /*
-        Cover crop agar foto
-        memenuhi seluruh layar.
-        */
-
-        const scale =
-            Math.max(
-                cw/iw,
-                ch/ih
-            );
-
-
-        const nw =
-            iw*scale;
-
-        const nh =
-            ih*scale;
-
-
-        const x =
-            (cw-nw)/2;
-
-        const y =
-            (ch-nh)/2;
-
-
-        ctx.drawImage(
+        drawCover(
+            ctx,
             backgroundImage,
-            x,
-            y,
-            nw,
-            nh
+            width,
+            height
+        );
+
+    }else{
+
+        ctx.fillStyle =
+            "#10141c";
+
+        ctx.fillRect(
+            0,
+            0,
+            width,
+            height
         );
 
     }
 
 
     /*
-    STEP 2:
-    Mask hanya manusia.
+    2. Keep ONLY the person.
     */
 
     ctx.globalCompositeOperation =
@@ -3699,272 +3549,219 @@ function drawVirtualBackground(results){
         results.segmentationMask,
         0,
         0,
-        canvas.width,
-        canvas.height
+        width,
+        height
     );
 
 
     /*
-    STEP 3:
-    Tambahkan kamera manusia
-    di atas background.
+    3. Put the person over
+       the background.
     */
 
     ctx.globalCompositeOperation =
         "destination-over";
 
 
-    ctx.drawImage(
-        results.image,
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
+    if(backgroundImage){
 
+        drawCover(
+            ctx,
+            backgroundImage,
+            width,
+            height
+        );
+
+    }
+
+
+    /*
+    4. Restore normal drawing.
+    */
 
     ctx.globalCompositeOperation =
         "source-over";
 
 
-    ctx.restore();
+    updateProcessedStream(
+        canvas
+    );
 
-
-    updateProcessedStream();
 }
 
 
-/* -----------------------------------------------------
-CREATE PROCESSED STREAM
------------------------------------------------------ */
+/* =====================================================
+CANVAS
+===================================================== */
 
-function updateProcessedStream(){
+let bgCanvas = null;
 
-    if(!backgroundCanvas){
-        return;
+function getBackgroundCanvas(){
+
+    if(bgCanvas){
+        return bgCanvas;
     }
 
+
+    bgCanvas =
+        document.createElement("canvas");
+
+
+    bgCanvas.width = 640;
+
+    bgCanvas.height = 480;
+
+
+    return bgCanvas;
+
+}
+
+
+/* =====================================================
+COVER IMAGE
+===================================================== */
+
+function drawCover(
+    ctx,
+    image,
+    width,
+    height
+){
+
+    const scale =
+        Math.max(
+            width / image.width,
+            height / image.height
+        );
+
+
+    const w =
+        image.width * scale;
+
+    const h =
+        image.height * scale;
+
+
+    const x =
+        (width-w)/2;
+
+    const y =
+        (height-h)/2;
+
+
+    ctx.drawImage(
+        image,
+        x,
+        y,
+        w,
+        h
+    );
+
+}
+
+
+/* =====================================================
+PROCESSED STREAM
+===================================================== */
+
+function updateProcessedStream(canvas){
 
     if(!processedStream){
 
         processedStream =
-            backgroundCanvas.captureStream(24);
+            canvas.captureStream(24);
 
 
-        /*
-        Audio tetap memakai audio asli.
-        */
+        const audioTracks =
+            stream.getAudioTracks();
 
-        stream
-            .getAudioTracks()
-            .forEach(track=>{
+
+        audioTracks.forEach(
+            track => {
 
                 processedStream.addTrack(
                     track
                 );
 
-            });
-
-    }
-
-
-    processedVideoTrack =
-        processedStream.getVideoTracks()[0];
-
-
-    if(
-        !processedVideoTrack
-    ){
-
-        return;
-    }
-
-
-    /*
-    Local preview menggunakan output.
-    */
-
-    const localVideo =
-        document.querySelector(
-            "#tile-"+myId+" video"
+            }
         );
 
 
-    if(localVideo){
-
-        if(
-            localVideo.srcObject !==
+        processedVideoTrack =
             processedStream
-        ){
+                .getVideoTracks()[0];
+
+
+        peers.forEach(
+            peer => {
+
+                replaceVideoTrack(
+                    peer,
+                    processedVideoTrack
+                );
+
+            }
+        );
+
+
+        const localVideo =
+            $("tile-"+myId)
+                ?.querySelector("video");
+
+
+        if(localVideo){
 
             localVideo.srcObject =
                 processedStream;
 
+            localVideo.play()
+                .catch(()=>{});
+
         }
-
-
-        localVideo.play().catch(()=>{});
 
     }
 
-
-    /*
-    Kirim video hasil background
-    ke semua peer.
-    */
-
-    peers.forEach(
-        peerData=>{
-
-            const sender =
-                peerData.pc
-                    .getSenders()
-                    .find(
-                        sender =>
-                            sender.track &&
-                            sender.track.kind ===
-                            "video"
-                    );
-
-
-            if(
-                sender &&
-                sender.track !==
-                processedVideoTrack
-            ){
-
-                sender.replaceTrack(
-                    processedVideoTrack
-                ).catch(error=>{
-
-                    console.warn(
-                        "replaceTrack:",
-                        error
-                    );
-
-                });
-
-            }
-
-        }
-    );
 }
 
 
-/* -----------------------------------------------------
-REMOVE BACKGROUND
------------------------------------------------------ */
+/* =====================================================
+REPLACE VIDEO TRACK
+===================================================== */
 
-function removeBackground(){
+function replaceVideoTrack(
+    peer,
+    track
+){
 
-    backgroundEnabled =
-        false;
-
-
-    backgroundImage =
-        null;
-
-
-    if(backgroundAnimation){
-
-        cancelAnimationFrame(
-            backgroundAnimation
-        );
-
-        backgroundAnimation =
-            null;
-
+    if(!peer || !track){
+        return;
     }
 
 
-    if(
-        backgroundProcessingVideo
-    ){
-
-        backgroundProcessingVideo.srcObject =
-            null;
-
-    }
-
-
-    /*
-    Kembalikan kamera asli.
-    */
-
-    if(originalVideoTrack){
-
-        peers.forEach(
-            peerData=>{
-
-                const sender =
-                    peerData.pc
-                        .getSenders()
-                        .find(
-                            sender =>
-                                sender.track &&
-                                sender.track.kind ===
-                                "video"
-                        );
-
-
-                if(sender){
-
-                    sender.replaceTrack(
-                        originalVideoTrack
-                    ).catch(()=>{});
-
-                }
-
-            }
-        );
-
-    }
-
-
-    const localVideo =
-        document.querySelector(
-            "#tile-"+myId+" video"
-        );
-
-
-    if(localVideo){
-
-        localVideo.srcObject =
-            stream;
-
-        localVideo.play().catch(()=>{});
-
-    }
-
-
-    processedVideoTrack =
-        null;
-
-
-    if(processedStream){
-
-        processedStream
-            .getVideoTracks()
-            .forEach(
-                track=>{
-                    try{
-                        track.stop();
-                    }catch(e){}
-                }
+    const sender =
+        peer.getSenders()
+            .find(
+                s =>
+                    s.track &&
+                    s.track.kind ===
+                    "video"
             );
 
-        processedStream = null;
+
+    if(sender){
+
+        sender.replaceTrack(
+            track
+        ).catch(
+            error =>
+            console.error(
+                "replaceTrack:",
+                error
+            )
+        );
 
     }
 
-
-    $("backgroundStatus").textContent =
-        "Background dihapus.";
-
-    $("backgroundFile").value = "";
-
-
-    closeBackground();
 }
 
 
@@ -3986,7 +3783,6 @@ async function copyLink(){
             link
         );
 
-
         alert(
             "Meeting link copied!"
         );
@@ -3994,11 +3790,12 @@ async function copyLink(){
     }catch(error){
 
         prompt(
-            "Copy meeting link:",
+            "Copy link:",
             link
         );
 
     }
+
 }
 
 
@@ -4008,19 +3805,10 @@ CONNECTION
 
 socket.on(
     "connect",
-    ()=>{
+    () => {
 
         $("connection").textContent =
             "🟢 Connected";
-
-        $("connection").style.color =
-            "#32c875";
-
-
-        /*
-        Socket reconnect tidak otomatis
-        memulihkan WebRTC room.
-        */
 
     }
 );
@@ -4028,65 +3816,62 @@ socket.on(
 
 socket.on(
     "disconnect",
-    ()=>{
+    () => {
 
         $("connection").textContent =
             "🟠 Reconnecting...";
-
-        $("connection").style.color =
-            "#f3b83f";
 
     }
 );
 
 
 /* =====================================================
-KEYBOARD
+LEAVE
 ===================================================== */
 
-$("newName")
-    ?.addEventListener(
-        "keydown",
-        event=>{
+function leave(){
 
-            if(
-                event.key ===
-                "Enter"
-            ){
-
-                changeName();
-
-            }
-
-        }
+    socket.emit(
+        "leave-room"
     );
 
 
-$("code")
-    ?.addEventListener(
-        "keydown",
-        event=>{
-
-            if(
-                event.key ===
-                "Enter"
-            ){
-
-                joinRoom();
-
-            }
-
-        }
+    peers.forEach(
+        peer => peer.close()
     );
+
+
+    peers.clear();
+
+
+    stream
+        ?.getTracks()
+        .forEach(
+            track =>
+            track.stop()
+        );
+
+
+    processedStream
+        ?.getTracks()
+        .forEach(
+            track =>
+            track.stop()
+        );
+
+
+    location.href = "/";
+
+}
 
 
 /* =====================================================
-DIRECT MEETING LINK
+DIRECT LINK
 ===================================================== */
 
 window.addEventListener(
     "load",
-    ()=>{
+    () => {
 
         const match =
             location.pathname.match(
@@ -4097,80 +3882,11 @@ window.addEventListener(
         if(match){
 
             $("code").value =
-                match[1]
-                    .toUpperCase();
+                match[1];
 
             showJoin();
 
         }
-
-    }
-);
-
-
-/* =====================================================
-CLEANUP
-===================================================== */
-
-window.addEventListener(
-    "beforeunload",
-    ()=>{
-
-        peers.forEach(
-            peerData=>{
-
-                try{
-                    peerData.pc.close();
-                }catch(e){}
-
-            }
-        );
-
-
-        if(stream){
-
-            stream
-                .getTracks()
-                .forEach(track=>{
-
-                    try{
-                        track.stop();
-                    }catch(e){}
-
-                });
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-EXTRA AUDIO SAFETY
-===================================================== */
-
-/*
-Pastikan audio remote tidak dimute
-secara tidak sengaja.
-*/
-
-document.addEventListener(
-    "click",
-    ()=>{
-
-        document
-            .querySelectorAll(
-                "#grid video"
-            )
-            .forEach(video=>{
-
-                if(!video.muted){
-
-                    video.volume = 1;
-
-                }
-
-            });
 
     }
 );

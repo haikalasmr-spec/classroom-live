@@ -5,7 +5,12 @@ const path = require("path");
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+
+const io = new Server(server, {
+    cors: {
+        origin: "*"
+    }
+});
 
 const PORT = process.env.PORT || 3000;
 const MAX_PARTICIPANTS = 20;
@@ -24,22 +29,36 @@ app.get("/meeting/:code", (req, res) => {
     res.sendFile(path.join(publicPath, "index.html"));
 });
 
+
+/* =====================================================
+ROOM CODE
+===================================================== */
+
 function createRoomCode() {
+
     let code;
 
     do {
+
         code =
             "CLASS-" +
             Math.random()
                 .toString(36)
                 .substring(2, 6)
                 .toUpperCase();
+
     } while (rooms.has(code));
 
     return code;
 }
 
+
+/* =====================================================
+PARTICIPANTS
+===================================================== */
+
 function getParticipants(roomCode) {
+
     const room = rooms.get(roomCode);
 
     if (!room) return [];
@@ -54,7 +73,9 @@ function getParticipants(roomCode) {
     }));
 }
 
+
 function broadcastParticipants(roomCode) {
+
     if (!rooms.has(roomCode)) return;
 
     io.to(roomCode).emit(
@@ -63,7 +84,13 @@ function broadcastParticipants(roomCode) {
     );
 }
 
+
+/* =====================================================
+REMOVE USER
+===================================================== */
+
 function removeUser(socket) {
+
     const roomCode = socket.data.room;
 
     if (!roomCode) return;
@@ -82,35 +109,45 @@ function removeUser(socket) {
     broadcastParticipants(roomCode);
 
     if (room.users.size === 0) {
+
         rooms.delete(roomCode);
+
     }
+
+    socket.leave(roomCode);
 
     socket.data.room = null;
 }
 
+
+/* =====================================================
+CONNECTION
+===================================================== */
+
 io.on("connection", socket => {
 
-    /*
-    =========================================
+
+    /* =================================================
     CREATE ROOM
-    =========================================
-    */
+    ================================================= */
 
     socket.on("create-room", (data, callback) => {
 
-        const roomCode = createRoomCode();
-
-        let name = String(
-            data?.name || "Guru"
-        )
-            .trim()
-            .substring(0, 40);
+        let name =
+            String(data?.name || "Guru")
+                .trim()
+                .substring(0, 40);
 
         if (!name) {
             name = "Guru";
         }
 
+
+        const roomCode = createRoomCode();
+
+
         rooms.set(roomCode, {
+
             host: socket.id,
 
             users: new Map([
@@ -125,37 +162,41 @@ io.on("connection", socket => {
                     }
                 ]
             ])
+
         });
+
 
         socket.join(roomCode);
 
         socket.data.room = roomCode;
         socket.data.role = "teacher";
 
+
         callback({
             ok: true,
             code: roomCode
         });
 
+
         broadcastParticipants(roomCode);
+
     });
 
 
-    /*
-    =========================================
+    /* =================================================
     JOIN ROOM
-    =========================================
-    */
+    ================================================= */
 
     socket.on("join-room", (data, callback) => {
 
-        const roomCode = String(
-            data?.code || ""
-        )
-            .trim()
-            .toUpperCase();
+        const roomCode =
+            String(data?.code || "")
+                .trim()
+                .toUpperCase();
+
 
         const room = rooms.get(roomCode);
+
 
         if (!room) {
 
@@ -163,16 +204,30 @@ io.on("connection", socket => {
                 ok: false,
                 error: "Meeting tidak ditemukan."
             });
+
         }
+
 
         if (room.users.size >= MAX_PARTICIPANTS) {
 
             return callback({
                 ok: false,
-                error:
-                    "Meeting penuh. Maksimal 20 peserta."
+                error: "Meeting sudah penuh. Maksimal 20 peserta."
             });
+
         }
+
+
+        let name =
+            String(data?.name || "Siswa")
+                .trim()
+                .substring(0, 40);
+
+
+        if (!name) {
+            name = "Siswa";
+        }
+
 
         const existingPeers =
             [...room.users.entries()].map(
@@ -183,34 +238,39 @@ io.on("connection", socket => {
                 })
             );
 
-        let name = String(
-            data?.name || "Siswa"
-        )
-            .trim()
-            .substring(0, 40);
-
-        if (!name) {
-            name = "Siswa";
-        }
 
         room.users.set(socket.id, {
+
             name,
+
             role: "student",
+
             camera: true,
+
             mic: true,
+
             hand: false
+
         });
+
 
         socket.join(roomCode);
 
         socket.data.room = roomCode;
+
         socket.data.role = "student";
 
+
         callback({
+
             ok: true,
+
             code: roomCode,
+
             existingPeers
+
         });
+
 
         socket.to(roomCode).emit(
             "peer-joined",
@@ -221,21 +281,19 @@ io.on("connection", socket => {
             }
         );
 
+
         broadcastParticipants(roomCode);
+
     });
 
 
-    /*
-    =========================================
+    /* =================================================
     WEBRTC OFFER
-    =========================================
-    */
+    ================================================= */
 
     socket.on("offer", data => {
 
-        if (!data?.to || !data?.offer) {
-            return;
-        }
+        if (!data?.to || !data?.offer) return;
 
         io.to(data.to).emit(
             "offer",
@@ -244,20 +302,17 @@ io.on("connection", socket => {
                 offer: data.offer
             }
         );
+
     });
 
 
-    /*
-    =========================================
+    /* =================================================
     WEBRTC ANSWER
-    =========================================
-    */
+    ================================================= */
 
     socket.on("answer", data => {
 
-        if (!data?.to || !data?.answer) {
-            return;
-        }
+        if (!data?.to || !data?.answer) return;
 
         io.to(data.to).emit(
             "answer",
@@ -266,20 +321,17 @@ io.on("connection", socket => {
                 answer: data.answer
             }
         );
+
     });
 
 
-    /*
-    =========================================
+    /* =================================================
     ICE
-    =========================================
-    */
+    ================================================= */
 
     socket.on("ice-candidate", data => {
 
-        if (!data?.to || !data?.candidate) {
-            return;
-        }
+        if (!data?.to || !data?.candidate) return;
 
         io.to(data.to).emit(
             "ice-candidate",
@@ -288,14 +340,13 @@ io.on("connection", socket => {
                 candidate: data.candidate
             }
         );
+
     });
 
 
-    /*
-    =========================================
-    MIC / CAMERA
-    =========================================
-    */
+    /* =================================================
+    MEDIA STATE
+    ================================================= */
 
     socket.on("media-state", data => {
 
@@ -304,13 +355,19 @@ io.on("connection", socket => {
 
         if (!room) return;
 
+
         const user =
             room.users.get(socket.id);
 
         if (!user) return;
 
-        user.camera = !!data.camera;
-        user.mic = !!data.mic;
+
+        user.camera =
+            !!data.camera;
+
+        user.mic =
+            !!data.mic;
+
 
         socket.to(socket.data.room).emit(
             "media-state",
@@ -321,17 +378,17 @@ io.on("connection", socket => {
             }
         );
 
+
         broadcastParticipants(
             socket.data.room
         );
+
     });
 
 
-    /*
-    =========================================
+    /* =================================================
     RAISE HAND
-    =========================================
-    */
+    ================================================= */
 
     socket.on("raise-hand", data => {
 
@@ -340,12 +397,16 @@ io.on("connection", socket => {
 
         if (!room) return;
 
+
         const user =
             room.users.get(socket.id);
 
         if (!user) return;
 
-        user.hand = !!data.hand;
+
+        user.hand =
+            !!data.hand;
+
 
         io.to(socket.data.room).emit(
             "hand-state",
@@ -355,116 +416,167 @@ io.on("connection", socket => {
             }
         );
 
+
         broadcastParticipants(
             socket.data.room
         );
+
     });
 
 
-    /*
-    =========================================
+    /* =================================================
     CHANGE NAME
-    =========================================
-    */
+    ================================================= */
 
-    socket.on(
-        "change-name",
-        (data, callback) => {
+    socket.on("change-name", (data, callback) => {
 
-            const room =
-                rooms.get(socket.data.room);
+        const room =
+            rooms.get(socket.data.room);
 
-            if (!room) {
 
-                if (callback) {
-                    callback({
-                        ok: false,
-                        error:
-                            "Meeting tidak ditemukan."
-                    });
-                }
+        if (!room) {
 
-                return;
-            }
+            return callback?.({
+                ok: false,
+                error: "Meeting tidak ditemukan."
+            });
 
-            const user =
-                room.users.get(socket.id);
+        }
 
-            if (!user) return;
 
-            let newName = String(
-                data?.name || ""
-            )
+        const user =
+            room.users.get(socket.id);
+
+
+        if (!user) return;
+
+
+        let newName =
+            String(data?.name || "")
                 .trim()
                 .substring(0, 40);
 
-            if (!newName) {
 
-                if (callback) {
-                    callback({
-                        ok: false,
-                        error:
-                            "Nama tidak boleh kosong."
-                    });
-                }
+        if (!newName) {
 
-                return;
-            }
+            return callback?.({
+                ok: false,
+                error: "Nama tidak boleh kosong."
+            });
 
-            user.name = newName;
-
-            if (callback) {
-                callback({
-                    ok: true,
-                    name: newName
-                });
-            }
-
-            socket.to(socket.data.room).emit(
-                "name-changed",
-                {
-                    id: socket.id,
-                    name: newName
-                }
-            );
-
-            broadcastParticipants(
-                socket.data.room
-            );
         }
-    );
 
 
-    /*
-    =========================================
-    LEAVE
-    =========================================
-    */
+        user.name = newName;
 
-    socket.on("leave-room", () => {
-        removeUser(socket);
+
+        callback?.({
+            ok: true,
+            name: newName
+        });
+
+
+        io.to(socket.data.room).emit(
+            "name-changed",
+            {
+                id: socket.id,
+                name: newName
+            }
+        );
+
+
+        broadcastParticipants(
+            socket.data.room
+        );
+
     });
 
 
-    /*
-    =========================================
+    /* =================================================
+    CHAT
+    ================================================= */
+
+    socket.on("chat-message", data => {
+
+        const roomCode =
+            socket.data.room;
+
+        if (!roomCode) return;
+
+
+        const room =
+            rooms.get(roomCode);
+
+        if (!room) return;
+
+
+        const user =
+            room.users.get(socket.id);
+
+        if (!user) return;
+
+
+        let message =
+            String(data?.message || "")
+                .trim()
+                .substring(0, 500);
+
+
+        if (!message) return;
+
+
+        io.to(roomCode).emit(
+            "chat-message",
+            {
+                id: socket.id,
+                name: user.name,
+                role: user.role,
+                message,
+                time: new Date().toLocaleTimeString(
+                    "id-ID",
+                    {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    }
+                )
+            }
+        );
+
+    });
+
+
+    /* =================================================
+    LEAVE
+    ================================================= */
+
+    socket.on("leave-room", () => {
+
+        removeUser(socket);
+
+    });
+
+
+    /* =================================================
     DISCONNECT
-    =========================================
-    */
+    ================================================= */
 
     socket.on("disconnect", () => {
+
         removeUser(socket);
+
     });
 
 });
 
 
-server.listen(
-    PORT,
-    "0.0.0.0",
-    () => {
-        console.log(
-            `CLASSROOM LIVE running on port ${PORT}`
-        );
-    }
-);
+/* =====================================================
+SERVER
+===================================================== */
+
+server.listen(PORT, "0.0.0.0", () => {
+
+    console.log(
+        `CLASSROOM LIVE running on port ${PORT}`
+    );
+
+});

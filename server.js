@@ -8,7 +8,6 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 const PORT = process.env.PORT || 3000;
-
 const MAX_PARTICIPANTS = 20;
 
 const rooms = new Map();
@@ -25,7 +24,7 @@ app.get("/meeting/:code", (req, res) => {
     res.sendFile(path.join(publicPath, "index.html"));
 });
 
-function createCode() {
+function createRoomCode() {
     let code;
 
     do {
@@ -55,7 +54,7 @@ function getParticipants(roomCode) {
     }));
 }
 
-function sendParticipants(roomCode) {
+function broadcastParticipants(roomCode) {
     if (!rooms.has(roomCode)) return;
 
     io.to(roomCode).emit(
@@ -80,7 +79,7 @@ function removeUser(socket) {
         socket.id
     );
 
-    sendParticipants(roomCode);
+    broadcastParticipants(roomCode);
 
     if (room.users.size === 0) {
         rooms.delete(roomCode);
@@ -89,22 +88,27 @@ function removeUser(socket) {
     socket.data.room = null;
 }
 
-io.on("connection", (socket) => {
+io.on("connection", socket => {
 
     /*
-    ============================================
+    =========================================
     CREATE ROOM
-    ============================================
+    =========================================
     */
 
     socket.on("create-room", (data, callback) => {
 
-        const roomCode = createCode();
+        const roomCode = createRoomCode();
 
-        const name =
-            String(data?.name || "Guru")
-                .trim()
-                .substring(0, 40);
+        let name = String(
+            data?.name || "Guru"
+        )
+            .trim()
+            .substring(0, 40);
+
+        if (!name) {
+            name = "Guru";
+        }
 
         rooms.set(roomCode, {
             host: socket.id,
@@ -113,7 +117,7 @@ io.on("connection", (socket) => {
                 [
                     socket.id,
                     {
-                        name: name || "Guru",
+                        name,
                         role: "teacher",
                         camera: true,
                         mic: true,
@@ -133,22 +137,23 @@ io.on("connection", (socket) => {
             code: roomCode
         });
 
-        sendParticipants(roomCode);
+        broadcastParticipants(roomCode);
     });
 
 
     /*
-    ============================================
+    =========================================
     JOIN ROOM
-    ============================================
+    =========================================
     */
 
     socket.on("join-room", (data, callback) => {
 
-        const roomCode =
-            String(data?.code || "")
-                .trim()
-                .toUpperCase();
+        const roomCode = String(
+            data?.code || ""
+        )
+            .trim()
+            .toUpperCase();
 
         const room = rooms.get(roomCode);
 
@@ -156,7 +161,7 @@ io.on("connection", (socket) => {
 
             return callback({
                 ok: false,
-                error: "Meeting not found."
+                error: "Meeting tidak ditemukan."
             });
         }
 
@@ -178,10 +183,11 @@ io.on("connection", (socket) => {
                 })
             );
 
-        let name =
-            String(data?.name || "Siswa")
-                .trim()
-                .substring(0, 40);
+        let name = String(
+            data?.name || "Siswa"
+        )
+            .trim()
+            .substring(0, 40);
 
         if (!name) {
             name = "Siswa";
@@ -215,19 +221,21 @@ io.on("connection", (socket) => {
             }
         );
 
-        sendParticipants(roomCode);
+        broadcastParticipants(roomCode);
     });
 
 
     /*
-    ============================================
-    WEBRTC SIGNALING
-    ============================================
+    =========================================
+    WEBRTC OFFER
+    =========================================
     */
 
-    socket.on("offer", (data) => {
+    socket.on("offer", data => {
 
-        if (!data?.to) return;
+        if (!data?.to || !data?.offer) {
+            return;
+        }
 
         io.to(data.to).emit(
             "offer",
@@ -239,9 +247,17 @@ io.on("connection", (socket) => {
     });
 
 
-    socket.on("answer", (data) => {
+    /*
+    =========================================
+    WEBRTC ANSWER
+    =========================================
+    */
 
-        if (!data?.to) return;
+    socket.on("answer", data => {
+
+        if (!data?.to || !data?.answer) {
+            return;
+        }
 
         io.to(data.to).emit(
             "answer",
@@ -253,9 +269,17 @@ io.on("connection", (socket) => {
     });
 
 
-    socket.on("ice-candidate", (data) => {
+    /*
+    =========================================
+    ICE
+    =========================================
+    */
 
-        if (!data?.to) return;
+    socket.on("ice-candidate", data => {
+
+        if (!data?.to || !data?.candidate) {
+            return;
+        }
 
         io.to(data.to).emit(
             "ice-candidate",
@@ -268,18 +292,20 @@ io.on("connection", (socket) => {
 
 
     /*
-    ============================================
-    CAMERA / MICROPHONE
-    ============================================
+    =========================================
+    MIC / CAMERA
+    =========================================
     */
 
-    socket.on("media-state", (data) => {
+    socket.on("media-state", data => {
 
-        const room = rooms.get(socket.data.room);
+        const room =
+            rooms.get(socket.data.room);
 
         if (!room) return;
 
-        const user = room.users.get(socket.id);
+        const user =
+            room.users.get(socket.id);
 
         if (!user) return;
 
@@ -295,23 +321,27 @@ io.on("connection", (socket) => {
             }
         );
 
-        sendParticipants(socket.data.room);
+        broadcastParticipants(
+            socket.data.room
+        );
     });
 
 
     /*
-    ============================================
+    =========================================
     RAISE HAND
-    ============================================
+    =========================================
     */
 
-    socket.on("raise-hand", (data) => {
+    socket.on("raise-hand", data => {
 
-        const room = rooms.get(socket.data.room);
+        const room =
+            rooms.get(socket.data.room);
 
         if (!room) return;
 
-        const user = room.users.get(socket.id);
+        const user =
+            room.users.get(socket.id);
 
         if (!user) return;
 
@@ -325,78 +355,90 @@ io.on("connection", (socket) => {
             }
         );
 
-        sendParticipants(socket.data.room);
+        broadcastParticipants(
+            socket.data.room
+        );
     });
 
 
     /*
-    ============================================
+    =========================================
     CHANGE NAME
-    ============================================
+    =========================================
     */
 
-    socket.on("change-name", (data, callback) => {
+    socket.on(
+        "change-name",
+        (data, callback) => {
 
-        const room = rooms.get(socket.data.room);
+            const room =
+                rooms.get(socket.data.room);
 
-        if (!room) {
+            if (!room) {
 
-            if (callback) {
-                callback({
-                    ok: false,
-                    error: "Meeting not found."
-                });
+                if (callback) {
+                    callback({
+                        ok: false,
+                        error:
+                            "Meeting tidak ditemukan."
+                    });
+                }
+
+                return;
             }
 
-            return;
-        }
+            const user =
+                room.users.get(socket.id);
 
-        const user = room.users.get(socket.id);
+            if (!user) return;
 
-        if (!user) return;
-
-        let newName =
-            String(data?.name || "")
+            let newName = String(
+                data?.name || ""
+            )
                 .trim()
                 .substring(0, 40);
 
-        if (!newName) {
+            if (!newName) {
+
+                if (callback) {
+                    callback({
+                        ok: false,
+                        error:
+                            "Nama tidak boleh kosong."
+                    });
+                }
+
+                return;
+            }
+
+            user.name = newName;
 
             if (callback) {
                 callback({
-                    ok: false,
-                    error: "Nama tidak boleh kosong."
+                    ok: true,
+                    name: newName
                 });
             }
 
-            return;
+            socket.to(socket.data.room).emit(
+                "name-changed",
+                {
+                    id: socket.id,
+                    name: newName
+                }
+            );
+
+            broadcastParticipants(
+                socket.data.room
+            );
         }
-
-        user.name = newName;
-
-        if (callback) {
-            callback({
-                ok: true,
-                name: newName
-            });
-        }
-
-        socket.to(socket.data.room).emit(
-            "name-changed",
-            {
-                id: socket.id,
-                name: newName
-            }
-        );
-
-        sendParticipants(socket.data.room);
-    });
+    );
 
 
     /*
-    ============================================
+    =========================================
     LEAVE
-    ============================================
+    =========================================
     */
 
     socket.on("leave-room", () => {
@@ -405,9 +447,9 @@ io.on("connection", (socket) => {
 
 
     /*
-    ============================================
+    =========================================
     DISCONNECT
-    ============================================
+    =========================================
     */
 
     socket.on("disconnect", () => {
@@ -417,10 +459,12 @@ io.on("connection", (socket) => {
 });
 
 
-server.listen(PORT, "0.0.0.0", () => {
-
-    console.log(
-        `CLASSROOM LIVE listening on ${PORT}`
-    );
-
-});
+server.listen(
+    PORT,
+    "0.0.0.0",
+    () => {
+        console.log(
+            `CLASSROOM LIVE running on port ${PORT}`
+        );
+    }
+);

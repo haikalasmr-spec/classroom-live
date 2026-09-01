@@ -1,60 +1,3640 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CLASSROOM LIVE</title><script src="/socket.io/socket.io.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>CLASSROOM LIVE</title>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<!-- Virtual background -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"></script>
+
 <style>
-*{box-sizing:border-box}body{margin:0;background:#101114;color:#fff;font:16px Arial,sans-serif}
-button,input{font:inherit}button{border:0;border-radius:10px;padding:12px 16px;cursor:pointer}
-.home{min-height:100vh;display:grid;place-items:center;padding:20px}.card{width:min(440px,100%);background:#191b20;padding:28px;border-radius:18px}
-input{width:100%;padding:13px;border-radius:10px;border:1px solid #3a3d45;background:#101114;color:#fff;margin-top:8px}
-.row{display:flex;gap:10px;margin-top:12px}.row button{flex:1}.primary{background:#fff;color:#111;font-weight:bold}.secondary,.control{background:#30333a;color:#fff}.error{color:#ff9292;margin-top:12px}
-#meeting{display:none;height:100vh}.top{height:62px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;background:#17191e}
-.status{font-size:13px;color:#9fe0aa}.grid{height:calc(100vh - 132px);padding:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;overflow:auto}
-.tile{position:relative;min-height:190px;background:#202329;border-radius:14px;overflow:hidden}.tile video{width:100%;height:100%;min-height:190px;object-fit:cover;background:#08090b}.label{position:absolute;left:10px;bottom:10px;background:#000b;padding:7px 10px;border-radius:8px}
-.controls{height:70px;display:flex;justify-content:center;align-items:center;gap:10px;background:#17191e}.off,.leave{color:#fff}.off{background:#8b2e35}.leave{background:#d33b45}
-@media(max-width:600px){.grid{grid-template-columns:1fr}.tile,.tile video{min-height:220px}.controls{gap:6px}.control{padding:11px 12px;font-size:13px}}
-</style></head><body>
-<div id="home" class="home"><div class="card"><h1>CLASSROOM LIVE</h1><p>Simple video meeting — maksimal 10 siswa.</p>
-<input id="name" placeholder="Nama">
-<div class="row"><button class="primary" onclick="createRoom()">Create Meeting</button><button class="secondary" onclick="joinBox()">Join Meeting</button></div>
-<div id="join" style="display:none"><input id="code" placeholder="CLASS-82K4"><button class="primary" style="width:100%;margin-top:10px" onclick="joinRoom()">Join</button></div>
-<div id="error" class="error"></div></div></div>
-<div id="meeting"><header class="top"><b>CLASSROOM LIVE</b><span><b id="mc"></b> · <span id="conn" class="status">Connected</span></span></header>
-<main id="grid" class="grid"></main><footer class="controls">
-<button id="mic" class="control" onclick="toggleMic()">🎤 Mic ON</button><button id="cam" class="control" onclick="toggleCam()">📷 Camera ON</button>
-<button class="control" onclick="copyLink()">🔗 Link</button><button class="leave" onclick="leave()">Leave</button></footer></div>
-<script>
-const socket=io();const peers=new Map();let stream,code,myId,mic=true,cam=true;
-const cfg={iceServers:[{urls:"stun:stun.l.google.com:19302"}]};
-const name=()=>document.getElementById("name").value.trim()||"Siswa";
-const error=x=>document.getElementById("error").textContent=x;
-function joinBox(){document.getElementById("join").style.display="block"}
-async function media(){
- if(!navigator.mediaDevices?.getUserMedia){error("Camera/microphone membutuhkan HTTPS.");return false}
- try{stream=await navigator.mediaDevices.getUserMedia({video:true,audio:true});return true}
- catch(e){
-  try{stream=await navigator.mediaDevices.getUserMedia({video:true,audio:false});mic=false;return true}
-  catch(e2){error("Camera permission denied or camera unavailable.");return false}
- }
+
+*{
+    box-sizing:border-box;
 }
-async function createRoom(){if(!await media())return;socket.emit("create-room",{name:name()},r=>{if(!r.ok)return error(r.error);start(r.code)})}
-async function joinRoom(){let c=document.getElementById("code").value.trim().toUpperCase();if(!c)return error("Masukkan kode.");if(!await media())return;
- socket.emit("join-room",{code:c,name:name()},r=>{if(!r.ok)return error(r.error);start(r.code);r.existingPeers.forEach(p=>offer(p.id,p.name))})}
-function start(c){code=c;myId=socket.id;document.getElementById("home").style.display="none";document.getElementById("meeting").style.display="block";document.getElementById("mc").textContent=c;addLocal()}
-function addLocal(){let t=document.createElement("div");t.className="tile";t.id="t-"+myId;let v=document.createElement("video");v.autoplay=true;v.muted=true;v.playsInline=true;v.srcObject=stream;let l=document.createElement("div");l.className="label";l.textContent=name()+" (You)";t.append(v,l);grid.append(t)}
-function peer(id,n){if(peers.has(id))return peers.get(id);let p=new RTCPeerConnection(cfg);peers.set(id,p);stream.getTracks().forEach(x=>p.addTrack(x,stream));
-p.onicecandidate=e=>e.candidate&&socket.emit("ice-candidate",{to:id,candidate:e.candidate});p.ontrack=e=>remote(id,n,e.streams[0]);return p}
-async function offer(id,n){let p=peer(id,n),o=await p.createOffer();await p.setLocalDescription(o);socket.emit("offer",{to:id,offer:o})}
-socket.on("peer-joined",p=>peer(p.id,p.name));
-socket.on("offer",async d=>{let p=peer(d.from,"Peserta");await p.setRemoteDescription(d.offer);let a=await p.createAnswer();await p.setLocalDescription(a);socket.emit("answer",{to:d.from,answer:a})});
-socket.on("answer",d=>peers.get(d.from)?.setRemoteDescription(d.answer));
-socket.on("ice-candidate",async d=>{try{await peers.get(d.from)?.addIceCandidate(d.candidate)}catch(e){}});
-socket.on("peer-left",id=>{peers.get(id)?.close();peers.delete(id);document.getElementById("t-"+id)?.remove()});
-socket.on("media-state",d=>{let t=document.getElementById("t-"+d.id);if(t)t.querySelector(".label").textContent=t.querySelector(".label").textContent.replace(/ 🔇| 📷 OFF/g,"")+(d.mic?"":" 🔇")+(d.camera?"":" 📷 OFF")});
-function remote(id,n,s){let t=document.getElementById("t-"+id);if(t)return; t=document.createElement("div");t.className="tile";t.id="t-"+id;let v=document.createElement("video");v.autoplay=true;v.playsInline=true;v.srcObject=s;let l=document.createElement("div");l.className="label";l.textContent=n||"Peserta";t.append(v,l);grid.append(t)}
-function state(){socket.emit("media-state",{camera:cam,mic:mic})}
-function toggleMic(){mic=!mic;stream.getAudioTracks().forEach(t=>t.enabled=mic);document.getElementById("mic").textContent=mic?"🎤 Mic ON":"🔇 Mic OFF";document.getElementById("mic").classList.toggle("off",!mic);state()}
-function toggleCam(){cam=!cam;stream.getVideoTracks().forEach(t=>t.enabled=cam);document.getElementById("cam").textContent=cam?"📷 Camera ON":"📷 Camera OFF";document.getElementById("cam").classList.toggle("off",!cam);state()}
-async function copyLink(){let u=location.origin+"/meeting/"+code;try{await navigator.clipboard.writeText(u);alert("Link copied")}catch(e){prompt("Copy link:",u)}}
-function leave(){socket.emit("leave-room");stream?.getTracks().forEach(t=>t.stop());location.href="/"}
-window.addEventListener("load",()=>{let m=location.pathname.match(/\/meeting\/([^/]+)/);if(m){document.getElementById("code").value=m[1];joinBox()}})
-</script></body></html>
+
+:root{
+
+    --bg:#080a0f;
+    --panel:#12151d;
+    --panel2:#181c25;
+    --border:#282e3b;
+
+    --text:#f5f7fb;
+    --muted:#9ba3b3;
+
+    --blue:#4f8cff;
+    --green:#32c875;
+    --red:#e54852;
+    --yellow:#f3b83f;
+}
+
+html,
+body{
+
+    margin:0;
+    width:100%;
+    min-height:100%;
+
+    background:var(--bg);
+    color:var(--text);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+button,
+input{
+
+    font:inherit;
+}
+
+button{
+
+    cursor:pointer;
+}
+
+.hidden{
+
+    display:none!important;
+}
+
+
+/* =========================================
+HOME
+========================================= */
+
+.home{
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:25px;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            #17244a 0,
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 90% 90%,
+            #102e2a 0,
+            transparent 35%
+        ),
+        var(--bg);
+}
+
+.home-card{
+
+    width:min(950px,100%);
+
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+
+    background:#11141b;
+
+    border:1px solid var(--border);
+
+    border-radius:25px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 30px 90px #0009;
+}
+
+.home-main{
+
+    padding:55px;
+}
+
+.brand{
+
+    display:flex;
+    align-items:center;
+
+    gap:12px;
+
+    margin-bottom:45px;
+}
+
+.logo{
+
+    width:48px;
+    height:48px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:14px;
+
+    background:var(--blue);
+
+    font-size:23px;
+}
+
+.brand-name{
+
+    font-size:20px;
+    font-weight:bold;
+}
+
+.eyebrow{
+
+    color:#79a5ff;
+
+    font-size:12px;
+
+    letter-spacing:1.5px;
+
+    font-weight:bold;
+
+    margin-bottom:12px;
+}
+
+.hero{
+
+    font-size:44px;
+
+    line-height:1.05;
+
+    margin:0 0 18px;
+
+    letter-spacing:-1.5px;
+}
+
+.description{
+
+    color:var(--muted);
+
+    line-height:1.6;
+
+    max-width:550px;
+
+    margin-bottom:32px;
+}
+
+.label{
+
+    display:block;
+
+    color:#c7ccd6;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+    margin-bottom:7px;
+}
+
+.input{
+
+    width:100%;
+
+    height:50px;
+
+    padding:0 15px;
+
+    border-radius:12px;
+
+    border:1px solid var(--border);
+
+    background:#090c11;
+
+    color:white;
+
+    outline:none;
+}
+
+.input:focus{
+
+    border-color:var(--blue);
+}
+
+.buttons{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:12px;
+
+    margin-top:14px;
+}
+
+.btn{
+
+    height:50px;
+
+    border-radius:12px;
+
+    border:1px solid var(--border);
+
+    background:#202530;
+
+    color:white;
+
+    font-weight:bold;
+}
+
+.btn-primary{
+
+    background:var(--blue);
+
+    border-color:var(--blue);
+}
+
+.btn-danger{
+
+    background:var(--red);
+
+    border-color:var(--red);
+}
+
+.join-area{
+
+    margin-top:12px;
+
+    padding:14px;
+
+    border-radius:13px;
+
+    border:1px solid var(--border);
+
+    background:#0b0e14;
+}
+
+.error{
+
+    color:#ff8585;
+
+    margin-top:12px;
+
+    font-size:14px;
+}
+
+.home-info{
+
+    background:#0c0f15;
+
+    border-left:1px solid var(--border);
+
+    padding:35px;
+
+    display:flex;
+
+    align-items:center;
+}
+
+.info-title{
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    margin-bottom:18px;
+}
+
+.info-item{
+
+    display:flex;
+
+    gap:13px;
+
+    padding:15px 0;
+
+    border-bottom:1px solid var(--border);
+}
+
+.info-icon{
+
+    width:38px;
+    height:38px;
+
+    border-radius:10px;
+
+    display:grid;
+    place-items:center;
+
+    background:#1b2230;
+}
+
+.info-item strong{
+
+    display:block;
+
+    margin-bottom:4px;
+}
+
+.info-item span{
+
+    color:var(--muted);
+
+    font-size:13px;
+}
+
+
+/* =========================================
+LOBBY
+========================================= */
+
+#lobby{
+
+    min-height:100vh;
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+}
+
+.lobby-card{
+
+    width:min(900px,100%);
+
+    padding:25px;
+
+    border-radius:22px;
+
+    border:1px solid var(--border);
+
+    background:var(--panel);
+}
+
+.lobby-title{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+}
+
+.lobby-title h2{
+
+    margin:0;
+}
+
+.preview{
+
+    position:relative;
+
+    min-height:400px;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    background:#030406;
+}
+
+#previewVideo{
+
+    width:100%;
+    height:400px;
+
+    object-fit:cover;
+
+    display:block;
+}
+
+.preview-status{
+
+    position:absolute;
+
+    top:14px;
+    left:14px;
+
+    background:#000b;
+
+    padding:8px 11px;
+
+    border-radius:9px;
+
+    font-size:13px;
+}
+
+.lobby-actions{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr 1fr;
+
+    gap:10px;
+
+    margin-top:15px;
+}
+
+
+/* =========================================
+MEETING
+========================================= */
+
+#meeting{
+
+    display:none;
+
+    width:100%;
+    height:100vh;
+
+    overflow:hidden;
+}
+
+.topbar{
+
+    height:70px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 18px;
+
+    background:#10131a;
+
+    border-bottom:1px solid var(--border);
+}
+
+.top-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:11px;
+}
+
+.small-logo{
+
+    width:37px;
+    height:37px;
+
+    border-radius:10px;
+
+    background:var(--blue);
+
+    display:grid;
+    place-items:center;
+}
+
+.top-name{
+
+    font-weight:bold;
+}
+
+.top-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+}
+
+.code{
+
+    padding:8px 11px;
+
+    border:1px solid var(--border);
+
+    border-radius:9px;
+
+    background:#1a1e27;
+
+    font-size:13px;
+
+    font-weight:bold;
+}
+
+.status{
+
+    color:var(--green);
+
+    font-size:13px;
+}
+
+.grid{
+
+    height:calc(100vh - 140px);
+
+    padding:14px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(260px,1fr));
+
+    gap:13px;
+
+    overflow:auto;
+}
+
+.tile{
+
+    position:relative;
+
+    min-height:205px;
+
+    overflow:hidden;
+
+    border-radius:17px;
+
+    border:1px solid var(--border);
+
+    background:#151820;
+}
+
+.tile video{
+
+    width:100%;
+    height:100%;
+
+    min-height:205px;
+
+    object-fit:cover;
+
+    display:block;
+
+    background:#050609;
+}
+
+.avatar{
+
+    position:absolute;
+
+    inset:0;
+
+    display:grid;
+
+    place-items:center;
+
+    background:#171b24;
+}
+
+.avatar-circle{
+
+    width:75px;
+    height:75px;
+
+    border-radius:50%;
+
+    display:grid;
+
+    place-items:center;
+
+    background:#2b3447;
+
+    font-size:27px;
+
+    font-weight:bold;
+}
+
+.tile-info{
+
+    position:absolute;
+
+    left:11px;
+    right:11px;
+    bottom:11px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+}
+
+.name-tag{
+
+    max-width:70%;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+    padding:8px 10px;
+
+    border-radius:8px;
+
+    background:#000c;
+
+    font-size:13px;
+}
+
+.media-icons{
+
+    display:flex;
+
+    gap:5px;
+}
+
+.media-icon{
+
+    padding:7px;
+
+    border-radius:8px;
+
+    background:#000c;
+
+    font-size:12px;
+}
+
+.hand-icon{
+
+    color:var(--yellow);
+
+    font-size:18px;
+
+    display:none;
+}
+
+.hand-icon.show{
+
+    display:block;
+}
+
+
+/* =========================================
+CONTROLS
+========================================= */
+
+.controls{
+
+    height:70px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:9px;
+
+    padding:8px;
+
+    background:#10131a;
+
+    border-top:1px solid var(--border);
+}
+
+.control{
+
+    min-width:100px;
+
+    height:45px;
+
+    padding:0 13px;
+
+    border-radius:11px;
+
+    border:1px solid var(--border);
+
+    background:#202530;
+
+    color:white;
+
+    font-weight:bold;
+}
+
+.control:hover{
+
+    background:#2a303c;
+}
+
+.control.off{
+
+    background:#8d3038;
+
+    border-color:#a13a43;
+}
+
+.control.hand-active{
+
+    background:#9b6b18;
+
+    border-color:#bd841e;
+}
+
+.leave{
+
+    background:var(--red);
+
+    border-color:var(--red);
+}
+
+
+/* =========================================
+PARTICIPANTS PANEL
+========================================= */
+
+.panel{
+
+    position:fixed;
+
+    top:0;
+    right:0;
+
+    width:min(360px,90vw);
+
+    height:100vh;
+
+    z-index:50;
+
+    background:#11141b;
+
+    border-left:1px solid var(--border);
+
+    transform:translateX(100%);
+
+    transition:.25s ease;
+
+    box-shadow:-20px 0 60px #0008;
+}
+
+.panel.open{
+
+    transform:translateX(0);
+}
+
+.panel-head{
+
+    height:70px;
+
+    padding:0 18px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    border-bottom:1px solid var(--border);
+}
+
+.panel-head h3{
+
+    margin:0;
+}
+
+.close-panel{
+
+    width:38px;
+    height:38px;
+
+    border-radius:9px;
+
+    border:1px solid var(--border);
+
+    background:#202530;
+
+    color:white;
+}
+
+.people{
+
+    padding:10px;
+
+    overflow:auto;
+
+    height:calc(100vh - 70px);
+}
+
+.person{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:12px;
+
+    border-radius:12px;
+
+    margin-bottom:5px;
+}
+
+.person:hover{
+
+    background:#1a1e27;
+}
+
+.person-avatar{
+
+    width:39px;
+    height:39px;
+
+    border-radius:50%;
+
+    display:grid;
+    place-items:center;
+
+    background:#293247;
+
+    font-size:14px;
+
+    font-weight:bold;
+}
+
+.person-main{
+
+    flex:1;
+
+    min-width:0;
+}
+
+.person-name{
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    font-size:14px;
+
+    font-weight:bold;
+}
+
+.person-role{
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    margin-top:3px;
+}
+
+.person-status{
+
+    font-size:15px;
+}
+
+
+/* =========================================
+NAME MODAL
+========================================= */
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:100;
+
+    background:#0009;
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+}
+
+.modal.show{
+
+    display:flex;
+}
+
+.modal-card{
+
+    width:min(400px,100%);
+
+    padding:25px;
+
+    border-radius:18px;
+
+    border:1px solid var(--border);
+
+    background:#151821;
+}
+
+.modal-card h3{
+
+    margin-top:0;
+}
+
+.modal-buttons{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:15px;
+}
+
+.modal-buttons button{
+
+    flex:1;
+}
+
+
+/* =========================================
+RESPONSIVE
+========================================= */
+
+@media(max-width:760px){
+
+    .home{
+
+        padding:14px;
+    }
+
+    .home-card{
+
+        grid-template-columns:1fr;
+    }
+
+    .home-info{
+
+        display:none;
+    }
+
+    .home-main{
+
+        padding:32px 24px;
+    }
+
+    .hero{
+
+        font-size:36px;
+    }
+
+    .buttons{
+
+        grid-template-columns:1fr;
+    }
+
+    .lobby-card{
+
+        padding:16px;
+    }
+
+    .preview{
+
+        min-height:270px;
+    }
+
+    #previewVideo{
+
+        height:270px;
+    }
+
+    .lobby-actions{
+
+        grid-template-columns:1fr;
+    }
+
+    .topbar{
+
+        height:62px;
+
+        padding:0 10px;
+    }
+
+    .top-name{
+
+        font-size:14px;
+    }
+
+    .status{
+
+        display:none;
+    }
+
+    .grid{
+
+        height:calc(100vh - 128px);
+
+        padding:8px;
+
+        gap:8px;
+
+        grid-template-columns:1fr;
+    }
+
+    .tile,
+    .tile video{
+
+        min-height:225px;
+    }
+
+    .controls{
+
+        height:66px;
+
+        gap:5px;
+    }
+
+    .control{
+
+        min-width:0;
+
+        flex:1;
+
+        padding:0 5px;
+
+        font-size:11px;
+    }
+
+    .code{
+
+        font-size:11px;
+
+        padding:7px;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+HOME
+========================================= -->
+
+<section id="home" class="home">
+
+<div class="home-card">
+
+<div class="home-main">
+
+<div class="brand">
+
+<div class="logo">🎓</div>
+
+<div class="brand-name">
+CLASSROOM LIVE
+</div>
+
+</div>
+
+
+<div class="eyebrow">
+SCHOOL VIDEO MEETING
+</div>
+
+
+<h1 class="hero">
+Connect your classroom anywhere.
+</h1>
+
+
+<p class="description">
+
+Video meeting sederhana untuk guru dan siswa.
+Tidak perlu install aplikasi.
+Buka website, izinkan kamera dan microphone,
+kemudian masuk kelas.
+
+</p>
+
+
+<label class="label">
+Nama
+</label>
+
+<input
+    id="name"
+    class="input"
+    placeholder="Masukkan nama"
+    maxlength="40"
+/>
+
+
+<div class="buttons">
+
+<button
+    class="btn btn-primary"
+    onclick="createRoom()"
+>
+🎓 Create Meeting
+</button>
+
+
+<button
+    class="btn"
+    onclick="showJoin()"
+>
+🚪 Join Meeting
+</button>
+
+</div>
+
+
+<div
+    id="joinArea"
+    class="join-area hidden"
+>
+
+<input
+    id="code"
+    class="input"
+    placeholder="CLASS-82K4"
+    maxlength="10"
+/>
+
+<button
+    class="btn btn-primary"
+    style="width:100%;margin-top:10px"
+    onclick="joinRoom()"
+>
+Join Classroom
+</button>
+
+</div>
+
+
+<div id="error" class="error"></div>
+
+</div>
+
+
+<div class="home-info">
+
+<div>
+
+<div class="info-title">
+CLASSROOM LIVE
+</div>
+
+
+<div class="info-item">
+
+<div class="info-icon">📹</div>
+
+<div>
+
+<strong>Real Camera</strong>
+
+<span>
+Gunakan kamera HP, laptop atau webcam.
+</span>
+
+</div>
+
+</div>
+
+
+<div class="info-item">
+
+<div class="info-icon">🎤</div>
+
+<div>
+
+<strong>Real Microphone</strong>
+
+<span>
+Gunakan microphone bawaan atau headset.
+</span>
+
+</div>
+
+</div>
+
+
+<div class="info-item">
+
+<div class="info-icon">👥</div>
+
+<div>
+
+<strong>Up to 20 People</strong>
+
+<span>
+Guru dan siswa dalam satu classroom.
+</span>
+
+</div>
+
+</div>
+
+
+<div class="info-item">
+
+<div class="info-icon">🙋</div>
+
+<div>
+
+<strong>Raise Hand</strong>
+
+<span>
+Siswa dapat mengangkat tangan.
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+LOBBY
+========================================= -->
+
+<section id="lobby">
+
+<div class="lobby-card">
+
+<div class="lobby-title">
+
+<h2>
+Ready to join?
+</h2>
+
+<span
+    id="lobbyCode"
+    class="code"
+>
+</span>
+
+</div>
+
+
+<div class="preview">
+
+<video
+    id="previewVideo"
+    autoplay
+    muted
+    playsinline
+></video>
+
+<div
+    id="previewStatus"
+    class="preview-status"
+>
+Preparing camera...
+</div>
+
+</div>
+
+
+<div class="lobby-actions">
+
+<button
+    class="btn"
+    onclick="togglePreviewMic()"
+    id="previewMic"
+>
+🎤 Mic ON
+</button>
+
+
+<button
+    class="btn"
+    onclick="togglePreviewCam()"
+    id="previewCam"
+>
+📷 Camera ON
+</button>
+
+
+<button
+    class="btn btn-primary"
+    onclick="enterMeeting()"
+>
+Join Now
+</button>
+
+</div>
+
+<div id="lobbyError" class="error"></div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================
+MEETING
+========================================= -->
+
+<section id="meeting">
+
+
+<header class="topbar">
+
+<div class="top-left">
+
+<div class="small-logo">
+🎓
+</div>
+
+<div class="top-name">
+CLASSROOM LIVE
+</div>
+
+</div>
+
+
+<div class="top-right">
+
+<span
+    id="connection"
+    class="status"
+>
+🟢 Connected
+</span>
+
+<span
+    id="meetingCode"
+    class="code"
+>
+CLASS-XXXX
+</span>
+
+</div>
+
+</header>
+
+
+<main id="grid" class="grid"></main>
+
+
+<footer class="controls">
+
+<button
+    id="micButton"
+    class="control"
+    onclick="toggleMic()"
+>
+🎤 Mic ON
+</button>
+
+
+<button
+    id="camButton"
+    class="control"
+    onclick="toggleCam()"
+>
+📷 Camera ON
+</button>
+
+
+<button
+    id="handButton"
+    class="control"
+    onclick="toggleHand()"
+>
+🙋 Raise Hand
+</button>
+
+
+<button
+    class="control"
+    onclick="openParticipants()"
+>
+👥 People
+</button>
+
+
+<button
+    class="control"
+    onclick="openBackground()"
+>
+🖼️ Background
+</button>
+
+
+<button
+    class="control"
+    onclick="openNameModal()"
+>
+✏️ Name
+</button>
+
+
+<button
+    class="control leave"
+    onclick="leave()"
+>
+Leave
+</button>
+
+</footer>
+
+</section>
+
+
+<!-- =========================================
+PARTICIPANTS
+========================================= -->
+
+<aside
+    id="peoplePanel"
+    class="panel"
+>
+
+<div class="panel-head">
+
+<h3>
+Participants
+<span id="peopleCount">0/20</span>
+</h3>
+
+<button
+    class="close-panel"
+    onclick="closeParticipants()"
+>
+×
+</button>
+
+</div>
+
+<div
+    id="peopleList"
+    class="people"
+></div>
+
+</aside>
+
+
+<!-- =========================================
+NAME MODAL
+========================================= -->
+
+<div
+    id="nameModal"
+    class="modal"
+>
+
+<div class="modal-card">
+
+<h3>
+Change your name
+</h3>
+
+<input
+    id="newName"
+    class="input"
+    maxlength="40"
+    placeholder="Nama baru"
+/>
+
+<div class="modal-buttons">
+
+<button
+    class="btn"
+    onclick="closeNameModal()"
+>
+Cancel
+</button>
+
+<button
+    class="btn btn-primary"
+    onclick="changeName()"
+>
+Save
+</button>
+
+</div>
+
+<div
+    id="nameError"
+    class="error"
+></div>
+
+</div>
+
+</div>
+
+
+<!-- =========================================
+BACKGROUND MODAL
+========================================= -->
+
+<div
+    id="backgroundModal"
+    class="modal"
+>
+
+<div class="modal-card">
+
+<h3>
+Virtual Background
+</h3>
+
+<p style="color:#9ba3b3;font-size:14px;line-height:1.5">
+
+Pilih foto dari HP atau komputer.
+Foto diproses di browser dan tidak perlu
+di-upload ke server.
+
+</p>
+
+
+<input
+    id="backgroundFile"
+    class="input"
+    type="file"
+    accept="image/*"
+    onchange="selectBackground(event)"
+>
+
+
+<div class="modal-buttons">
+
+<button
+    class="btn"
+    onclick="removeBackground()"
+>
+Remove
+</button>
+
+<button
+    class="btn"
+    onclick="closeBackground()"
+>
+Close
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================================
+JAVASCRIPT
+========================================= -->
+
+<script>
+
+const socket = io();
+
+const peers = new Map();
+
+let stream = null;
+
+let code = "";
+
+let myId = "";
+
+let mic = true;
+
+let cam = true;
+
+let hand = false;
+
+let myName = "";
+
+let backgroundImage = null;
+
+let backgroundEnabled = false;
+
+let pendingRoom = null;
+
+let pendingAction = null;
+
+
+/* =========================================
+WEBRTC
+========================================= */
+
+const rtcConfig = {
+
+    iceServers:[
+        {
+            urls:"stun:stun.l.google.com:19302"
+        }
+    ]
+
+};
+
+
+/* =========================================
+ELEMENTS
+========================================= */
+
+const $ = id =>
+    document.getElementById(id);
+
+
+function setError(text){
+
+    $("error").textContent = text;
+
+}
+
+
+function showJoin(){
+
+    $("joinArea").classList.remove("hidden");
+
+    $("code").focus();
+
+}
+
+
+/* =========================================
+MEDIA
+========================================= */
+
+async function getMedia(){
+
+    if(
+        !navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia
+    ){
+
+        setError(
+            "Camera dan microphone membutuhkan HTTPS."
+        );
+
+        return false;
+    }
+
+
+    try{
+
+        stream =
+            await navigator.mediaDevices.getUserMedia({
+                video:{
+                    facingMode:"user"
+                },
+                audio:true
+            });
+
+        mic = true;
+        cam = true;
+
+        return true;
+
+    }catch(error){
+
+        console.log(error);
+
+        try{
+
+            stream =
+                await navigator.mediaDevices.getUserMedia({
+                    video:{
+                        facingMode:"user"
+                    },
+                    audio:false
+                });
+
+            mic = false;
+            cam = true;
+
+            return true;
+
+        }catch(error2){
+
+            setError(
+                "Camera permission denied or camera unavailable."
+            );
+
+            return false;
+        }
+
+    }
+
+}
+
+
+/* =========================================
+CREATE ROOM
+========================================= */
+
+async function createRoom(){
+
+    myName =
+        $("name").value.trim() || "Guru";
+
+    if(!await getMedia()) return;
+
+
+    pendingAction = "create";
+
+    showLobby();
+
+}
+
+
+/* =========================================
+JOIN ROOM
+========================================= */
+
+async function joinRoom(){
+
+    const enteredCode =
+        $("code").value.trim().toUpperCase();
+
+
+    if(!enteredCode){
+
+        setError("Masukkan kode meeting.");
+
+        return;
+    }
+
+
+    myName =
+        $("name").value.trim() || "Siswa";
+
+
+    if(!await getMedia()) return;
+
+
+    pendingAction = "join";
+
+    pendingRoom = enteredCode;
+
+    showLobby();
+
+}
+
+
+/* =========================================
+LOBBY
+========================================= */
+
+function showLobby(){
+
+    $("home").style.display = "none";
+
+    $("lobby").style.display = "flex";
+
+    $("previewVideo").srcObject = stream;
+
+    $("previewStatus").textContent =
+        cam
+            ? "📷 Camera ready"
+            : "Camera unavailable";
+
+}
+
+
+function togglePreviewMic(){
+
+    if(!stream) return;
+
+    mic = !mic;
+
+    stream
+        .getAudioTracks()
+        .forEach(track => {
+            track.enabled = mic;
+        });
+
+
+    $("previewMic").textContent =
+        mic
+            ? "🎤 Mic ON"
+            : "🔇 Mic OFF";
+
+}
+
+
+function togglePreviewCam(){
+
+    if(!stream) return;
+
+    cam = !cam;
+
+    stream
+        .getVideoTracks()
+        .forEach(track => {
+            track.enabled = cam;
+        });
+
+
+    $("previewCam").textContent =
+        cam
+            ? "📷 Camera ON"
+            : "📷 Camera OFF";
+
+}
+
+
+function enterMeeting(){
+
+    $("lobbyError").textContent = "";
+
+
+    if(pendingAction === "create"){
+
+        socket.emit(
+            "create-room",
+            {
+                name:myName
+            },
+            response => {
+
+                if(!response.ok){
+
+                    $("lobbyError").textContent =
+                        response.error;
+
+                    return;
+                }
+
+
+                startMeeting(
+                    response.code
+                );
+
+            }
+        );
+
+    }else{
+
+        socket.emit(
+            "join-room",
+            {
+                code:pendingRoom,
+                name:myName
+            },
+            response => {
+
+                if(!response.ok){
+
+                    $("lobbyError").textContent =
+                        response.error;
+
+                    return;
+                }
+
+
+                startMeeting(
+                    response.code
+                );
+
+
+                response.existingPeers.forEach(
+                    peerData => {
+
+                        createOffer(
+                            peerData.id,
+                            peerData.name
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+}
+
+
+/* =========================================
+START MEETING
+========================================= */
+
+function startMeeting(roomCode){
+
+    code = roomCode;
+
+    myId = socket.id;
+
+    $("lobby").style.display = "none";
+
+    $("meeting").style.display = "block";
+
+    $("meetingCode").textContent = code;
+
+    addLocalVideo();
+
+    updateButtons();
+
+}
+
+
+/* =========================================
+LOCAL VIDEO
+========================================= */
+
+function addLocalVideo(){
+
+    let tile =
+        document.getElementById(
+            "tile-" + myId
+        );
+
+
+    if(tile) return;
+
+
+    tile = document.createElement("div");
+
+    tile.className = "tile";
+
+    tile.id = "tile-" + myId;
+
+
+    const video =
+        document.createElement("video");
+
+    video.autoplay = true;
+
+    video.muted = true;
+
+    video.playsInline = true;
+
+    video.srcObject = stream;
+
+
+    const avatar =
+        createAvatar(myName);
+
+
+    const info =
+        document.createElement("div");
+
+    info.className = "tile-info";
+
+
+    const nameTag =
+        document.createElement("div");
+
+    nameTag.className = "name-tag";
+
+    nameTag.id = "name-" + myId;
+
+    nameTag.textContent =
+        myName + " (You)";
+
+
+    const icons =
+        document.createElement("div");
+
+    icons.className = "media-icons";
+
+
+    const micIcon =
+        document.createElement("span");
+
+    micIcon.className =
+        "media-icon";
+
+    micIcon.id =
+        "mic-" + myId;
+
+    micIcon.textContent =
+        mic ? "🎤" : "🔇";
+
+
+    const handIcon =
+        document.createElement("span");
+
+    handIcon.className =
+        "hand-icon";
+
+    handIcon.id =
+        "hand-" + myId;
+
+    handIcon.textContent =
+        "🙋";
+
+
+    icons.append(
+        micIcon,
+        handIcon
+    );
+
+
+    info.append(
+        nameTag,
+        icons
+    );
+
+
+    tile.append(
+        avatar,
+        video,
+        info
+    );
+
+
+    $("grid").appendChild(tile);
+
+    updateLocalVideo();
+
+}
+
+
+/* =========================================
+AVATAR
+========================================= */
+
+function getInitials(name){
+
+    const words =
+        name
+            .trim()
+            .split(/\s+/)
+            .slice(0,2);
+
+
+    return words
+        .map(word =>
+            word.charAt(0).toUpperCase()
+        )
+        .join("");
+}
+
+
+function createAvatar(name){
+
+    const avatar =
+        document.createElement("div");
+
+    avatar.className = "avatar";
+
+
+    const circle =
+        document.createElement("div");
+
+    circle.className =
+        "avatar-circle";
+
+    circle.textContent =
+        getInitials(name) || "?";
+
+
+    avatar.appendChild(circle);
+
+    return avatar;
+
+}
+
+
+/* =========================================
+PEER
+========================================= */
+
+function createPeer(id,name){
+
+    if(peers.has(id)){
+
+        return peers.get(id);
+
+    }
+
+
+    const peer =
+        new RTCPeerConnection(
+            rtcConfig
+        );
+
+
+    peers.set(
+        id,
+        peer
+    );
+
+
+    if(stream){
+
+        stream
+            .getTracks()
+            .forEach(track => {
+
+                peer.addTrack(
+                    track,
+                    stream
+                );
+
+            });
+
+    }
+
+
+    peer.onicecandidate =
+        event => {
+
+            if(!event.candidate)
+                return;
+
+
+            socket.emit(
+                "ice-candidate",
+                {
+                    to:id,
+                    candidate:event.candidate
+                }
+            );
+
+        };
+
+
+    peer.ontrack =
+        event => {
+
+            if(
+                event.streams &&
+                event.streams[0]
+            ){
+
+                addRemoteVideo(
+                    id,
+                    name,
+                    event.streams[0]
+                );
+
+            }
+
+        };
+
+
+    peer.onconnectionstatechange =
+        () => {
+
+            if(
+                peer.connectionState ===
+                "failed"
+            ){
+
+                peer.restartIce();
+
+            }
+
+        };
+
+
+    return peer;
+
+}
+
+
+/* =========================================
+OFFER
+========================================= */
+
+async function createOffer(id,name){
+
+    try{
+
+        const peer =
+            createPeer(id,name);
+
+
+        const offer =
+            await peer.createOffer();
+
+
+        await peer.setLocalDescription(
+            offer
+        );
+
+
+        socket.emit(
+            "offer",
+            {
+                to:id,
+                offer:offer
+            }
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =========================================
+REMOTE VIDEO
+========================================= */
+
+function addRemoteVideo(id,name,remoteStream){
+
+    let tile =
+        document.getElementById(
+            "tile-" + id
+        );
+
+
+    if(!tile){
+
+        tile =
+            document.createElement("div");
+
+        tile.className = "tile";
+
+        tile.id = "tile-" + id;
+
+
+        const avatar =
+            createAvatar(
+                name || "Peserta"
+            );
+
+
+        const video =
+            document.createElement("video");
+
+        video.autoplay = true;
+
+        video.playsInline = true;
+
+        video.srcObject =
+            remoteStream;
+
+
+        const info =
+            document.createElement("div");
+
+        info.className = "tile-info";
+
+
+        const nameTag =
+            document.createElement("div");
+
+        nameTag.className =
+            "name-tag";
+
+        nameTag.id =
+            "name-" + id;
+
+        nameTag.textContent =
+            name || "Peserta";
+
+
+        const icons =
+            document.createElement("div");
+
+        icons.className =
+            "media-icons";
+
+
+        const micIcon =
+            document.createElement("span");
+
+        micIcon.className =
+            "media-icon";
+
+        micIcon.id =
+            "mic-" + id;
+
+        micIcon.textContent =
+            "🎤";
+
+
+        const handIcon =
+            document.createElement("span");
+
+        handIcon.className =
+            "hand-icon";
+
+        handIcon.id =
+            "hand-" + id;
+
+        handIcon.textContent =
+            "🙋";
+
+
+        icons.append(
+            micIcon,
+            handIcon
+        );
+
+
+        info.append(
+            nameTag,
+            icons
+        );
+
+
+        tile.append(
+            avatar,
+            video,
+            info
+        );
+
+
+        $("grid").appendChild(tile);
+
+    }
+
+
+    const video =
+        tile.querySelector("video");
+
+    video.srcObject =
+        remoteStream;
+
+}
+
+
+/* =========================================
+SOCKET EVENTS
+========================================= */
+
+socket.on(
+    "peer-joined",
+    peerData => {
+
+        createPeer(
+            peerData.id,
+            peerData.name
+        );
+
+    }
+);
+
+
+socket.on(
+    "offer",
+    async data => {
+
+        try{
+
+            const peer =
+                createPeer(
+                    data.from,
+                    "Peserta"
+                );
+
+
+            await peer.setRemoteDescription(
+                data.offer
+            );
+
+
+            const answer =
+                await peer.createAnswer();
+
+
+            await peer.setLocalDescription(
+                answer
+            );
+
+
+            socket.emit(
+                "answer",
+                {
+                    to:data.from,
+                    answer:answer
+                }
+            );
+
+        }catch(error){
+
+            console.error(error);
+
+        }
+
+    }
+);
+
+
+socket.on(
+    "answer",
+    async data => {
+
+        try{
+
+            const peer =
+                peers.get(
+                    data.from
+                );
+
+
+            if(peer){
+
+                await peer.setRemoteDescription(
+                    data.answer
+                );
+
+            }
+
+        }catch(error){
+
+            console.error(error);
+
+        }
+
+    }
+);
+
+
+socket.on(
+    "ice-candidate",
+    async data => {
+
+        try{
+
+            const peer =
+                peers.get(
+                    data.from
+                );
+
+
+            if(
+                peer &&
+                data.candidate
+            ){
+
+                await peer.addIceCandidate(
+                    data.candidate
+                );
+
+            }
+
+        }catch(error){
+
+            console.log(error);
+
+        }
+
+    }
+);
+
+
+/* =========================================
+PARTICIPANTS
+========================================= */
+
+socket.on(
+    "participants",
+    participants => {
+
+        updateParticipants(
+            participants
+        );
+
+    }
+);
+
+
+function updateParticipants(list){
+
+    $("peopleCount").textContent =
+        list.length + "/20";
+
+
+    const people =
+        $("peopleList");
+
+
+    people.innerHTML = "";
+
+
+    list.forEach(person => {
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "person";
+
+
+        const avatar =
+            document.createElement("div");
+
+        avatar.className =
+            "person-avatar";
+
+        avatar.textContent =
+            getInitials(
+                person.name
+            );
+
+
+        const main =
+            document.createElement("div");
+
+        main.className =
+            "person-main";
+
+
+        const personName =
+            document.createElement("div");
+
+        personName.className =
+            "person-name";
+
+        personName.textContent =
+            person.name +
+            (
+                person.id === myId
+                    ? " (You)"
+                    : ""
+            );
+
+
+        const role =
+            document.createElement("div");
+
+        role.className =
+            "person-role";
+
+        role.textContent =
+            person.role === "teacher"
+                ? "Teacher"
+                : "Student";
+
+
+        main.append(
+            personName,
+            role
+        );
+
+
+        const status =
+            document.createElement("div");
+
+        status.className =
+            "person-status";
+
+
+        status.textContent =
+            (
+                person.mic
+                    ? "🎤"
+                    : "🔇"
+            ) +
+            " " +
+            (
+                person.camera
+                    ? "📷"
+                    : "🚫"
+            ) +
+            " " +
+            (
+                person.hand
+                    ? "🙋"
+                    : ""
+            );
+
+
+        row.append(
+            avatar,
+            main,
+            status
+        );
+
+
+        people.appendChild(row);
+
+    });
+
+}
+
+
+/* =========================================
+MEDIA STATE
+========================================= */
+
+socket.on(
+    "media-state",
+    data => {
+
+        updateRemoteMedia(
+            data.id,
+            data.camera,
+            data.mic
+        );
+
+    }
+);
+
+
+function updateRemoteMedia(
+    id,
+    camera,
+    remoteMic
+){
+
+    const tile =
+        document.getElementById(
+            "tile-" + id
+        );
+
+
+    if(!tile) return;
+
+
+    const video =
+        tile.querySelector("video");
+
+
+    const avatar =
+        tile.querySelector(".avatar");
+
+
+    const micIcon =
+        document.getElementById(
+            "mic-" + id
+        );
+
+
+    if(video){
+
+        video.style.display =
+            camera
+                ? "block"
+                : "none";
+
+    }
+
+
+    if(avatar){
+
+        avatar.style.display =
+            camera
+                ? "none"
+                : "grid";
+
+    }
+
+
+    if(micIcon){
+
+        micIcon.textContent =
+            remoteMic
+                ? "🎤"
+                : "🔇";
+
+    }
+
+}
+
+
+/* =========================================
+HAND
+========================================= */
+
+function toggleHand(){
+
+    hand = !hand;
+
+
+    socket.emit(
+        "raise-hand",
+        {
+            hand:hand
+        }
+    );
+
+
+    updateHandButton();
+
+}
+
+
+function updateHandButton(){
+
+    const button =
+        $("handButton");
+
+
+    button.textContent =
+        hand
+            ? "🙋 Hand Raised"
+            : "🙋 Raise Hand";
+
+
+    button.classList.toggle(
+        "hand-active",
+        hand
+    );
+
+}
+
+
+socket.on(
+    "hand-state",
+    data => {
+
+        const icon =
+            document.getElementById(
+                "hand-" + data.id
+            );
+
+
+        if(icon){
+
+            icon.classList.toggle(
+                "show",
+                data.hand
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================
+CAMERA
+========================================= */
+
+function toggleCam(){
+
+    if(!stream) return;
+
+
+    cam = !cam;
+
+
+    stream
+        .getVideoTracks()
+        .forEach(track => {
+
+            track.enabled =
+                cam;
+
+        });
+
+
+    updateButtons();
+
+    updateLocalVideo();
+
+
+    socket.emit(
+        "media-state",
+        {
+            camera:cam,
+            mic:mic
+        }
+    );
+
+}
+
+
+function updateLocalVideo(){
+
+    const tile =
+        document.getElementById(
+            "tile-" + myId
+        );
+
+
+    if(!tile) return;
+
+
+    const video =
+        tile.querySelector("video");
+
+    const avatar =
+        tile.querySelector(".avatar");
+
+
+    if(video){
+
+        video.style.display =
+            cam
+                ? "block"
+                : "none";
+
+    }
+
+
+    if(avatar){
+
+        avatar.style.display =
+            cam
+                ? "none"
+                : "grid";
+
+    }
+
+}
+
+
+/* =========================================
+MIC
+========================================= */
+
+function toggleMic(){
+
+    if(!stream) return;
+
+
+    mic = !mic;
+
+
+    stream
+        .getAudioTracks()
+        .forEach(track => {
+
+            track.enabled =
+                mic;
+
+        });
+
+
+    updateButtons();
+
+
+    socket.emit(
+        "media-state",
+        {
+            camera:cam,
+            mic:mic
+        }
+    );
+
+}
+
+
+/* =========================================
+BUTTONS
+========================================= */
+
+function updateButtons(){
+
+    $("micButton").textContent =
+        mic
+            ? "🎤 Mic ON"
+            : "🔇 Mic OFF";
+
+
+    $("micButton")
+        .classList.toggle(
+            "off",
+            !mic
+        );
+
+
+    $("camButton").textContent =
+        cam
+            ? "📷 Camera ON"
+            : "📷 Camera OFF";
+
+
+    $("camButton")
+        .classList.toggle(
+            "off",
+            !cam
+        );
+
+
+    updateHandButton();
+
+
+    const localMic =
+        $("mic-" + myId);
+
+
+    if(localMic){
+
+        localMic.textContent =
+            mic
+                ? "🎤"
+                : "🔇";
+
+    }
+
+}
+
+
+/* =========================================
+PARTICIPANTS PANEL
+========================================= */
+
+function openParticipants(){
+
+    $("peoplePanel")
+        .classList.add("open");
+
+}
+
+
+function closeParticipants(){
+
+    $("peoplePanel")
+        .classList.remove("open");
+
+}
+
+
+/* =========================================
+CHANGE NAME
+========================================= */
+
+function openNameModal(){
+
+    $("newName").value =
+        myName;
+
+    $("nameModal")
+        .classList.add("show");
+
+}
+
+
+function closeNameModal(){
+
+    $("nameModal")
+        .classList.remove("show");
+
+    $("nameError").textContent = "";
+
+}
+
+
+function changeName(){
+
+    const newName =
+        $("newName").value.trim();
+
+
+    if(!newName){
+
+        $("nameError").textContent =
+            "Nama tidak boleh kosong.";
+
+        return;
+    }
+
+
+    socket.emit(
+        "change-name",
+        {
+            name:newName
+        },
+        response => {
+
+            if(!response.ok){
+
+                $("nameError").textContent =
+                    response.error;
+
+                return;
+            }
+
+
+            myName =
+                response.name;
+
+
+            const localName =
+                $("name-" + myId);
+
+
+            if(localName){
+
+                localName.textContent =
+                    myName + " (You)";
+
+            }
+
+
+            const avatar =
+                document.querySelector(
+                    "#tile-" +
+                    myId +
+                    " .avatar-circle"
+                );
+
+
+            if(avatar){
+
+                avatar.textContent =
+                    getInitials(
+                        myName
+                    );
+
+            }
+
+
+            closeNameModal();
+
+        }
+    );
+
+}
+
+
+socket.on(
+    "name-changed",
+    data => {
+
+        const nameTag =
+            $("name-" + data.id);
+
+
+        if(nameTag){
+
+            nameTag.textContent =
+                data.name;
+
+        }
+
+
+        const avatar =
+            document.querySelector(
+                "#tile-" +
+                data.id +
+                " .avatar-circle"
+            );
+
+
+        if(avatar){
+
+            avatar.textContent =
+                getInitials(
+                    data.name
+                );
+
+        }
+
+    }
+);
+
+
+/* =========================================
+BACKGROUND
+========================================= */
+
+function openBackground(){
+
+    $("backgroundModal")
+        .classList.add("show");
+
+}
+
+
+function closeBackground(){
+
+    $("backgroundModal")
+        .classList.remove("show");
+
+}
+
+
+function selectBackground(event){
+
+    const file =
+        event.target.files[0];
+
+
+    if(!file) return;
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        () => {
+
+            backgroundImage =
+                new Image();
+
+
+            backgroundImage.onload =
+                () => {
+
+                    backgroundEnabled = true;
+
+                    startVirtualBackground();
+
+                };
+
+
+            backgroundImage.src =
+                reader.result;
+
+        };
+
+
+    reader.readAsDataURL(file);
+
+}
+
+
+function removeBackground(){
+
+    backgroundEnabled = false;
+
+    backgroundImage = null;
+
+    const video =
+        document.querySelector(
+            "#tile-" +
+            myId +
+            " video"
+        );
+
+
+    if(video){
+
+        video.srcObject =
+            stream;
+
+    }
+
+
+    closeBackground();
+
+}
+
+
+let segmentation = null;
+
+let backgroundCanvas = null;
+
+let backgroundContext = null;
+
+let backgroundStream = null;
+
+
+function startVirtualBackground(){
+
+    if(!backgroundImage) return;
+
+
+    const video =
+        document.querySelector(
+            "#tile-" +
+            myId +
+            " video"
+        );
+
+
+    if(!video) return;
+
+
+    if(
+        typeof SelfieSegmentation ===
+        "undefined"
+    ){
+
+        alert(
+            "Virtual background tidak tersedia pada browser ini."
+        );
+
+        backgroundEnabled = false;
+
+        return;
+    }
+
+
+    if(!backgroundCanvas){
+
+        backgroundCanvas =
+            document.createElement(
+                "canvas"
+            );
+
+        backgroundCanvas.width =
+            640;
+
+        backgroundCanvas.height =
+            480;
+
+        backgroundContext =
+            backgroundCanvas.getContext(
+                "2d"
+            );
+
+    }
+
+
+    if(!segmentation){
+
+        segmentation =
+            new SelfieSegmentation({
+
+                locateFile:
+                    file =>
+                        "https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/" +
+                        file
+
+            });
+
+
+        segmentation.setOptions({
+
+            modelSelection:1
+
+        });
+
+
+        segmentation.onResults(
+            drawVirtualBackground
+        );
+
+    }
+
+
+    processVirtualBackground();
+
+}
+
+
+async function processVirtualBackground(){
+
+    if(!backgroundEnabled) return;
+
+    if(!stream) return;
+
+
+    const source =
+        document.querySelector(
+            "#tile-" +
+            myId +
+            " video"
+        );
+
+
+    if(!source) return;
+
+
+    try{
+
+        await segmentation.send({
+            image:source
+        });
+
+    }catch(error){
+
+        console.log(
+            "Background error:",
+            error
+        );
+
+    }
+
+
+    requestAnimationFrame(
+        processVirtualBackground
+    );
+
+}
+
+
+function drawVirtualBackground(results){
+
+    if(!backgroundEnabled) return;
+
+
+    if(!backgroundContext) return;
+
+
+    const canvas =
+        backgroundCanvas;
+
+
+    const ctx =
+        backgroundContext;
+
+
+    ctx.save();
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    if(backgroundImage){
+
+        ctx.drawImage(
+            backgroundImage,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+    }
+
+
+    ctx.globalCompositeOperation =
+        "destination-out";
+
+
+    ctx.drawImage(
+        results.segmentationMask,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    ctx.globalCompositeOperation =
+        "destination-over";
+
+
+    if(backgroundImage){
+
+        ctx.drawImage(
+            backgroundImage,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+    }
+
+
+    ctx.globalCompositeOperation =
+        "source-over";
+
+
+    ctx.drawImage(
+        results.image,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    ctx.restore();
+
+
+    if(!backgroundStream){
+
+        backgroundStream =
+            canvas.captureStream(30);
+
+
+        const originalAudio =
+            stream.getAudioTracks();
+
+
+        originalAudio.forEach(
+            track => {
+
+                backgroundStream.addTrack(
+                    track
+                );
+
+            }
+        );
+
+
+        videoWithBackground(
+            backgroundStream
+        );
+
+    }
+
+}
+
+
+function videoWithBackground(
+    newStream
+){
+
+    const localVideo =
+        document.querySelector(
+            "#tile-" +
+            myId +
+            " video"
+        );
+
+
+    if(localVideo){
+
+        localVideo.srcObject =
+            newStream;
+
+    }
+
+
+    peers.forEach(
+        peer => {
+
+            const senders =
+                peer.getSenders();
+
+
+            const videoSender =
+                senders.find(
+                    sender =>
+                        sender.track &&
+                        sender.track.kind ===
+                        "video"
+                );
+
+
+            if(
+                videoSender &&
+                backgroundStream
+            ){
+
+                const videoTrack =
+                    backgroundStream.getVideoTracks()[0];
+
+
+                if(videoTrack){
+
+                    videoSender.replaceTrack(
+                        videoTrack
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================
+COPY LINK
+========================================= */
+
+async function copyLink(){
+
+    const link =
+        location.origin +
+        "/meeting/" +
+        code;
+
+
+    try{
+
+        await navigator.clipboard.writeText(
+            link
+        );
+
+        alert(
+            "Meeting link copied!"
+        );
+
+    }catch(error){
+
+        prompt(
+            "Copy meeting link:",
+            link
+        );
+
+    }
+
+}
+
+
+/* =========================================
+CONNECTION
+========================================= */
+
+socket.on(
+    "connect",
+    () => {
+
+        $("connection").textContent =
+            "🟢 Connected";
+
+        $("connection").style.color =
+            "#32c875";
+
+    }
+);
+
+
+socket.on(
+    "disconnect",
+    () => {
+
+        $("connection").textContent =
+            "🟠 Reconnecting...";
+
+        $("connection").style.color =
+            "#f3b83f";
+
+    }
+);
+
+
+/* =========================================
+LEAVE
+========================================= */
+
+function leave(){
+
+    socket.emit(
+        "leave-room"
+    );
+
+
+    peers.forEach(
+        peer => peer.close()
+    );
+
+
+    peers.clear();
+
+
+    if(stream){
+
+        stream
+            .getTracks()
+            .forEach(
+                track =>
+                    track.stop()
+            );
+
+    }
+
+
+    location.href = "/";
+
+}
+
+
+/* =========================================
+DIRECT MEETING LINK
+========================================= */
+
+window.addEventListener(
+    "load",
+    () => {
+
+        const match =
+            location.pathname.match(
+                /\/meeting\/([^/]+)/
+            );
+
+
+        if(match){
+
+            $("code").value =
+                match[1];
+
+            showJoin();
+
+        }
+
+    }
+);
+
+
+/* =========================================
+KEYBOARD
+========================================= */
+
+$("newName")
+    ?.addEventListener(
+        "keydown",
+        event => {
+
+            if(
+                event.key ===
+                "Enter"
+            ){
+
+                changeName();
+
+            }
+
+        }
+    );
+
+
+</script>
+
+</body>
+</html>

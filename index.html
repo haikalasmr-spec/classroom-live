@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CLASSROOM LIVE</title><script src="/socket.io/socket.io.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101114;color:#fff;font:16px Arial,sans-serif}
+button,input{font:inherit}button{border:0;border-radius:10px;padding:12px 16px;cursor:pointer}
+.home{min-height:100vh;display:grid;place-items:center;padding:20px}.card{width:min(440px,100%);background:#191b20;padding:28px;border-radius:18px}
+input{width:100%;padding:13px;border-radius:10px;border:1px solid #3a3d45;background:#101114;color:#fff;margin-top:8px}
+.row{display:flex;gap:10px;margin-top:12px}.row button{flex:1}.primary{background:#fff;color:#111;font-weight:bold}.secondary,.control{background:#30333a;color:#fff}.error{color:#ff9292;margin-top:12px}
+#meeting{display:none;height:100vh}.top{height:62px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;background:#17191e}
+.status{font-size:13px;color:#9fe0aa}.grid{height:calc(100vh - 132px);padding:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;overflow:auto}
+.tile{position:relative;min-height:190px;background:#202329;border-radius:14px;overflow:hidden}.tile video{width:100%;height:100%;min-height:190px;object-fit:cover;background:#08090b}.label{position:absolute;left:10px;bottom:10px;background:#000b;padding:7px 10px;border-radius:8px}
+.controls{height:70px;display:flex;justify-content:center;align-items:center;gap:10px;background:#17191e}.off,.leave{color:#fff}.off{background:#8b2e35}.leave{background:#d33b45}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.tile,.tile video{min-height:220px}.controls{gap:6px}.control{padding:11px 12px;font-size:13px}}
+</style></head><body>
+<div id="home" class="home"><div class="card"><h1>CLASSROOM LIVE</h1><p>Simple video meeting — maksimal 10 siswa.</p>
+<input id="name" placeholder="Nama">
+<div class="row"><button class="primary" onclick="createRoom()">Create Meeting</button><button class="secondary" onclick="joinBox()">Join Meeting</button></div>
+<div id="join" style="display:none"><input id="code" placeholder="CLASS-82K4"><button class="primary" style="width:100%;margin-top:10px" onclick="joinRoom()">Join</button></div>
+<div id="error" class="error"></div></div></div>
+<div id="meeting"><header class="top"><b>CLASSROOM LIVE</b><span><b id="mc"></b> · <span id="conn" class="status">Connected</span></span></header>
+<main id="grid" class="grid"></main><footer class="controls">
+<button id="mic" class="control" onclick="toggleMic()">🎤 Mic ON</button><button id="cam" class="control" onclick="toggleCam()">📷 Camera ON</button>
+<button class="control" onclick="copyLink()">🔗 Link</button><button class="leave" onclick="leave()">Leave</button></footer></div>
+<script>
+const socket=io();const peers=new Map();let stream,code,myId,mic=true,cam=true;
+const cfg={iceServers:[{urls:"stun:stun.l.google.com:19302"}]};
+const name=()=>document.getElementById("name").value.trim()||"Siswa";
+const error=x=>document.getElementById("error").textContent=x;
+function joinBox(){document.getElementById("join").style.display="block"}
+async function media(){
+ if(!navigator.mediaDevices?.getUserMedia){error("Camera/microphone membutuhkan HTTPS.");return false}
+ try{stream=await navigator.mediaDevices.getUserMedia({video:true,audio:true});return true}
+ catch(e){
+  try{stream=await navigator.mediaDevices.getUserMedia({video:true,audio:false});mic=false;return true}
+  catch(e2){error("Camera permission denied or camera unavailable.");return false}
+ }
+}
+async function createRoom(){if(!await media())return;socket.emit("create-room",{name:name()},r=>{if(!r.ok)return error(r.error);start(r.code)})}
+async function joinRoom(){let c=document.getElementById("code").value.trim().toUpperCase();if(!c)return error("Masukkan kode.");if(!await media())return;
+ socket.emit("join-room",{code:c,name:name()},r=>{if(!r.ok)return error(r.error);start(r.code);r.existingPeers.forEach(p=>offer(p.id,p.name))})}
+function start(c){code=c;myId=socket.id;document.getElementById("home").style.display="none";document.getElementById("meeting").style.display="block";document.getElementById("mc").textContent=c;addLocal()}
+function addLocal(){let t=document.createElement("div");t.className="tile";t.id="t-"+myId;let v=document.createElement("video");v.autoplay=true;v.muted=true;v.playsInline=true;v.srcObject=stream;let l=document.createElement("div");l.className="label";l.textContent=name()+" (You)";t.append(v,l);grid.append(t)}
+function peer(id,n){if(peers.has(id))return peers.get(id);let p=new RTCPeerConnection(cfg);peers.set(id,p);stream.getTracks().forEach(x=>p.addTrack(x,stream));
+p.onicecandidate=e=>e.candidate&&socket.emit("ice-candidate",{to:id,candidate:e.candidate});p.ontrack=e=>remote(id,n,e.streams[0]);return p}
+async function offer(id,n){let p=peer(id,n),o=await p.createOffer();await p.setLocalDescription(o);socket.emit("offer",{to:id,offer:o})}
+socket.on("peer-joined",p=>peer(p.id,p.name));
+socket.on("offer",async d=>{let p=peer(d.from,"Peserta");await p.setRemoteDescription(d.offer);let a=await p.createAnswer();await p.setLocalDescription(a);socket.emit("answer",{to:d.from,answer:a})});
+socket.on("answer",d=>peers.get(d.from)?.setRemoteDescription(d.answer));
+socket.on("ice-candidate",async d=>{try{await peers.get(d.from)?.addIceCandidate(d.candidate)}catch(e){}});
+socket.on("peer-left",id=>{peers.get(id)?.close();peers.delete(id);document.getElementById("t-"+id)?.remove()});
+socket.on("media-state",d=>{let t=document.getElementById("t-"+d.id);if(t)t.querySelector(".label").textContent=t.querySelector(".label").textContent.replace(/ 🔇| 📷 OFF/g,"")+(d.mic?"":" 🔇")+(d.camera?"":" 📷 OFF")});
+function remote(id,n,s){let t=document.getElementById("t-"+id);if(t)return; t=document.createElement("div");t.className="tile";t.id="t-"+id;let v=document.createElement("video");v.autoplay=true;v.playsInline=true;v.srcObject=s;let l=document.createElement("div");l.className="label";l.textContent=n||"Peserta";t.append(v,l);grid.append(t)}
+function state(){socket.emit("media-state",{camera:cam,mic:mic})}
+function toggleMic(){mic=!mic;stream.getAudioTracks().forEach(t=>t.enabled=mic);document.getElementById("mic").textContent=mic?"🎤 Mic ON":"🔇 Mic OFF";document.getElementById("mic").classList.toggle("off",!mic);state()}
+function toggleCam(){cam=!cam;stream.getVideoTracks().forEach(t=>t.enabled=cam);document.getElementById("cam").textContent=cam?"📷 Camera ON":"📷 Camera OFF";document.getElementById("cam").classList.toggle("off",!cam);state()}
+async function copyLink(){let u=location.origin+"/meeting/"+code;try{await navigator.clipboard.writeText(u);alert("Link copied")}catch(e){prompt("Copy link:",u)}}
+function leave(){socket.emit("leave-room");stream?.getTracks().forEach(t=>t.stop());location.href="/"}
+window.addEventListener("load",()=>{let m=location.pathname.match(/\/meeting\/([^/]+)/);if(m){document.getElementById("code").value=m[1];joinBox()}})
+</script></body></html>

@@ -614,8 +614,6 @@ button{
 
 <body>
 
-<!-- HOME -->
-
 <section id="home">
 
     <div class="home-card">
@@ -651,17 +649,11 @@ button{
 
         <div class="home-buttons">
 
-            <button
-                id="createBtn"
-                class="primary"
-            >
+            <button id="createBtn" class="primary">
                 Buat Meeting
             </button>
 
-            <button
-                id="joinBtn"
-                class="secondary"
-            >
+            <button id="joinBtn" class="secondary">
                 Gabung Meeting
             </button>
 
@@ -673,8 +665,6 @@ button{
 
 </section>
 
-
-<!-- LOBBY -->
 
 <section id="lobby" class="hidden">
 
@@ -693,10 +683,7 @@ button{
                 playsinline
             ></video>
 
-            <div
-                id="lobbyLabel"
-                class="preview-label"
-            >
+            <div id="lobbyLabel" class="preview-label">
                 Kamera
             </div>
 
@@ -704,40 +691,26 @@ button{
 
         <div class="lobby-controls">
 
-            <button
-                id="lobbyMic"
-                class="control active"
-            >
+            <button id="lobbyMic" class="control active">
                 🎤 Mic
             </button>
 
-            <button
-                id="lobbyCamera"
-                class="control active"
-            >
+            <button id="lobbyCamera" class="control active">
                 📷 Kamera
             </button>
 
         </div>
 
-        <button
-            id="joinNowBtn"
-            class="join-btn"
-        >
+        <button id="joinNowBtn" class="join-btn">
             Masuk ke Meeting
         </button>
 
-        <div
-            id="lobbyError"
-            class="error"
-        ></div>
+        <div id="lobbyError" class="error"></div>
 
     </div>
 
 </section>
 
-
-<!-- MEETING -->
 
 <section id="meeting" class="hidden">
 
@@ -748,34 +721,22 @@ button{
                 CLASSROOM LIVE
             </div>
 
-            <div
-                id="roomLabel"
-                class="room-code"
-            >
+            <div id="roomLabel" class="room-code">
                 Meeting
             </div>
         </div>
 
         <div class="top-actions">
 
-            <button
-                id="copyBtn"
-                class="small-btn"
-            >
+            <button id="copyBtn" class="small-btn">
                 🔗 Salin
             </button>
 
-            <button
-                id="soundBtn"
-                class="sound-btn"
-            >
+            <button id="soundBtn" class="sound-btn">
                 🔊 Aktifkan Suara
             </button>
 
-            <button
-                id="peopleBtn"
-                class="small-btn"
-            >
+            <button id="peopleBtn" class="small-btn">
                 👥 <span id="countLabel">1</span>
             </button>
 
@@ -786,43 +747,28 @@ button{
 
     <div class="content">
 
-        <main
-            id="grid"
-            class="grid"
-        ></main>
+        <main id="grid" class="grid"></main>
 
-        <aside
-            id="sidebar"
-            class="sidebar"
-        >
+        <aside id="sidebar" class="sidebar">
 
             <div class="side-head">
                 Peserta
             </div>
 
-            <div
-                id="peopleList"
-                class="people-list"
-            ></div>
+            <div id="peopleList" class="people-list"></div>
 
         </aside>
 
     </div>
 
 
-    <div
-        id="chat"
-        class="chat"
-    >
+    <div id="chat" class="chat">
 
         <div class="chat-head">
             💬 Chat
         </div>
 
-        <div
-            id="chatMessages"
-            class="chat-messages"
-        ></div>
+        <div id="chatMessages" class="chat-messages"></div>
 
         <div class="chat-input">
 
@@ -843,59 +789,39 @@ button{
 
     <footer class="bottom">
 
-        <button
-            id="micBtn"
-            class="meet-btn active"
-            title="Microphone"
-        >
+        <button id="micBtn" class="meet-btn active" title="Microphone">
             🎤
         </button>
 
-        <button
-            id="cameraBtn"
-            class="meet-btn active"
-            title="Kamera"
-        >
+        <button id="cameraBtn" class="meet-btn active" title="Kamera">
             📷
         </button>
 
-        <button
-            id="handBtn"
-            class="meet-btn"
-            title="Angkat tangan"
-        >
+        <button id="handBtn" class="meet-btn" title="Angkat tangan">
             ✋
         </button>
 
-        <button
-            id="chatBtn"
-            class="meet-btn"
-            title="Chat"
-        >
+        <button id="chatBtn" class="meet-btn" title="Chat">
             💬
         </button>
 
-        <button
-            id="backgroundBtn"
-            class="meet-btn"
-            title="Background"
-        >
+        <button id="backgroundBtn" class="meet-btn" title="Background">
             🖼️
         </button>
 
         <button
-            id="nameBtn"
+            id="shareBtn"
             class="meet-btn"
-            title="Ganti nama"
+            title="Bagikan layar"
         >
+            🖥️
+        </button>
+
+        <button id="nameBtn" class="meet-btn" title="Ganti nama">
             👤
         </button>
 
-        <button
-            id="leaveBtn"
-            class="meet-btn danger"
-            title="Keluar"
-        >
+        <button id="leaveBtn" class="meet-btn danger" title="Keluar">
             ☎
         </button>
 
@@ -904,18 +830,10 @@ button{
 </section>
 
 
-<div
-    id="status"
-    class="status"
-></div>
+<div id="status" class="status"></div>
 
 
-<!-- NAME MODAL -->
-
-<div
-    id="nameModal"
-    class="modal"
->
+<div id="nameModal" class="modal">
 
     <div class="modal-card">
 
@@ -932,17 +850,11 @@ button{
 
         <div class="modal-buttons">
 
-            <button
-                id="cancelName"
-                class="secondary"
-            >
+            <button id="cancelName" class="secondary">
                 Batal
             </button>
 
-            <button
-                id="saveName"
-                class="primary"
-            >
+            <button id="saveName" class="primary">
                 Simpan
             </button>
 
@@ -953,12 +865,7 @@ button{
 </div>
 
 
-<!-- BACKGROUND MODAL -->
-
-<div
-    id="backgroundModal"
-    class="modal"
->
+<div id="backgroundModal" class="modal">
 
     <div class="modal-card">
 
@@ -968,31 +875,19 @@ button{
 
         <div class="background-options">
 
-            <button
-                class="bg-option"
-                data-bg="none"
-            >
+            <button class="bg-option" data-bg="none">
                 🚫 Tanpa Background
             </button>
 
-            <button
-                class="bg-option"
-                data-bg="blue"
-            >
+            <button class="bg-option" data-bg="blue">
                 🔵 Biru
             </button>
 
-            <button
-                class="bg-option"
-                data-bg="purple"
-            >
+            <button class="bg-option" data-bg="purple">
                 🟣 Ungu
             </button>
 
-            <button
-                class="bg-option"
-                id="uploadBgBtn"
-            >
+            <button class="bg-option" id="uploadBgBtn">
                 📁 Upload Foto
             </button>
 
@@ -1005,10 +900,7 @@ button{
             hidden
         >
 
-        <div
-            id="backgroundError"
-            class="error"
-        ></div>
+        <div id="backgroundError" class="error"></div>
 
         <button
             id="closeBackground"
@@ -1022,8 +914,6 @@ button{
 
 </div>
 
-
-<!-- HIDDEN RAW PROCESSING VIDEO -->
 
 <video
     id="processingVideo"
@@ -1080,6 +970,7 @@ const cameraBtn = document.getElementById("cameraBtn");
 const handBtn = document.getElementById("handBtn");
 const chatBtn = document.getElementById("chatBtn");
 const backgroundBtn = document.getElementById("backgroundBtn");
+const shareBtn = document.getElementById("shareBtn");
 const nameBtn = document.getElementById("nameBtn");
 const leaveBtn = document.getElementById("leaveBtn");
 
@@ -1128,8 +1019,6 @@ let localAudioTrack = null;
 let processedStream = null;
 let processedVideoTrack = null;
 
-let currentVideoTrack = null;
-
 let currentRoom = null;
 let currentName = "";
 let currentRole = "";
@@ -1140,12 +1029,19 @@ let handRaised = false;
 
 let joined = false;
 
+
+/*
+ * SCREEN SHARE
+ */
+
+let screenStream = null;
+let screenTrack = null;
+let sharingScreen = false;
+
+
 const peers = new Map();
-
 const pendingIce = new Map();
-
 const remoteStreams = new Map();
-
 const participantData = new Map();
 
 
@@ -1198,13 +1094,11 @@ function showStatus(text, duration = 2500){
 
 
 function showHomeError(text){
-
     document.getElementById("homeError").textContent = text;
 }
 
 
 function showLobbyError(text){
-
     document.getElementById("lobbyError").textContent = text;
 }
 
@@ -1222,12 +1116,26 @@ function makeAvatar(name){
 
 
 function escapeText(value){
-
     return String(value ?? "");
 }
 
 
+/*
+ * PRIORITAS:
+ *
+ * 1. Screen share
+ * 2. Background
+ * 3. Kamera asli
+ */
+
 function getDisplayStream(){
+
+    if (
+        sharingScreen &&
+        screenStream
+    ){
+        return screenStream;
+    }
 
     if (
         backgroundEnabled &&
@@ -1253,6 +1161,16 @@ async function getLocalMedia(){
 
     if (localStream) return localStream;
 
+    if (
+        !navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia
+    ){
+        throw new Error(
+            "Browser tidak mendukung kamera dan microphone."
+        );
+    }
+
+
     try{
 
         localStream =
@@ -1276,19 +1194,43 @@ async function getLocalMedia(){
                 },
 
                 audio: {
-                    echoCancellation: true,
-                    noiseSuppression: true,
-                    autoGainControl: true,
-                    channelCount: 1,
-                    sampleRate: 48000,
-                    sampleSize: 16
+                    echoCancellation: {
+                        ideal: true
+                    },
+
+                    noiseSuppression: {
+                        ideal: true
+                    },
+
+                    autoGainControl: {
+                        ideal: true
+                    },
+
+                    channelCount: {
+                        ideal: 1
+                    },
+
+                    sampleRate: {
+                        ideal: 48000
+                    },
+
+                    sampleSize: {
+                        ideal: 16
+                    },
+
+                    latency: {
+                        ideal: 0.02
+                    }
                 }
 
             });
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            "getUserMedia error:",
+            error
+        );
 
         throw new Error(
             "Kamera atau microphone tidak dapat digunakan. Pastikan izin kamera dan microphone diberikan."
@@ -1303,33 +1245,72 @@ async function getLocalMedia(){
         localStream.getAudioTracks()[0] || null;
 
 
-    cameraEnabled = !!rawVideoTrack;
-    micEnabled = !!localAudioTrack;
+    cameraEnabled =
+        !!rawVideoTrack;
+
+    micEnabled =
+        !!localAudioTrack;
 
 
     if (rawVideoTrack){
-        rawVideoTrack.enabled = cameraEnabled;
+        rawVideoTrack.enabled =
+            cameraEnabled;
     }
 
+
     if (localAudioTrack){
-        localAudioTrack.enabled = micEnabled;
+
+        localAudioTrack.enabled =
+            micEnabled;
+
+        try{
+
+            await localAudioTrack.applyConstraints({
+
+                echoCancellation: {
+                    ideal: true
+                },
+
+                noiseSuppression: {
+                    ideal: true
+                },
+
+                autoGainControl: {
+                    ideal: true
+                },
+
+                channelCount: {
+                    ideal: 1
+                }
+
+            });
+
+        }catch(error){
+
+            console.warn(
+                "Audio constraints tambahan tidak tersedia:",
+                error
+            );
+        }
     }
 
 
     processingVideo.srcObject =
         new MediaStream(
-            rawVideoTrack ? [rawVideoTrack] : []
+            rawVideoTrack
+                ? [rawVideoTrack]
+                : []
         );
 
     await processingVideo.play().catch(() => {});
 
 
-    lobbyVideo.srcObject = localStream;
+    lobbyVideo.srcObject =
+        localStream;
 
     lobbyVideo.muted = true;
-
+    lobbyVideo.defaultMuted = true;
     lobbyVideo.volume = 0;
-
     lobbyVideo.style.transform = "none";
 
 
@@ -1355,11 +1336,17 @@ async function prepareLobby(){
         lobbyVideo.srcObject =
             localStream;
 
+        lobbyVideo.muted = true;
+        lobbyVideo.volume = 0;
+        lobbyVideo.style.transform = "none";
+
         await lobbyVideo.play().catch(() => {});
 
     }catch(error){
 
-        showHomeError(error.message);
+        showHomeError(
+            error.message
+        );
     }
 }
 
@@ -1397,7 +1384,8 @@ createBtn.addEventListener(
                     currentRoom =
                         response.code;
 
-                    currentRole = "teacher";
+                    currentRole =
+                        "teacher";
 
                     prepareMeeting();
                 }
@@ -1405,7 +1393,9 @@ createBtn.addEventListener(
 
         }catch(error){
 
-            showHomeError(error.message);
+            showHomeError(
+                error.message
+            );
         }
     }
 );
@@ -1416,7 +1406,10 @@ joinBtn.addEventListener(
     async () => {
 
         const code =
-            roomCodeInput.value.trim().toUpperCase();
+            roomCodeInput.value
+                .trim()
+                .toUpperCase();
+
 
         if (!code){
 
@@ -1427,10 +1420,14 @@ joinBtn.addEventListener(
             return;
         }
 
-        currentName =
-            homeName.value.trim() || "Siswa";
 
-        currentRoom = code;
+        currentName =
+            homeName.value.trim() ||
+            "Siswa";
+
+        currentRoom =
+            code;
+
 
         try{
 
@@ -1441,43 +1438,63 @@ joinBtn.addEventListener(
 
         }catch(error){
 
-            showHomeError(error.message);
+            showHomeError(
+                error.message
+            );
         }
     }
 );
 
+
+/*
+ * LOBBY MIC
+ */
 
 lobbyMic.addEventListener(
     "click",
     () => {
 
-        micEnabled = !micEnabled;
+        if (!localAudioTrack) return;
 
-        if (localAudioTrack){
-            localAudioTrack.enabled =
-                micEnabled;
-        }
+        micEnabled =
+            !micEnabled;
+
+
+        localAudioTrack.enabled =
+            micEnabled;
+
 
         updateLocalButtons();
     }
 );
 
+
+/*
+ * LOBBY CAMERA
+ */
 
 lobbyCamera.addEventListener(
     "click",
     () => {
 
-        cameraEnabled = !cameraEnabled;
+        if (!rawVideoTrack) return;
 
-        if (rawVideoTrack){
-            rawVideoTrack.enabled =
-                cameraEnabled;
-        }
+        cameraEnabled =
+            !cameraEnabled;
+
+
+        rawVideoTrack.enabled =
+            cameraEnabled;
+
 
         updateLocalButtons();
     }
 );
 
+
+/*
+ * JOIN
+ */
 
 joinNowBtn.addEventListener(
     "click",
@@ -1497,7 +1514,15 @@ joinNowBtn.addEventListener(
             "join-room",
             {
                 code: currentRoom,
-                name: currentName
+                name: currentName,
+
+                /*
+                 * Server akan menentukan
+                 * apakah microphone boleh ON.
+                 */
+
+                camera: cameraEnabled,
+                mic: micEnabled
             },
             response => {
 
@@ -1515,7 +1540,34 @@ joinNowBtn.addEventListener(
                 currentRoom =
                     response.code;
 
-                currentRole = "student";
+                currentRole =
+                    "student";
+
+
+                /*
+                 * Server dapat mematikan
+                 * microphone apabila sudah
+                 * ada 3 microphone aktif.
+                 */
+
+                if (
+                    typeof response.mic ===
+                    "boolean"
+                ){
+
+                    micEnabled =
+                        response.mic;
+
+                    if (localAudioTrack){
+
+                        localAudioTrack.enabled =
+                            micEnabled;
+                    }
+                }
+
+
+                updateLocalButtons();
+
 
                 prepareMeeting(
                     response.existingPeers || []
@@ -1530,7 +1582,9 @@ joinNowBtn.addEventListener(
    MEETING INIT
 ========================================================= */
 
-function prepareMeeting(existingPeers = []){
+function prepareMeeting(
+    existingPeers = []
+){
 
     joined = true;
 
@@ -1538,25 +1592,32 @@ function prepareMeeting(existingPeers = []){
     home.classList.add("hidden");
     meeting.classList.remove("hidden");
 
+
     roomLabel.textContent =
-        `${currentRoom} • ${currentRole === "teacher" ? "Guru" : "Siswa"}`;
+        `${currentRoom} • ${
+            currentRole === "teacher"
+                ? "Guru"
+                : "Siswa"
+        }`;
+
 
     addLocalTile();
 
+
     sendMediaState();
 
-    /*
-     * HANYA PESERTA BARU YANG MEMBUAT OFFER.
-     *
-     * Ini sesuai dengan server.js:
-     * peer-joined dikirim ke peserta lama.
-     */
 
-    if (currentRole === "student"){
+    if (
+        currentRole === "student"
+    ){
 
-        for (const peer of existingPeers){
+        for (
+            const peer
+            of existingPeers
+        ){
 
             if (!peer?.id) continue;
+
 
             createPeer(
                 peer.id,
@@ -1577,54 +1638,69 @@ function prepareMeeting(existingPeers = []){
 
 function addLocalTile(){
 
-    removeTile(socket.id);
+    removeTile(
+        socket.id
+    );
+
 
     const tile =
         document.createElement("div");
 
-    tile.className = "tile";
-    tile.id = `tile-${socket.id}`;
+    tile.className =
+        "tile";
+
+    tile.id =
+        `tile-${socket.id}`;
+
 
     const video =
         document.createElement("video");
 
     video.autoplay = true;
     video.muted = true;
+    video.defaultMuted = true;
     video.playsInline = true;
     video.volume = 0;
 
-    /*
-     * PENTING:
-     * Tidak menggunakan scaleX(-1).
-     * Kamera tidak mirror.
-     */
-
-    video.style.transform = "none";
+    video.style.transform =
+        "none";
 
 
     const avatar =
         document.createElement("div");
 
-    avatar.className = "avatar";
+    avatar.className =
+        "avatar";
+
     avatar.textContent =
         makeAvatar(currentName);
 
+
     avatar.style.display =
-        cameraEnabled ? "none" : "flex";
+        cameraEnabled
+            ? "none"
+            : "flex";
 
 
     const name =
         document.createElement("div");
 
-    name.className = "name";
+    name.className =
+        "name";
+
     name.textContent =
-        `${currentName} ${currentRole === "teacher" ? "• Guru" : ""}`;
+        `${currentName} ${
+            currentRole === "teacher"
+                ? "• Guru"
+                : ""
+        }`;
 
 
     const state =
         document.createElement("div");
 
-    state.className = "state";
+    state.className =
+        "state";
 
 
     tile.appendChild(video);
@@ -1637,12 +1713,20 @@ function addLocalTile(){
 
     updateLocalTile();
 
+
     const display =
         getDisplayStream();
 
+
     if (display){
 
-        video.srcObject = display;
+        video.srcObject =
+            display;
+
+        video.muted = true;
+        video.volume = 0;
+        video.style.transform =
+            "none";
 
         video.play().catch(() => {});
     }
@@ -1658,6 +1742,7 @@ function updateLocalTile(){
 
     if (!tile) return;
 
+
     const video =
         tile.querySelector("video");
 
@@ -1668,16 +1753,28 @@ function updateLocalTile(){
         tile.querySelector(".state");
 
 
-    avatar.style.display =
-        cameraEnabled ? "none" : "flex";
+    if (avatar){
+
+        avatar.style.display =
+            cameraEnabled
+                ? "none"
+                : "flex";
+    }
 
 
-    state.innerHTML = `
-        <span class="badge">
-            ${micEnabled ? "🎤" : "🔇"}
-        </span>
-        ${handRaised ? `<span class="badge">✋</span>` : ""}
-    `;
+    if (state){
+
+        state.innerHTML = `
+            <span class="badge">
+                ${micEnabled ? "🎤" : "🔇"}
+            </span>
+            ${
+                handRaised
+                    ? `<span class="badge">✋</span>`
+                    : ""
+            }
+        `;
+    }
 
 
     if (video){
@@ -1685,12 +1782,20 @@ function updateLocalTile(){
         const display =
             getDisplayStream();
 
-        if (display &&
-            video.srcObject !== display){
+
+        if (
+            display &&
+            video.srcObject !== display
+        ){
 
             video.srcObject =
                 display;
         }
+
+
+        video.muted = true;
+        video.defaultMuted = true;
+        video.volume = 0;
 
         video.style.transform =
             "none";
@@ -1712,7 +1817,9 @@ function createPeer(
 
     if (!peerId) return null;
 
-    if (peerId === socket.id) return null;
+    if (peerId === socket.id){
+        return null;
+    }
 
 
     if (peers.has(peerId)){
@@ -1722,8 +1829,10 @@ function createPeer(
 
         if (
             old &&
-            old.connectionState !== "closed"
+            old.connectionState !==
+            "closed"
         ){
+
             return old;
         }
     }
@@ -1743,26 +1852,30 @@ function createPeer(
 
             ],
 
-            bundlePolicy: "max-bundle",
+            bundlePolicy:
+                "max-bundle",
 
-            rtcpMuxPolicy: "require"
+            rtcpMuxPolicy:
+                "require"
 
         });
 
 
-    peers.set(peerId, pc);
+    peers.set(
+        peerId,
+        pc
+    );
 
-    pendingIce.set(peerId, []);
+    pendingIce.set(
+        peerId,
+        []
+    );
 
     remoteStreams.set(
         peerId,
         new MediaStream()
     );
 
-
-    /*
-     * SIMPAN NAMA PEER
-     */
 
     participantData.set(
         peerId,
@@ -1778,9 +1891,7 @@ function createPeer(
 
 
     /*
-     * LOCAL TRACKS
-     *
-     * Selalu tambahkan audio + video.
+     * LOCAL VIDEO
      */
 
     const display =
@@ -1795,42 +1906,44 @@ function createPeer(
         ){
 
             try{
+
                 pc.addTrack(
                     track,
                     display
                 );
+
             }catch(error){
+
                 console.warn(
-                    "Video addTrack error",
+                    "Video addTrack error:",
                     error
                 );
             }
-
         }
+    }
 
 
-        /*
-         * Audio tetap berasal dari
-         * microphone asli.
-         */
+    /*
+     * LOCAL AUDIO
+     *
+     * Selalu dari microphone asli.
+     */
 
-        if (localAudioTrack){
+    if (localAudioTrack){
 
-            try{
+        try{
 
-                pc.addTrack(
-                    localAudioTrack,
-                    localStream
-                );
+            pc.addTrack(
+                localAudioTrack,
+                localStream
+            );
 
-            }catch(error){
+        }catch(error){
 
-                console.warn(
-                    "Audio addTrack error",
-                    error
-                );
-
-            }
+            console.warn(
+                "Audio addTrack error:",
+                error
+            );
         }
     }
 
@@ -1839,147 +1952,154 @@ function createPeer(
      * ICE
      */
 
-    pc.onicecandidate = event => {
+    pc.onicecandidate =
+        event => {
 
-        if (!event.candidate) return;
-
-        socket.emit(
-            "ice-candidate",
-            {
-                to: peerId,
-                candidate: event.candidate
+            if (!event.candidate){
+                return;
             }
-        );
-    };
+
+
+            socket.emit(
+                "ice-candidate",
+                {
+                    to: peerId,
+                    candidate:
+                        event.candidate
+                }
+            );
+        };
 
 
     /*
      * REMOTE TRACK
      */
 
-    pc.ontrack = event => {
+    pc.ontrack =
+        event => {
 
-        let stream =
-            remoteStreams.get(peerId);
+            let stream =
+                remoteStreams.get(
+                    peerId
+                );
 
-        if (!stream){
 
-            stream =
-                new MediaStream();
+            if (!stream){
 
-            remoteStreams.set(
+                stream =
+                    new MediaStream();
+
+                remoteStreams.set(
+                    peerId,
+                    stream
+                );
+            }
+
+
+            if (
+                !stream.getTracks()
+                    .some(
+                        track =>
+                            track.id ===
+                            event.track.id
+                    )
+            ){
+
+                stream.addTrack(
+                    event.track
+                );
+            }
+
+
+            createOrUpdateRemoteTile(
                 peerId,
                 stream
             );
-        }
-
-
-        /*
-         * Jangan add track dua kali.
-         */
-
-        if (
-            !stream.getTracks()
-                .some(
-                    track =>
-                        track.id === event.track.id
-                )
-        ){
-
-            stream.addTrack(
-                event.track
-            );
-        }
-
-
-        createOrUpdateRemoteTile(
-            peerId,
-            stream
-        );
-    };
+        };
 
 
     /*
      * CONNECTION STATE
      */
 
-    pc.onconnectionstatechange = () => {
+    pc.onconnectionstatechange =
+        () => {
 
-        const state =
-            pc.connectionState;
-
-        console.log(
-            "Peer",
-            peerId,
-            "connection:",
-            state
-        );
+            const state =
+                pc.connectionState;
 
 
-        if (state === "connected"){
-
-            showStatus(
-                `Terhubung dengan ${getPeerName(peerId)}`
+            console.log(
+                "Peer",
+                peerId,
+                "connection:",
+                state
             );
-        }
 
 
-        if (
-            state === "failed" ||
-            state === "disconnected"
-        ){
+            if (
+                state ===
+                "connected"
+            ){
 
-            /*
-             * Jangan langsung menghapus
-             * saat disconnected.
-             * Browser masih mungkin memulihkan
-             * koneksi.
-             */
-
-            setTimeout(() => {
-
-                if (
-                    pc.connectionState ===
-                    "failed"
-                ){
-
-                    rebuildPeer(
-                        peerId
-                    );
-                }
-
-            }, 3000);
-        }
+                showStatus(
+                    `Terhubung dengan ${getPeerName(peerId)}`
+                );
+            }
 
 
-        if (state === "closed"){
+            if (
+                state === "failed"
+            ){
 
-            removePeer(
-                peerId
-            );
-        }
-    };
+                setTimeout(
+                    () => {
+
+                        if (
+                            pc.connectionState ===
+                            "failed"
+                        ){
+
+                            rebuildPeer(
+                                peerId
+                            );
+                        }
+
+                    },
+                    3000
+                );
+            }
+
+
+            if (
+                state === "closed"
+            ){
+
+                removePeer(
+                    peerId
+                );
+            }
+        };
 
 
     /*
-     * ICE CONNECTION STATE
+     * ICE CONNECTION
      */
 
-    pc.oniceconnectionstatechange = () => {
+    pc.oniceconnectionstatechange =
+        () => {
 
-        console.log(
-            "Peer",
-            peerId,
-            "ICE:",
-            pc.iceConnectionState
-        );
-    };
+            console.log(
+                "Peer",
+                peerId,
+                "ICE:",
+                pc.iceConnectionState
+            );
+        };
 
 
     /*
      * OFFER
-     *
-     * Hanya peer baru / initiator.
      */
 
     if (shouldOffer){
@@ -2009,8 +2129,11 @@ async function makeOffer(
         const offer =
             await pc.createOffer({
 
-                offerToReceiveAudio: true,
-                offerToReceiveVideo: true
+                offerToReceiveAudio:
+                    true,
+
+                offerToReceiveVideo:
+                    true
 
             });
 
@@ -2024,7 +2147,8 @@ async function makeOffer(
             "offer",
             {
                 to: peerId,
-                offer: pc.localDescription
+                offer:
+                    pc.localDescription
             }
         );
 
@@ -2039,16 +2163,17 @@ async function makeOffer(
 
 
 /* =========================================================
-   ANSWER
+   OFFER RECEIVED
 ========================================================= */
 
 socket.on(
     "offer",
     async data => {
 
-        if (!data?.from ||
-            !data?.offer){
-
+        if (
+            !data?.from ||
+            !data?.offer
+        ){
             return;
         }
 
@@ -2058,7 +2183,9 @@ socket.on(
 
 
         let pc =
-            peers.get(peerId);
+            peers.get(
+                peerId
+            );
 
 
         if (!pc){
@@ -2100,7 +2227,8 @@ socket.on(
                 "answer",
                 {
                     to: peerId,
-                    answer: pc.localDescription
+                    answer:
+                        pc.localDescription
                 }
             );
 
@@ -2116,22 +2244,26 @@ socket.on(
 
 
 /* =========================================================
-   ANSWER RECEIVED
+   ANSWER
 ========================================================= */
 
 socket.on(
     "answer",
     async data => {
 
-        if (!data?.from ||
-            !data?.answer){
-
+        if (
+            !data?.from ||
+            !data?.answer
+        ){
             return;
         }
 
 
         const pc =
-            peers.get(data.from);
+            peers.get(
+                data.from
+            );
+
 
         if (!pc) return;
 
@@ -2144,11 +2276,6 @@ socket.on(
                 )
             );
 
-
-            /*
-             * ICE yang datang terlalu cepat
-             * baru dimasukkan sekarang.
-             */
 
             await flushPendingIce(
                 data.from,
@@ -2187,22 +2314,29 @@ socket.on(
 
 
         const pc =
-            peers.get(peerId);
+            peers.get(
+                peerId
+            );
 
 
         if (!pc){
 
             const list =
-                pendingIce.get(peerId) || [];
+                pendingIce.get(
+                    peerId
+                ) || [];
+
 
             list.push(
                 data.candidate
             );
 
+
             pendingIce.set(
                 peerId,
                 list
             );
+
 
             return;
         }
@@ -2210,30 +2344,27 @@ socket.on(
 
         try{
 
-            /*
-             * Ini bug penting yang sering membuat
-             * kamera hanya muncul sendiri.
-             *
-             * ICE tidak boleh dibuang ketika
-             * remoteDescription belum ada.
-             */
-
             if (
                 !pc.remoteDescription ||
                 !pc.remoteDescription.type
             ){
 
                 const list =
-                    pendingIce.get(peerId) || [];
+                    pendingIce.get(
+                        peerId
+                    ) || [];
+
 
                 list.push(
                     data.candidate
                 );
 
+
                 pendingIce.set(
                     peerId,
                     list
                 );
+
 
                 return;
             }
@@ -2262,7 +2393,9 @@ async function flushPendingIce(
 ){
 
     const list =
-        pendingIce.get(peerId) || [];
+        pendingIce.get(
+            peerId
+        ) || [];
 
 
     if (
@@ -2311,12 +2444,10 @@ socket.on(
     "peer-joined",
     data => {
 
-        if (!data?.id) return;
+        if (!data?.id){
+            return;
+        }
 
-        /*
-         * Peserta lama hanya membuat PC.
-         * TIDAK membuat offer.
-         */
 
         createPeer(
             data.id,
@@ -2328,7 +2459,7 @@ socket.on(
 
 
 /* =========================================================
-   REBUILD FAILED PEER
+   REBUILD
 ========================================================= */
 
 async function rebuildPeer(
@@ -2336,7 +2467,10 @@ async function rebuildPeer(
 ){
 
     const old =
-        peers.get(peerId);
+        peers.get(
+            peerId
+        );
+
 
     if (old){
 
@@ -2346,22 +2480,21 @@ async function rebuildPeer(
     }
 
 
-    peers.delete(peerId);
+    peers.delete(
+        peerId
+    );
 
 
     const user =
-        participantData.get(peerId);
+        participantData.get(
+            peerId
+        );
 
 
-    /*
-     * Hanya initiator/original joiner yang
-     * membuat offer lagi.
-     *
-     * Untuk meeting ini kita gunakan:
-     * student = initiator terhadap peer
-     */
-
-    if (currentRole === "student"){
+    if (
+        currentRole ===
+        "student"
+    ){
 
         createPeer(
             peerId,
@@ -2400,7 +2533,8 @@ function createOrUpdateRemoteTile(
         tile =
             document.createElement("div");
 
-        tile.className = "tile";
+        tile.className =
+            "tile";
 
         tile.id =
             `tile-${peerId}`;
@@ -2409,13 +2543,9 @@ function createOrUpdateRemoteTile(
         const video =
             document.createElement("video");
 
+
         video.autoplay = true;
         video.playsInline = true;
-
-        /*
-         * SANGAT PENTING:
-         * remote video TIDAK muted.
-         */
 
         video.muted = false;
         video.defaultMuted = false;
@@ -2456,17 +2586,25 @@ function createOrUpdateRemoteTile(
 
 
     const user =
-        participantData.get(peerId);
+        participantData.get(
+            peerId
+        );
 
 
     const video =
-        tile.querySelector("video");
+        tile.querySelector(
+            "video"
+        );
 
     const avatar =
-        tile.querySelector(".avatar");
+        tile.querySelector(
+            ".avatar"
+        );
 
     const name =
-        tile.querySelector(".name");
+        tile.querySelector(
+            ".name"
+        );
 
 
     if (user){
@@ -2474,16 +2612,21 @@ function createOrUpdateRemoteTile(
         name.textContent =
             `${user.name || "Peserta"} ${
                 user.role === "teacher"
-                ? "• Guru"
-                : ""
+                    ? "• Guru"
+                    : ""
             }`;
 
+
         avatar.textContent =
-            makeAvatar(user.name);
+            makeAvatar(
+                user.name
+            );
+
 
         avatar.style.display =
-            user.camera ? "none" : "flex";
-
+            user.camera
+                ? "none"
+                : "flex";
     }
 
 
@@ -2506,54 +2649,53 @@ function createOrUpdateRemoteTile(
         "none";
 
 
-    /*
-     * Browser bisa menolak autoplay.
-     * Kita coba langsung.
-     */
+    video.play().catch(
+        error => {
 
-    video.play().catch(error => {
+            console.warn(
+                "Remote autoplay blocked:",
+                error
+            );
 
-        console.warn(
-            "Remote autoplay blocked:",
-            error
-        );
+            soundBtn.classList.add(
+                "active"
+            );
+        }
+    );
 
-        soundBtn.classList.add(
-            "active"
-        );
-    });
-
-
-    /*
-     * TRACK ENDED
-     */
 
     for (
         const track
         of stream.getTracks()
     ){
 
-        track.onended = () => {
+        track.onended =
+            () => {
 
-            if (
-                video.srcObject === stream
-            ){
+                if (
+                    video.srcObject ===
+                    stream
+                ){
 
-                video.play().catch(() => {});
-            }
-        };
+                    video.play().catch(
+                        () => {}
+                    );
+                }
+            };
     }
 }
 
 
 /* =========================================================
-   GET PEER NAME
+   PEER NAME
 ========================================================= */
 
 function getPeerName(id){
 
     return (
-        participantData.get(id)?.name ||
+        participantData.get(
+            id
+        )?.name ||
         "Peserta"
     );
 }
@@ -2568,7 +2710,10 @@ function removePeer(
 ){
 
     const pc =
-        peers.get(peerId);
+        peers.get(
+            peerId
+        );
+
 
     if (pc){
 
@@ -2578,13 +2723,28 @@ function removePeer(
     }
 
 
-    peers.delete(peerId);
+    peers.delete(
+        peerId
+    );
 
-    pendingIce.delete(peerId);
-    remoteStreams.delete(peerId);
-    participantData.delete(peerId);
 
-    removeTile(peerId);
+    pendingIce.delete(
+        peerId
+    );
+
+    remoteStreams.delete(
+        peerId
+    );
+
+    participantData.delete(
+        peerId
+    );
+
+
+    removeTile(
+        peerId
+    );
+
 
     renderParticipants();
 }
@@ -2599,6 +2759,7 @@ function removeTile(
             `tile-${peerId}`
         );
 
+
     if (tile){
         tile.remove();
     }
@@ -2606,7 +2767,7 @@ function removeTile(
 
 
 /* =========================================================
-   SERVER PEER LEFT
+   PEER LEFT
 ========================================================= */
 
 socket.on(
@@ -2616,6 +2777,7 @@ socket.on(
         removePeer(
             peerId
         );
+
 
         showStatus(
             "Peserta keluar dari meeting."
@@ -2663,7 +2825,8 @@ function renderParticipants(){
         users.length;
 
 
-    peopleList.innerHTML = "";
+    peopleList.innerHTML =
+        "";
 
 
     for (
@@ -2672,35 +2835,47 @@ function renderParticipants(){
     ){
 
         const row =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         row.className =
             "person";
 
 
         const info =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         info.className =
             "person-info";
 
 
         const avatar =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         avatar.className =
             "person-avatar";
 
         avatar.textContent =
-            makeAvatar(user.name);
+            makeAvatar(
+                user.name
+            );
 
 
         const texts =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
 
         const name =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         name.className =
             "person-name";
@@ -2710,37 +2885,67 @@ function renderParticipants(){
 
 
         const role =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         role.className =
             "person-role";
 
         role.textContent =
             user.role === "teacher"
-            ? "Guru"
-            : "Siswa";
+                ? "Guru"
+                : "Siswa";
 
 
-        texts.appendChild(name);
-        texts.appendChild(role);
+        texts.appendChild(
+            name
+        );
 
-        info.appendChild(avatar);
-        info.appendChild(texts);
+        texts.appendChild(
+            role
+        );
+
+
+        info.appendChild(
+            avatar
+        );
+
+        info.appendChild(
+            texts
+        );
 
 
         const state =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
 
         state.textContent =
             `${user.mic ? "🎤" : "🔇"} ${
-                user.camera ? "📷" : "🚫"
-            }${user.hand ? " ✋" : ""}`;
+                user.camera
+                    ? "📷"
+                    : "🚫"
+            }${
+                user.hand
+                    ? " ✋"
+                    : ""
+            }`;
 
 
-        row.appendChild(info);
-        row.appendChild(state);
+        row.appendChild(
+            info
+        );
 
-        peopleList.appendChild(row);
+        row.appendChild(
+            state
+        );
+
+
+        peopleList.appendChild(
+            row
+        );
     }
 }
 
@@ -2757,20 +2962,29 @@ function updateAllTiles(){
                 `tile-${user.id}`
             );
 
+
         if (!tile) continue;
 
 
         const video =
-            tile.querySelector("video");
+            tile.querySelector(
+                "video"
+            );
 
         const avatar =
-            tile.querySelector(".avatar");
+            tile.querySelector(
+                ".avatar"
+            );
 
         const name =
-            tile.querySelector(".name");
+            tile.querySelector(
+                ".name"
+            );
 
         const state =
-            tile.querySelector(".state");
+            tile.querySelector(
+                ".state"
+            );
 
 
         if (name){
@@ -2778,8 +2992,8 @@ function updateAllTiles(){
             name.textContent =
                 `${user.name || "Peserta"} ${
                     user.role === "teacher"
-                    ? "• Guru"
-                    : ""
+                        ? "• Guru"
+                        : ""
                 }`;
         }
 
@@ -2787,12 +3001,14 @@ function updateAllTiles(){
         if (avatar){
 
             avatar.textContent =
-                makeAvatar(user.name);
+                makeAvatar(
+                    user.name
+                );
 
             avatar.style.display =
                 user.camera
-                ? "none"
-                : "flex";
+                    ? "none"
+                    : "flex";
         }
 
 
@@ -2800,8 +3016,8 @@ function updateAllTiles(){
 
             video.style.display =
                 user.camera
-                ? "block"
-                : "none";
+                    ? "block"
+                    : "none";
         }
 
 
@@ -2813,8 +3029,8 @@ function updateAllTiles(){
                 </span>
                 ${
                     user.hand
-                    ? `<span class="badge">✋</span>`
-                    : ""
+                        ? `<span class="badge">✋</span>`
+                        : ""
                 }
             `;
         }
@@ -2823,12 +3039,17 @@ function updateAllTiles(){
         if (user.hand){
 
             let hand =
-                tile.querySelector(".hand");
+                tile.querySelector(
+                    ".hand"
+                );
+
 
             if (!hand){
 
                 hand =
-                    document.createElement("div");
+                    document.createElement(
+                        "div"
+                    );
 
                 hand.className =
                     "hand";
@@ -2836,13 +3057,18 @@ function updateAllTiles(){
                 hand.textContent =
                     "✋";
 
-                tile.appendChild(hand);
+                tile.appendChild(
+                    hand
+                );
             }
 
         }else{
 
             const hand =
-                tile.querySelector(".hand");
+                tile.querySelector(
+                    ".hand"
+                );
+
 
             if (hand){
                 hand.remove();
@@ -2858,15 +3084,25 @@ function updateAllTiles(){
 
 function sendMediaState(){
 
+    if (!joined) return;
+
+
     socket.emit(
         "media-state",
         {
-            camera: cameraEnabled,
-            mic: micEnabled
+            camera:
+                cameraEnabled,
+
+            mic:
+                micEnabled
         }
     );
 }
 
+
+/*
+ * SERVER ADALAH SUMBER KEBENARAN
+ */
 
 socket.on(
     "media-state",
@@ -2887,7 +3123,42 @@ socket.on(
                 data.camera !== false;
 
             user.mic =
-                data.mic !== false;
+                data.mic === true;
+        }
+
+
+        /*
+         * Jika ini adalah diri sendiri,
+         * gunakan keputusan server.
+         */
+
+        if (
+            data.id === socket.id
+        ){
+
+            cameraEnabled =
+                data.camera !== false;
+
+            micEnabled =
+                data.mic === true;
+
+
+            if (localAudioTrack){
+
+                localAudioTrack.enabled =
+                    micEnabled;
+            }
+
+
+            if (rawVideoTrack){
+
+                rawVideoTrack.enabled =
+                    cameraEnabled;
+            }
+
+
+            updateLocalButtons();
+            updateLocalTile();
         }
 
 
@@ -2898,26 +3169,93 @@ socket.on(
 
 
 /* =========================================================
-   MIC
+   MIC LIMIT
+========================================================= */
+
+socket.on(
+    "mic-limit",
+    data => {
+
+        micEnabled = false;
+
+
+        if (localAudioTrack){
+
+            localAudioTrack.enabled =
+                false;
+        }
+
+
+        updateLocalButtons();
+        updateLocalTile();
+
+
+        showStatus(
+            data?.message ||
+            "Maksimal 3 microphone aktif dalam meeting."
+        );
+    }
+);
+
+
+/* =========================================================
+   MIC BUTTON
 ========================================================= */
 
 micBtn.addEventListener(
     "click",
     () => {
 
-        if (!localAudioTrack) return;
+        if (!localAudioTrack){
+            return;
+        }
 
-        micEnabled =
+
+        const nextMic =
             !micEnabled;
 
 
-        localAudioTrack.enabled =
-            micEnabled;
+        /*
+         * Mematikan mic boleh langsung.
+         */
+
+        if (!nextMic){
+
+            micEnabled =
+                false;
 
 
-        updateLocalButtons();
-        updateLocalTile();
-        sendMediaState();
+            localAudioTrack.enabled =
+                false;
+
+
+            updateLocalButtons();
+            updateLocalTile();
+
+
+            sendMediaState();
+
+            return;
+        }
+
+
+        /*
+         * Menghidupkan mic:
+         *
+         * JANGAN langsung menganggap berhasil.
+         * Server harus menyetujui dahulu.
+         */
+
+        socket.emit(
+            "media-state",
+            {
+                camera:
+                    cameraEnabled,
+
+                mic:
+                    true
+            }
+        );
     }
 );
 
@@ -2930,7 +3268,10 @@ cameraBtn.addEventListener(
     "click",
     () => {
 
-        if (!rawVideoTrack) return;
+        if (!rawVideoTrack){
+            return;
+        }
+
 
         cameraEnabled =
             !cameraEnabled;
@@ -2942,10 +3283,16 @@ cameraBtn.addEventListener(
 
         updateLocalButtons();
         updateLocalTile();
+
+
         sendMediaState();
     }
 );
 
+
+/* =========================================================
+   BUTTON UI
+========================================================= */
 
 function updateLocalButtons(){
 
@@ -2971,11 +3318,328 @@ function updateLocalButtons(){
 
 
     micBtn.textContent =
-        micEnabled ? "🎤" : "🔇";
+        micEnabled
+            ? "🎤"
+            : "🔇";
+
 
     cameraBtn.textContent =
-        cameraEnabled ? "📷" : "🚫";
+        cameraEnabled
+            ? "📷"
+            : "🚫";
 }
+
+
+/* =========================================================
+   SCREEN SHARE
+========================================================= */
+
+async function startScreenShare(){
+
+    if (!joined){
+
+        showStatus(
+            "Kamu belum berada di meeting."
+        );
+
+        return;
+    }
+
+
+    if (
+        !navigator.mediaDevices ||
+        !navigator.mediaDevices.getDisplayMedia
+    ){
+
+        showStatus(
+            "Browser ini tidak mendukung screen sharing."
+        );
+
+        return;
+    }
+
+
+    if (sharingScreen){
+        return;
+    }
+
+
+    try{
+
+        screenStream =
+            await navigator.mediaDevices.getDisplayMedia({
+
+                video: {
+                    frameRate: {
+                        ideal: 30,
+                        max: 30
+                    }
+                },
+
+                /*
+                 * Tidak mengambil audio sistem.
+                 * Ini sengaja agar tidak menambah
+                 * risiko echo/dengung.
+                 */
+
+                audio: false
+            });
+
+
+        screenTrack =
+            screenStream.getVideoTracks()[0];
+
+
+        if (!screenTrack){
+
+            throw new Error(
+                "Track layar tidak tersedia."
+            );
+        }
+
+
+        sharingScreen = true;
+
+
+        /*
+         * Ganti video yang dikirim ke
+         * semua peserta.
+         */
+
+        await replaceOutgoingVideoTrack(
+            screenTrack
+        );
+
+
+        /*
+         * Preview lokal.
+         */
+
+        const localVideo =
+            document.querySelector(
+                `#tile-${socket.id} video`
+            );
+
+
+        if (localVideo){
+
+            localVideo.srcObject =
+                screenStream;
+
+            localVideo.muted = true;
+            localVideo.defaultMuted = true;
+            localVideo.volume = 0;
+
+            localVideo.style.transform =
+                "none";
+
+            localVideo.play().catch(
+                () => {}
+            );
+        }
+
+
+        shareBtn.classList.add(
+            "active"
+        );
+
+        shareBtn.textContent =
+            "🛑";
+
+        shareBtn.title =
+            "Berhenti berbagi layar";
+
+
+        showStatus(
+            "Berbagi layar aktif."
+        );
+
+
+        /*
+         * Jika user menekan tombol
+         * "Stop sharing" bawaan browser,
+         * otomatis kembali ke kamera.
+         */
+
+        screenTrack.onended =
+            () => {
+
+                if (sharingScreen){
+
+                    stopScreenShare();
+                }
+            };
+
+    }catch(error){
+
+        console.error(
+            "Screen share error:",
+            error
+        );
+
+
+        if (screenStream){
+
+            for (
+                const track
+                of screenStream.getTracks()
+            ){
+
+                try{
+                    track.stop();
+                }catch(_){}
+            }
+        }
+
+
+        screenStream = null;
+        screenTrack = null;
+        sharingScreen = false;
+
+
+        shareBtn.classList.remove(
+            "active"
+        );
+
+        shareBtn.textContent =
+            "🖥️";
+
+        shareBtn.title =
+            "Bagikan layar";
+
+
+        showStatus(
+            "Berbagi layar dibatalkan."
+        );
+    }
+}
+
+
+async function stopScreenShare(){
+
+    if (!sharingScreen){
+        return;
+    }
+
+
+    sharingScreen = false;
+
+
+    if (screenTrack){
+
+        try{
+            screenTrack.onended = null;
+        }catch(_){}
+
+
+        try{
+            screenTrack.stop();
+        }catch(_){}
+
+
+        screenTrack = null;
+    }
+
+
+    if (screenStream){
+
+        for (
+            const track
+            of screenStream.getTracks()
+        ){
+
+            try{
+                track.stop();
+            }catch(_){}
+        }
+
+
+        screenStream = null;
+    }
+
+
+    /*
+     * Kembali ke background atau kamera.
+     */
+
+    const returnTrack =
+        backgroundEnabled &&
+        processedVideoTrack
+            ? processedVideoTrack
+            : rawVideoTrack;
+
+
+    if (returnTrack){
+
+        await replaceOutgoingVideoTrack(
+            returnTrack
+        );
+    }
+
+
+    const localVideo =
+        document.querySelector(
+            `#tile-${socket.id} video`
+        );
+
+
+    if (localVideo){
+
+        const display =
+            getDisplayStream();
+
+
+        if (display){
+
+            localVideo.srcObject =
+                display;
+        }
+
+
+        localVideo.muted = true;
+        localVideo.defaultMuted = true;
+        localVideo.volume = 0;
+
+        localVideo.style.transform =
+            "none";
+
+        localVideo.play().catch(
+            () => {}
+        );
+    }
+
+
+    shareBtn.classList.remove(
+        "active"
+    );
+
+    shareBtn.textContent =
+        "🖥️";
+
+    shareBtn.title =
+        "Bagikan layar";
+
+
+    showStatus(
+        "Berbagi layar dihentikan."
+    );
+}
+
+
+shareBtn.addEventListener(
+    "click",
+    () => {
+
+        if (sharingScreen){
+
+            stopScreenShare();
+
+        }else{
+
+            startScreenShare();
+        }
+    }
+);
 
 
 /* =========================================================
@@ -2993,7 +3657,8 @@ handBtn.addEventListener(
         socket.emit(
             "raise-hand",
             {
-                hand: handRaised
+                hand:
+                    handRaised
             }
         );
 
@@ -3018,10 +3683,13 @@ socket.on(
                 data?.id
             );
 
+
         if (!user) return;
+
 
         user.hand =
             !!data.hand;
+
 
         updateAllTiles();
         renderParticipants();
@@ -3039,6 +3707,7 @@ nameBtn.addEventListener(
 
         newName.value =
             currentName;
+
 
         nameModal.classList.add(
             "open"
@@ -3067,7 +3736,6 @@ saveName.addEventListener(
 
 
         if (!name){
-
             return;
         }
 
@@ -3101,6 +3769,7 @@ saveName.addEventListener(
 
                 updateLocalTile();
 
+
                 showStatus(
                     "Nama berhasil diubah."
                 );
@@ -3118,6 +3787,7 @@ socket.on(
             participantData.get(
                 data?.id
             );
+
 
         if (!user) return;
 
@@ -3158,7 +3828,8 @@ chatInput.addEventListener(
     event => {
 
         if (
-            event.key === "Enter"
+            event.key ===
+            "Enter"
         ){
 
             event.preventDefault();
@@ -3175,7 +3846,9 @@ function sendChatMessage(){
         chatInput.value.trim();
 
 
-    if (!message) return;
+    if (!message){
+        return;
+    }
 
 
     socket.emit(
@@ -3186,7 +3859,8 @@ function sendChatMessage(){
     );
 
 
-    chatInput.value = "";
+    chatInput.value =
+        "";
 
     chatInput.focus();
 }
@@ -3197,38 +3871,39 @@ socket.on(
     data => {
 
         const item =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         item.className =
             "message";
 
 
         const name =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         name.className =
             "message-name";
 
+
         name.textContent =
             `${data.name || "Peserta"}${
                 data.role === "teacher"
-                ? " • Guru"
-                : ""
+                    ? " • Guru"
+                    : ""
             }`;
 
 
         const text =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         text.className =
             "message-text";
 
-        /*
-         * textContent digunakan,
-         * bukan innerHTML.
-         * Jadi pesan tidak bisa
-         * menyisipkan HTML/script.
-         */
 
         text.textContent =
             escapeText(
@@ -3236,10 +3911,18 @@ socket.on(
             );
 
 
-        item.appendChild(name);
-        item.appendChild(text);
+        item.appendChild(
+            name
+        );
 
-        chatMessages.appendChild(item);
+        item.appendChild(
+            text
+        );
+
+
+        chatMessages.appendChild(
+            item
+        );
 
 
         chatMessages.scrollTop =
@@ -3282,19 +3965,27 @@ soundBtn.addEventListener(
             of videos
         ){
 
-            if (
-                video ===
+            const localVideo =
                 document.querySelector(
                     `#tile-${socket.id} video`
-                )
+                );
+
+
+            if (
+                video === localVideo
             ){
                 continue;
             }
 
 
-            video.muted = false;
-            video.defaultMuted = false;
-            video.volume = 1;
+            video.muted =
+                false;
+
+            video.defaultMuted =
+                false;
+
+            video.volume =
+                1;
 
 
             try{
@@ -3304,7 +3995,7 @@ soundBtn.addEventListener(
             }catch(error){
 
                 console.warn(
-                    "Sound unlock failed",
+                    "Sound unlock failed:",
                     error
                 );
             }
@@ -3319,7 +4010,7 @@ soundBtn.addEventListener(
 
 
 /* =========================================================
-   COPY MEETING LINK
+   COPY LINK
 ========================================================= */
 
 copyBtn.addEventListener(
@@ -3336,28 +4027,38 @@ copyBtn.addEventListener(
                 link
             );
 
+
             showStatus(
                 "Link meeting berhasil disalin."
             );
 
         }catch(error){
 
-            /*
-             * Fallback sederhana
-             */
-
             const temp =
-                document.createElement("textarea");
+                document.createElement(
+                    "textarea"
+                );
 
-            temp.value = link;
 
-            document.body.appendChild(temp);
+            temp.value =
+                link;
+
+
+            document.body.appendChild(
+                temp
+            );
+
 
             temp.select();
 
-            document.execCommand("copy");
+
+            document.execCommand(
+                "copy"
+            );
+
 
             temp.remove();
+
 
             showStatus(
                 "Link meeting berhasil disalin."
@@ -3394,46 +4095,53 @@ closeBackground.addEventListener(
 
 
 document
-    .querySelectorAll(".bg-option[data-bg]")
-    .forEach(button => {
+    .querySelectorAll(
+        ".bg-option[data-bg]"
+    )
+    .forEach(
+        button => {
 
-        button.addEventListener(
-            "click",
-            async () => {
+            button.addEventListener(
+                "click",
+                async () => {
 
-                const type =
-                    button.dataset.bg;
+                    const type =
+                        button.dataset.bg;
 
 
-                if (
-                    type === "none"
-                ){
+                    if (
+                        type === "none"
+                    ){
 
-                    await disableBackground();
+                        await disableBackground();
+
+
+                        backgroundModal.classList.remove(
+                            "open"
+                        );
+
+
+                        return;
+                    }
+
+
+                    selectedBackground =
+                        type;
+
+                    customBackgroundImage =
+                        null;
+
+
+                    await enableBackground();
+
 
                     backgroundModal.classList.remove(
                         "open"
                     );
-
-                    return;
                 }
-
-
-                selectedBackground =
-                    type;
-
-                customBackgroundImage =
-                    null;
-
-
-                await enableBackground();
-
-                backgroundModal.classList.remove(
-                    "open"
-                );
-            }
-        );
-    });
+            );
+        }
+    );
 
 
 uploadBgBtn.addEventListener(
@@ -3451,6 +4159,7 @@ backgroundFile.addEventListener(
 
         const file =
             event.target.files?.[0];
+
 
         if (!file) return;
 
@@ -3474,32 +4183,35 @@ backgroundFile.addEventListener(
             new FileReader();
 
 
-        reader.onload = () => {
+        reader.onload =
+            () => {
 
-            const img =
-                new Image();
-
-
-            img.onload = async () => {
-
-                customBackgroundImage =
-                    img;
-
-                selectedBackground =
-                    "custom";
+                const img =
+                    new Image();
 
 
-                await enableBackground();
+                img.onload =
+                    async () => {
 
-                backgroundModal.classList.remove(
-                    "open"
-                );
+                        customBackgroundImage =
+                            img;
+
+                        selectedBackground =
+                            "custom";
+
+
+                        await enableBackground();
+
+
+                        backgroundModal.classList.remove(
+                            "open"
+                        );
+                    };
+
+
+                img.src =
+                    reader.result;
             };
-
-
-            img.src =
-                reader.result;
-        };
 
 
         reader.readAsDataURL(
@@ -3510,7 +4222,7 @@ backgroundFile.addEventListener(
 
 
 /* =========================================================
-   MEDIAPIPE INIT
+   MEDIAPIPE
 ========================================================= */
 
 function initSegmentation(){
@@ -3534,13 +4246,14 @@ function initSegmentation(){
     segmentation =
         new SelfieSegmentation({
 
-            locateFile: file => {
+            locateFile:
+                file => {
 
-                return (
-                    "https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/" +
-                    file
-                );
-            }
+                    return (
+                        "https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/" +
+                        file
+                    );
+                }
 
         });
 
@@ -3561,7 +4274,7 @@ function initSegmentation(){
 
 
 /* =========================================================
-   BACKGROUND ENABLE
+   ENABLE BACKGROUND
 ========================================================= */
 
 async function enableBackground(){
@@ -3573,6 +4286,17 @@ async function enableBackground(){
         );
 
         return;
+    }
+
+
+    /*
+     * Screen share harus dihentikan
+     * sebelum background digunakan.
+     */
+
+    if (sharingScreen){
+
+        await stopScreenShare();
     }
 
 
@@ -3589,14 +4313,19 @@ async function enableBackground(){
     }
 
 
-    backgroundEnabled = true;
+    backgroundEnabled =
+        true;
 
-    await processingVideo.play().catch(() => {});
+
+    await processingVideo.play().catch(
+        () => {}
+    );
 
 
     if (!backgroundRunning){
 
-        backgroundRunning = true;
+        backgroundRunning =
+            true;
 
         processBackgroundFrame();
     }
@@ -3616,7 +4345,8 @@ async function processBackgroundFrame(){
 
     if (!backgroundEnabled){
 
-        backgroundRunning = false;
+        backgroundRunning =
+            false;
 
         return;
     }
@@ -3630,7 +4360,8 @@ async function processBackgroundFrame(){
         try{
 
             await segmentation.send({
-                image: processingVideo
+                image:
+                    processingVideo
             });
 
         }catch(error){
@@ -3657,7 +4388,19 @@ function handleSegmentationResults(
     results
 ){
 
-    if (!backgroundEnabled) return;
+    if (!backgroundEnabled){
+        return;
+    }
+
+
+    /*
+     * JANGAN mengganti screen-share
+     * dengan hasil MediaPipe.
+     */
+
+    if (sharingScreen){
+        return;
+    }
 
 
     const width =
@@ -3706,7 +4449,7 @@ function handleSegmentationResults(
 
 
     /*
-     * 1. BUAT BACKGROUND
+     * BACKGROUND
      */
 
     backgroundCtx.clearRect(
@@ -3758,8 +4501,7 @@ function handleSegmentationResults(
 
 
     /*
-     * 2. FOREGROUND:
-     * gambar kamera asli
+     * FOREGROUND
      */
 
     foregroundCtx.clearRect(
@@ -3783,14 +4525,6 @@ function handleSegmentationResults(
     );
 
 
-    /*
-     * 3. MASK:
-     * hanya badan/wajah yang dipertahankan.
-     *
-     * Ini bagian penting agar background
-     * TIDAK menutupi wajah.
-     */
-
     foregroundCtx.globalCompositeOperation =
         "destination-in";
 
@@ -3805,9 +4539,7 @@ function handleSegmentationResults(
 
 
     /*
-     * 4. OUTPUT:
-     * background dahulu
-     * lalu foreground manusia.
+     * OUTPUT
      */
 
     outputCtx.clearRect(
@@ -3841,7 +4573,7 @@ function handleSegmentationResults(
 
 
     /*
-     * 5. BUAT VIDEO STREAM
+     * STREAM
      */
 
     if (!processedStream){
@@ -3851,14 +4583,13 @@ function handleSegmentationResults(
                 30
             );
 
+
         processedVideoTrack =
             processedStream.getVideoTracks()[0];
 
 
         /*
-         * Audio ASLI dimasukkan ke stream.
-         *
-         * Canvas hanya menghasilkan video.
+         * Microphone asli.
          */
 
         if (localAudioTrack){
@@ -3871,7 +4602,7 @@ function handleSegmentationResults(
 
 
     /*
-     * 6. LOCAL PREVIEW
+     * LOCAL PREVIEW
      */
 
     const localVideo =
@@ -3885,19 +4616,26 @@ function handleSegmentationResults(
         localVideo.srcObject =
             processedStream;
 
-        localVideo.muted = true;
-        localVideo.volume = 0;
+        localVideo.muted =
+            true;
+
+        localVideo.defaultMuted =
+            true;
+
+        localVideo.volume =
+            0;
 
         localVideo.style.transform =
             "none";
 
-        localVideo.play().catch(() => {});
+        localVideo.play().catch(
+            () => {}
+        );
     }
 
 
     /*
-     * 7. GANTI TRACK VIDEO PADA
-     * SEMUA PEER CONNECTION.
+     * GANTI TRACK VIDEO REMOTE
      */
 
     replaceOutgoingVideoTrack(
@@ -3927,12 +4665,14 @@ function drawCover(
     const w =
         image.width * scale;
 
+
     const h =
         image.height * scale;
 
 
     const x =
         (width - w) / 2;
+
 
     const y =
         (height - h) / 2;
@@ -4019,11 +4759,20 @@ async function disableBackground(){
     selectedBackground =
         null;
 
+
     customBackgroundImage =
         null;
 
 
-    if (rawVideoTrack){
+    /*
+     * Kalau tidak sedang share layar,
+     * kembalikan video ke kamera.
+     */
+
+    if (
+        rawVideoTrack &&
+        !sharingScreen
+    ){
 
         await replaceOutgoingVideoTrack(
             rawVideoTrack
@@ -4038,7 +4787,8 @@ async function disableBackground(){
     if (processedStream){
 
         /*
-         * Jangan hentikan microphone asli.
+         * Hanya stop video canvas.
+         * Microphone asli tidak disentuh.
          */
 
         for (
@@ -4051,31 +4801,44 @@ async function disableBackground(){
             }catch(_){}
         }
 
-        processedStream = null;
+
+        processedStream =
+            null;
     }
 
 
-    const localVideo =
-        document.querySelector(
-            `#tile-${socket.id} video`
-        );
+    if (!sharingScreen){
+
+        const localVideo =
+            document.querySelector(
+                `#tile-${socket.id} video`
+            );
 
 
-    if (
-        localVideo &&
-        localStream
-    ){
+        if (
+            localVideo &&
+            localStream
+        ){
 
-        localVideo.srcObject =
-            localStream;
+            localVideo.srcObject =
+                localStream;
 
-        localVideo.muted = true;
-        localVideo.volume = 0;
+            localVideo.muted =
+                true;
 
-        localVideo.style.transform =
-            "none";
+            localVideo.defaultMuted =
+                true;
 
-        localVideo.play().catch(() => {});
+            localVideo.volume =
+                0;
+
+            localVideo.style.transform =
+                "none";
+
+            localVideo.play().catch(
+                () => {}
+            );
+        }
     }
 
 
@@ -4097,16 +4860,75 @@ leaveBtn.addEventListener(
 
 function leaveMeeting(){
 
-    if (!joined) return;
+    if (!joined){
+        return;
+    }
 
 
     joined = false;
 
 
+    /*
+     * Stop screen sharing.
+     */
+
+    if (screenTrack){
+
+        try{
+            screenTrack.onended = null;
+        }catch(_){}
+
+
+        try{
+            screenTrack.stop();
+        }catch(_){}
+
+        screenTrack = null;
+    }
+
+
+    if (screenStream){
+
+        for (
+            const track
+            of screenStream.getTracks()
+        ){
+
+            try{
+                track.stop();
+            }catch(_){}
+        }
+
+        screenStream = null;
+    }
+
+
+    sharingScreen = false;
+
+
+    shareBtn.classList.remove(
+        "active"
+    );
+
+    shareBtn.textContent =
+        "🖥️";
+
+    shareBtn.title =
+        "Bagikan layar";
+
+
+    /*
+     * Inform server.
+     */
+
     socket.emit(
         "leave-room"
     );
 
+
+    /*
+     * Tutup peer.
+     */
 
     for (
         const pc
@@ -4125,6 +4947,10 @@ function leaveMeeting(){
     participantData.clear();
 
 
+    /*
+     * Stop camera + microphone.
+     */
+
     if (localStream){
 
         for (
@@ -4139,11 +4965,21 @@ function leaveMeeting(){
     }
 
 
-    localStream = null;
+    localStream =
+        null;
 
-    rawVideoTrack = null;
-    localAudioTrack = null;
 
+    rawVideoTrack =
+        null;
+
+
+    localAudioTrack =
+        null;
+
+
+    /*
+     * Stop processed stream.
+     */
 
     if (processedStream){
 
@@ -4159,17 +4995,50 @@ function leaveMeeting(){
     }
 
 
-    processedStream = null;
-    processedVideoTrack = null;
+    processedStream =
+        null;
+
+    processedVideoTrack =
+        null;
 
 
-    grid.innerHTML = "";
+    /*
+     * Reset state.
+     */
 
-    chatMessages.innerHTML = "";
+    backgroundEnabled =
+        false;
+
+    selectedBackground =
+        null;
+
+    customBackgroundImage =
+        null;
+
+    backgroundRunning =
+        false;
+
+    cameraEnabled =
+        true;
+
+    micEnabled =
+        true;
+
+    handRaised =
+        false;
+
+
+    grid.innerHTML =
+        "";
+
+    chatMessages.innerHTML =
+        "";
+
 
     sidebar.classList.remove(
         "open"
     );
+
 
     chat.classList.remove(
         "open"
@@ -4180,23 +5049,33 @@ function leaveMeeting(){
         "hidden"
     );
 
+
     lobby.classList.add(
         "hidden"
     );
+
 
     home.classList.remove(
         "hidden"
     );
 
 
-    currentRoom = null;
-    currentRole = "";
-    joined = false;
+    currentRoom =
+        null;
+
+    currentRole =
+        "";
+
+    joined =
+        false;
+
+
+    updateLocalButtons();
 }
 
 
 /* =========================================================
-   SOCKET CONNECTION STATUS
+   SOCKET STATUS
 ========================================================= */
 
 socket.on(

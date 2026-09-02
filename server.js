@@ -1,4 +1,3 @@
-```javascript
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
@@ -44,6 +43,7 @@ function createCode() {
     let roomCode;
 
     do {
+
         roomCode =
             "CLASS-" +
             Math.random()
@@ -58,7 +58,7 @@ function createCode() {
 
 
 /* =========================================================
-   ACTIVE MICROPHONE COUNTER
+   COUNT ACTIVE MICROPHONES
 ========================================================= */
 
 function countActiveMics(room) {
@@ -68,6 +68,7 @@ function countActiveMics(room) {
     let count = 0;
 
     for (const user of room.users.values()) {
+
         if (user.mic === true) {
             count++;
         }
@@ -87,7 +88,9 @@ function getParticipants(roomCode) {
 
     if (!room) return [];
 
-    return [...room.users.entries()].map(
+    return [
+        ...room.users.entries()
+    ].map(
         ([id, user]) => ({
             id,
             name: user.name,
@@ -117,11 +120,13 @@ function sendParticipants(roomCode) {
 
 function removeUser(socket) {
 
-    const roomCode = socket.data.room;
+    const roomCode =
+        socket.data.room;
 
     if (!roomCode) return;
 
-    const room = rooms.get(roomCode);
+    const room =
+        rooms.get(roomCode);
 
     if (!room) return;
 
@@ -135,6 +140,7 @@ function removeUser(socket) {
     sendParticipants(roomCode);
 
     if (room.users.size === 0) {
+
         rooms.delete(roomCode);
     }
 
@@ -158,16 +164,20 @@ io.on("connection", socket => {
         "create-room",
         (data, callback) => {
 
-            const roomCode = createCode();
+            const roomCode =
+                createCode();
 
             let name =
-                String(data?.name || "Guru")
+                String(
+                    data?.name || "Guru"
+                )
                     .trim()
                     .substring(0, 40);
 
             if (!name) {
                 name = "Guru";
             }
+
 
             rooms.set(
                 roomCode,
@@ -181,7 +191,13 @@ io.on("connection", socket => {
                                 name,
                                 role: "teacher",
                                 camera: true,
+
+                                /*
+                                 * Guru otomatis mendapat
+                                 * microphone pertama.
+                                 */
                                 mic: true,
+
                                 hand: false
                             }
                         ]
@@ -189,20 +205,28 @@ io.on("connection", socket => {
                 }
             );
 
+
             socket.join(roomCode);
 
-            socket.data.room = roomCode;
-            socket.data.role = "teacher";
+            socket.data.room =
+                roomCode;
+
+            socket.data.role =
+                "teacher";
+
 
             if (callback) {
+
                 callback({
                     ok: true,
-                    code: roomCode,
-                    mic: true
+                    code: roomCode
                 });
             }
 
-            sendParticipants(roomCode);
+
+            sendParticipants(
+                roomCode
+            );
         }
     );
 
@@ -216,15 +240,21 @@ io.on("connection", socket => {
         (data, callback) => {
 
             const roomCode =
-                String(data?.code || "")
+                String(
+                    data?.code || ""
+                )
                     .trim()
                     .toUpperCase();
 
-            const room = rooms.get(roomCode);
+
+            const room =
+                rooms.get(roomCode);
+
 
             if (!room) {
 
                 if (callback) {
+
                     callback({
                         ok: false,
                         error:
@@ -236,9 +266,13 @@ io.on("connection", socket => {
             }
 
 
-            if (room.users.size >= MAX_PARTICIPANTS) {
+            if (
+                room.users.size >=
+                MAX_PARTICIPANTS
+            ) {
 
                 if (callback) {
+
                     callback({
                         ok: false,
                         error:
@@ -251,20 +285,24 @@ io.on("connection", socket => {
 
 
             const existingPeers =
-                [...room.users.entries()]
-                    .map(
-                        ([id, user]) => ({
-                            id,
-                            name: user.name,
-                            role: user.role
-                        })
-                    );
+                [
+                    ...room.users.entries()
+                ].map(
+                    ([id, user]) => ({
+                        id,
+                        name: user.name,
+                        role: user.role
+                    })
+                );
 
 
             let name =
-                String(data?.name || "Siswa")
+                String(
+                    data?.name || "Siswa"
+                )
                     .trim()
                     .substring(0, 40);
+
 
             if (!name) {
                 name = "Siswa";
@@ -272,16 +310,34 @@ io.on("connection", socket => {
 
 
             /*
-             * Periksa apakah peserta meminta microphone aktif.
-             * Microphone hanya diberikan jika masih ada slot.
+             * Tentukan microphone siswa.
+             *
+             * Jika jumlah mic sudah 3,
+             * siswa tetap masuk meeting
+             * tetapi microphone OFF.
              */
 
-            const requestedMic =
+            let requestedMic =
                 data?.mic === true;
 
-            const micAllowed =
-                requestedMic &&
-                countActiveMics(room) < MAX_ACTIVE_MIC;
+            let approvedMic = false;
+
+
+            if (requestedMic) {
+
+                if (
+                    countActiveMics(room) <
+                    MAX_ACTIVE_MIC
+                ){
+
+                    approvedMic = true;
+
+                }else{
+
+                    approvedMic = false;
+                }
+
+            }
 
 
             room.users.set(
@@ -289,8 +345,9 @@ io.on("connection", socket => {
                 {
                     name,
                     role: "student",
-                    camera: true,
-                    mic: micAllowed,
+                    camera:
+                        data?.camera !== false,
+                    mic: approvedMic,
                     hand: false
                 }
             );
@@ -298,24 +355,46 @@ io.on("connection", socket => {
 
             socket.join(roomCode);
 
-            socket.data.room = roomCode;
-            socket.data.role = "student";
+            socket.data.room =
+                roomCode;
+
+            socket.data.role =
+                "student";
 
 
             if (callback) {
+
                 callback({
                     ok: true,
                     code: roomCode,
                     existingPeers,
-                    mic: micAllowed
+
+                    /*
+                     * Kirim keadaan mic
+                     * sebenarnya dari server.
+                     */
+                    mic: approvedMic
                 });
             }
 
 
-            /*
-             * Peserta baru menjadi initiator.
-             * Peserta lama tidak membuat offer baru.
-             */
+            if (
+                requestedMic &&
+                !approvedMic
+            ){
+
+                socket.emit(
+                    "mic-limit",
+                    {
+                        max:
+                            MAX_ACTIVE_MIC,
+
+                        message:
+                            "Maksimal 3 microphone aktif. Microphone kamu dimatikan."
+                    }
+                );
+            }
+
 
             socket.to(roomCode).emit(
                 "peer-joined",
@@ -327,28 +406,15 @@ io.on("connection", socket => {
             );
 
 
-            sendParticipants(roomCode);
-
-
-            if (requestedMic && !micAllowed) {
-
-                io.to(socket.id).emit(
-                    "mic-limit",
-                    {
-                        allowed: false,
-                        max: MAX_ACTIVE_MIC,
-                        message:
-                            "Maksimal 3 microphone aktif. Matikan microphone peserta lain terlebih dahulu."
-                    }
-                );
-
-            }
+            sendParticipants(
+                roomCode
+            );
         }
     );
 
 
     /* =====================================================
-       WEBRTC OFFER
+       OFFER
     ===================================================== */
 
     socket.on(
@@ -356,6 +422,7 @@ io.on("connection", socket => {
         data => {
 
             if (!data?.to) return;
+
             if (!data?.offer) return;
 
             io.to(data.to).emit(
@@ -370,7 +437,7 @@ io.on("connection", socket => {
 
 
     /* =====================================================
-       WEBRTC ANSWER
+       ANSWER
     ===================================================== */
 
     socket.on(
@@ -378,6 +445,7 @@ io.on("connection", socket => {
         data => {
 
             if (!data?.to) return;
+
             if (!data?.answer) return;
 
             io.to(data.to).emit(
@@ -392,7 +460,7 @@ io.on("connection", socket => {
 
 
     /* =====================================================
-       ICE CANDIDATE
+       ICE
     ===================================================== */
 
     socket.on(
@@ -400,6 +468,7 @@ io.on("connection", socket => {
         data => {
 
             if (!data?.to) return;
+
             if (!data?.candidate) return;
 
             io.to(data.to).emit(
@@ -422,80 +491,90 @@ io.on("connection", socket => {
         data => {
 
             const room =
-                rooms.get(socket.data.room);
+                rooms.get(
+                    socket.data.room
+                );
 
             if (!room) return;
 
+
             const user =
-                room.users.get(socket.id);
+                room.users.get(
+                    socket.id
+                );
 
             if (!user) return;
 
 
-            const requestedCamera =
+            /*
+             * CAMERA
+             *
+             * Camera tidak dibatasi.
+             */
+
+            user.camera =
                 data?.camera !== false;
+
+
+            /*
+             * MICROPHONE
+             *
+             * Server yang menentukan.
+             */
 
             const requestedMic =
                 data?.mic === true;
 
 
-            /*
-             * MICROPHONE DIMATIKAN
-             */
-
             if (!requestedMic) {
+
+                /*
+                 * User ingin mematikan mic.
+                 */
 
                 user.mic = false;
 
-            }
+            } else if (!user.mic) {
 
+                /*
+                 * User ingin menyalakan mic.
+                 */
 
-            /*
-             * MICROPHONE DINYALAKAN
-             */
-
-            else if (!user.mic) {
-
-                const activeMicCount =
+                const activeMics =
                     countActiveMics(room);
 
-                if (activeMicCount >= MAX_ACTIVE_MIC) {
+
+                if (
+                    activeMics <
+                    MAX_ACTIVE_MIC
+                ){
+
+                    user.mic = true;
+
+                }else{
 
                     user.mic = false;
 
-                    /*
-                     * Kirim penolakan hanya kepada
-                     * peserta yang mencoba menyalakan mic.
-                     */
-
-                    io.to(socket.id).emit(
+                    socket.emit(
                         "mic-limit",
                         {
-                            allowed: false,
-                            max: MAX_ACTIVE_MIC,
+                            max:
+                                MAX_ACTIVE_MIC,
+
+                            active:
+                                activeMics,
+
                             message:
                                 "Maksimal 3 microphone aktif. Matikan microphone peserta lain terlebih dahulu."
                         }
                     );
-
-                } else {
-
-                    user.mic = true;
-
                 }
-
             }
 
 
-            user.camera =
-                requestedCamera;
-
-
-            /*
-             * Kirim status ke seluruh peserta.
-             */
-
-            io.to(socket.data.room).emit(
+            io.to(
+                socket.data.room
+            ).emit(
                 "media-state",
                 {
                     id: socket.id,
@@ -521,12 +600,17 @@ io.on("connection", socket => {
         data => {
 
             const room =
-                rooms.get(socket.data.room);
+                rooms.get(
+                    socket.data.room
+                );
 
             if (!room) return;
 
+
             const user =
-                room.users.get(socket.id);
+                room.users.get(
+                    socket.id
+                );
 
             if (!user) return;
 
@@ -535,7 +619,9 @@ io.on("connection", socket => {
                 !!data?.hand;
 
 
-            io.to(socket.data.room).emit(
+            io.to(
+                socket.data.room
+            ).emit(
                 "hand-state",
                 {
                     id: socket.id,
@@ -560,11 +646,15 @@ io.on("connection", socket => {
         (data, callback) => {
 
             const room =
-                rooms.get(socket.data.room);
+                rooms.get(
+                    socket.data.room
+                );
+
 
             if (!room) {
 
                 if (callback) {
+
                     callback({
                         ok: false,
                         error:
@@ -577,13 +667,18 @@ io.on("connection", socket => {
 
 
             const user =
-                room.users.get(socket.id);
+                room.users.get(
+                    socket.id
+                );
+
 
             if (!user) return;
 
 
             let newName =
-                String(data?.name || "")
+                String(
+                    data?.name || ""
+                )
                     .trim()
                     .substring(0, 40);
 
@@ -591,6 +686,7 @@ io.on("connection", socket => {
             if (!newName) {
 
                 if (callback) {
+
                     callback({
                         ok: false,
                         error:
@@ -602,10 +698,12 @@ io.on("connection", socket => {
             }
 
 
-            user.name = newName;
+            user.name =
+                newName;
 
 
             if (callback) {
+
                 callback({
                     ok: true,
                     name: newName
@@ -613,7 +711,9 @@ io.on("connection", socket => {
             }
 
 
-            io.to(socket.data.room).emit(
+            io.to(
+                socket.data.room
+            ).emit(
                 "name-changed",
                 {
                     id: socket.id,
@@ -642,19 +742,27 @@ io.on("connection", socket => {
 
             if (!roomCode) return;
 
+
             const room =
-                rooms.get(roomCode);
+                rooms.get(
+                    roomCode
+                );
 
             if (!room) return;
 
+
             const user =
-                room.users.get(socket.id);
+                room.users.get(
+                    socket.id
+                );
 
             if (!user) return;
 
 
             let message =
-                String(data?.message || "")
+                String(
+                    data?.message || ""
+                )
                     .trim()
                     .substring(0, 500);
 
@@ -683,6 +791,7 @@ io.on("connection", socket => {
     socket.on(
         "leave-room",
         () => {
+
             removeUser(socket);
         }
     );
@@ -695,6 +804,7 @@ io.on("connection", socket => {
     socket.on(
         "disconnect",
         () => {
+
             removeUser(socket);
         }
     );
@@ -703,7 +813,7 @@ io.on("connection", socket => {
 
 
 /* =========================================================
-   SERVER
+   SERVER START
 ========================================================= */
 
 server.listen(
@@ -722,7 +832,5 @@ server.listen(
         console.log(
             `Maximum active microphones: ${MAX_ACTIVE_MIC}`
         );
-
     }
 );
-```

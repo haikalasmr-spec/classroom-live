@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#070b14">
+  <title>CLASSROOM LIVE — Meeting</title><link rel="stylesheet" href="/style.css"><script src="/socket.io/socket.io.js"></script>
+</head>
+<body class="meeting-body">
+  <header class="topbar">
+    <div class="brand-mini"><div class="brand-mark small">CL</div><strong>CLASSROOM LIVE</strong></div>
+    <div class="room-info"><span>ROOM</span><strong id="roomLabel">—</strong><button id="copyRoom" class="icon-btn" aria-label="Copy room code">Copy</button></div>
+    <div class="top-actions"><span id="connectionBadge" class="connection-badge">Connecting…</span><button id="inviteBtn" class="ghost-btn">Invite</button></div>
+  </header>
+  <main class="meeting-layout">
+    <section class="stage-wrap">
+      <div id="systemAlert" class="meeting-alert hidden" role="alert"></div>
+      <div id="videoGrid" class="video-grid"></div>
+      <div id="emptyState" class="empty-state hidden"><div class="empty-icon">◉</div><h2>Waiting for participants</h2><p>Share the room code or invite link with your class.</p></div>
+      <div id="micMeter" class="mic-meter"><span></span><span></span><span></span><span></span><span></span><b>Mic level</b></div>
+    </section>
+    <aside class="side-panel" id="sidePanel">
+      <div class="panel-tabs"><button class="tab active" data-panel="people">People <span id="peopleCount">0</span></button><button class="tab" data-panel="chat">Chat <span id="chatUnread" class="unread hidden">0</span></button></div>
+      <div id="peoplePanel" class="panel-content"><div id="peopleList"></div></div>
+      <div id="chatPanel" class="panel-content hidden"><div id="chatMessages" class="chat-messages"></div><form id="chatForm" class="chat-form"><input id="chatInput" maxlength="500" placeholder="Type a message…" autocomplete="off"><button type="submit">Send</button></form></div>
+    </aside>
+  </main>
+  <nav class="controls" aria-label="Meeting controls">
+    <div class="control-group"><button id="micBtn" class="control" aria-label="Toggle microphone"><span>🎙</span><small>Mute</small></button><button id="cameraBtn" class="control" aria-label="Toggle camera"><span>▣</span><small>Camera</small></button><button id="flipBtn" class="control" aria-label="Flip camera"><span>↻</span><small>Flip</small></button><button id="shareBtn" class="control" aria-label="Share screen"><span>▤</span><small>Share</small></button></div>
+    <div class="control-group center"><button id="handBtn" class="control" aria-label="Raise hand"><span>✋</span><small>Hand</small></button><button id="audioOnlyBtn" class="control" aria-label="Toggle audio only"><span>◉</span><small>Audio only</small></button><button id="moreBtn" class="control" aria-label="More options"><span>•••</span><small>More</small></button></div>
+    <div class="control-group"><button id="peopleBtn" class="control" aria-label="Open participants"><span>👥</span><small>People</small></button><button id="chatBtn" class="control" aria-label="Open chat"><span>▰</span><small>Chat</small></button><button id="leaveBtn" class="leave control" aria-label="Leave meeting"><span>↪</span><small>Leave</small></button></div>
+  </nav>
+  <div id="moreMenu" class="more-menu hidden"><button id="fullscreenBtn">Fullscreen stage</button><button id="pipBtn" class="hidden">Picture in Picture</button><button id="speakerTestBtn">Test speaker</button><button id="restartMediaBtn">Restart camera & mic</button><div class="quality-row"><span>Video quality</span><select id="qualitySelect"><option value="auto">Auto</option><option value="720">720p</option><option value="480">480p</option><option value="360">360p</option></select></div><div id="hostControls" class="host-controls hidden"><hr><b>Host controls</b><button id="lockBtn">Lock meeting</button><button id="endBtn" class="danger">End meeting</button></div></div>
+  <div id="joinOverlay" class="overlay"><div class="lobby-card"><div class="brand-mark">CL</div><h1>Join CLASSROOM LIVE</h1><p id="lobbyRoom">Preparing your camera and microphone…</p><div class="preview"><video id="localPreview" autoplay muted playsinline></video><div id="previewFallback" class="preview-fallback hidden">Camera unavailable<br><small>Audio can still work.</small></div></div><div class="device-row"><button id="lobbyMic" class="secondary">🎙 Microphone On</button><button id="lobbyCam" class="secondary">▣ Camera On</button></div><div class="meter-line"><span>Mic level</span><div id="lobbyMeter"><i></i><i></i><i></i><i></i><i></i></div></div><button id="enterBtn" class="primary wide">Enter meeting</button><p id="lobbyError" class="alert hidden"></p></div></div>
+  <script src="/app.js"></script>
+</body>
+</html>

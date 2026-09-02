@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b1020"><title>CLASSROOM LIVE</title><link rel="stylesheet" href="/style.css">
+</head>
+<body class="home-body">
+  <main class="home-shell">
+    <section class="hero-card">
+      <div class="brand-row"><div class="brand-mark">CL</div><div><div class="eyebrow">ONLINE CLASSROOM</div><h1>CLASSROOM LIVE</h1></div></div>
+      <p class="hero-copy">Belajar bersama tanpa batas. Video, suara, chat, dan kolaborasi langsung dari browser.</p>
+      <div class="home-grid">
+        <form id="createForm" class="action-card">
+          <div class="card-icon">＋</div><h2>Create Meeting</h2><p>Buat ruang kelas baru sebagai guru.</p>
+          <label>Nama<input id="createName" maxlength="40" required autocomplete="name" placeholder="Nama guru"></label>
+          <button class="primary" type="submit">Create Meeting</button>
+        </form>
+        <form id="joinForm" class="action-card">
+          <div class="card-icon">→</div><h2>Join Meeting</h2><p>Masuk ke ruang kelas menggunakan kode.</p>
+          <label>Nama<input id="joinName" maxlength="40" required autocomplete="name" placeholder="Nama siswa"></label>
+          <label>Room Code<input id="roomCode" maxlength="9" required placeholder="CL-XXXXXX" autocapitalize="characters" spellcheck="false"></label>
+          <button class="secondary" type="submit">Join Meeting</button>
+        </form>
+      </div>
+      <div class="browser-status" id="browserStatus"><span class="status-dot"></span><span>Checking browser capabilities…</span></div>
+      <div id="homeError" class="alert hidden" role="alert"></div>
+      <footer>Camera and microphone require browser permission and HTTPS in production.</footer>
+    </section>
+  </main>
+  <script>
+    const status = document.getElementById('browserStatus');
+    const statusText = status.querySelector('span:last-child');
+    const secure = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    const media = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+    statusText.textContent = media && secure ? 'Browser ready for camera & microphone' : media ? 'Camera/mic available; production should use HTTPS' : 'This browser does not expose camera/mic APIs';
+    function showError(t){ const e=document.getElementById('homeError'); e.textContent=t; e.classList.remove('hidden'); }
+    document.getElementById('createForm').addEventListener('submit', e => { e.preventDefault(); const n=document.getElementById('createName').value.trim(); if(n) location.href='/meeting.html?new=1&name='+encodeURIComponent(n); });
+    document.getElementById('joinForm').addEventListener('submit', e => { e.preventDefault(); const n=document.getElementById('joinName').value.trim(); const r=document.getElementById('roomCode').value.trim().toUpperCase(); if(!/^CL-[A-HJ-NP-Z2-9]{6}$/.test(r)) return showError('Room code harus berbentuk CL-XXXXXX.'); if(n) location.href='/meeting.html?room='+encodeURIComponent(r)+'&name='+encodeURIComponent(n); });
+    document.getElementById('roomCode').addEventListener('input', e => e.target.value=e.target.value.toUpperCase().replace(/[^A-Z0-9-]/g,''));
+  </script>
+</body>
+</html>

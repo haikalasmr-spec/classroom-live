@@ -1,3 +1,4 @@
+```javascript
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
@@ -15,7 +16,9 @@ const io = new Server(server, {
 });
 
 const PORT = process.env.PORT || 3000;
+
 const MAX_PARTICIPANTS = 20;
+const MAX_ACTIVE_MIC = 3;
 
 const rooms = new Map();
 
@@ -41,7 +44,6 @@ function createCode() {
     let roomCode;
 
     do {
-
         roomCode =
             "CLASS-" +
             Math.random()
@@ -52,6 +54,26 @@ function createCode() {
     } while (rooms.has(roomCode));
 
     return roomCode;
+}
+
+
+/* =========================================================
+   ACTIVE MICROPHONE COUNTER
+========================================================= */
+
+function countActiveMics(room) {
+
+    if (!room) return 0;
+
+    let count = 0;
+
+    for (const user of room.users.values()) {
+        if (user.mic === true) {
+            count++;
+        }
+    }
+
+    return count;
 }
 
 
@@ -175,7 +197,8 @@ io.on("connection", socket => {
             if (callback) {
                 callback({
                     ok: true,
-                    code: roomCode
+                    code: roomCode,
+                    mic: true
                 });
             }
 
@@ -248,13 +271,26 @@ io.on("connection", socket => {
             }
 
 
+            /*
+             * Periksa apakah peserta meminta microphone aktif.
+             * Microphone hanya diberikan jika masih ada slot.
+             */
+
+            const requestedMic =
+                data?.mic === true;
+
+            const micAllowed =
+                requestedMic &&
+                countActiveMics(room) < MAX_ACTIVE_MIC;
+
+
             room.users.set(
                 socket.id,
                 {
                     name,
                     role: "student",
                     camera: true,
-                    mic: true,
+                    mic: micAllowed,
                     hand: false
                 }
             );
@@ -270,7 +306,8 @@ io.on("connection", socket => {
                 callback({
                     ok: true,
                     code: roomCode,
-                    existingPeers
+                    existingPeers,
+                    mic: micAllowed
                 });
             }
 
@@ -278,8 +315,6 @@ io.on("connection", socket => {
             /*
              * Peserta baru menjadi initiator.
              * Peserta lama tidak membuat offer baru.
-             *
-             * Ini mengurangi kemungkinan offer collision.
              */
 
             socket.to(roomCode).emit(
@@ -293,6 +328,21 @@ io.on("connection", socket => {
 
 
             sendParticipants(roomCode);
+
+
+            if (requestedMic && !micAllowed) {
+
+                io.to(socket.id).emit(
+                    "mic-limit",
+                    {
+                        allowed: false,
+                        max: MAX_ACTIVE_MIC,
+                        message:
+                            "Maksimal 3 microphone aktif. Matikan microphone peserta lain terlebih dahulu."
+                    }
+                );
+
+            }
         }
     );
 
@@ -382,12 +432,68 @@ io.on("connection", socket => {
             if (!user) return;
 
 
-            user.camera =
+            const requestedCamera =
                 data?.camera !== false;
 
-            user.mic =
-                data?.mic !== false;
+            const requestedMic =
+                data?.mic === true;
 
+
+            /*
+             * MICROPHONE DIMATIKAN
+             */
+
+            if (!requestedMic) {
+
+                user.mic = false;
+
+            }
+
+
+            /*
+             * MICROPHONE DINYALAKAN
+             */
+
+            else if (!user.mic) {
+
+                const activeMicCount =
+                    countActiveMics(room);
+
+                if (activeMicCount >= MAX_ACTIVE_MIC) {
+
+                    user.mic = false;
+
+                    /*
+                     * Kirim penolakan hanya kepada
+                     * peserta yang mencoba menyalakan mic.
+                     */
+
+                    io.to(socket.id).emit(
+                        "mic-limit",
+                        {
+                            allowed: false,
+                            max: MAX_ACTIVE_MIC,
+                            message:
+                                "Maksimal 3 microphone aktif. Matikan microphone peserta lain terlebih dahulu."
+                        }
+                    );
+
+                } else {
+
+                    user.mic = true;
+
+                }
+
+            }
+
+
+            user.camera =
+                requestedCamera;
+
+
+            /*
+             * Kirim status ke seluruh peserta.
+             */
 
             io.to(socket.data.room).emit(
                 "media-state",
@@ -609,5 +715,14 @@ server.listen(
             `CLASSROOM LIVE running on port ${PORT}`
         );
 
+        console.log(
+            `Maximum participants: ${MAX_PARTICIPANTS}`
+        );
+
+        console.log(
+            `Maximum active microphones: ${MAX_ACTIVE_MIC}`
+        );
+
     }
 );
+```
